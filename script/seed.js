@@ -2,8 +2,67 @@
 
 const {
   db,
-  models: { User },
+  models: { User, Product },
 } = require('../server/db');
+
+const users = [
+  {
+    username: 'cody',
+    password: '123',
+    email: 'cody@gmail.com',
+    address: '123 St',
+    phoneNumber: '123456',
+    isAdmin: false,
+  },
+  {
+    username: 'murphy',
+    password: '123',
+    email: 'murphy@gmail.com',
+    address: '123 St',
+    phoneNumber: '123456',
+    isAdmin: false,
+  },
+  {
+    username: 'ian',
+    password: '123',
+    email: 'ian@gmail.com',
+    address: '123 St',
+    phoneNumber: '123456',
+    isAdmin: false,
+  },
+  {
+    username: 'bobo',
+    password: '123',
+    email: 'bobo@gmail.com',
+    address: '123 St',
+    phoneNumber: '123456',
+    isAdmin: false,
+  },
+  {
+    username: 'noah',
+    password: '123',
+    email: 'noah@gmail.com',
+    address: '123 St',
+    phoneNumber: '123456',
+    isAdmin: false,
+  },
+  {
+    username: 'ava',
+    password: '12345',
+    email: 'ava@gmail.com',
+    address: '1234 St',
+    phoneNumber: '1234567',
+    isAdmin: true,
+  },
+  {
+    username: 'amy',
+    password: '12345',
+    email: 'amy@gmail.com',
+    address: '1234 St',
+    phoneNumber: '1234567',
+    isAdmin: true,
+  },
+];
 
 const products = [
   {
@@ -99,25 +158,28 @@ const products = [
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
-async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
-  console.log('db synced!');
 
-  // Creating Users
-  const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ]);
-
-  console.log(`seeded ${users.length} users`);
-  console.log(`seeded successfully`);
-  return {
-    users: {
-      cody: users[0],
-      murphy: users[1],
-    },
-  };
-}
+// Creating Users
+const seed = async () => {
+  try {
+    await db.sync({ force: true });
+    console.log('db synced!');
+    // seed users database
+    await Promise.all(
+      users.map((user) => {
+        return User.create(user);
+      })
+    );
+    // seed products database
+    await Promise.all(
+      products.map((product) => {
+        return Product.create(product);
+      })
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 /*
  We've separated the `seed` function from the `runSeed` function.
@@ -148,4 +210,4 @@ if (module === require.main) {
 }
 
 // we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = { seed, products };
+module.exports = seed;

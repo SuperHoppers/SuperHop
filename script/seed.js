@@ -2,9 +2,7 @@
 
 const {
   db,
-  models: { User, Order, Order_Product },
-} = require('../server/db');
-  models: { User, Product },
+  models: { User, Order, Order_Product, Product },
 } = require('../server/db');
 
 const users = [
@@ -162,29 +160,25 @@ const products = [
  *      match the models, and populates the database.
  */
 
-async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
-  console.log('db synced!');
-
+// async function seed() {
+//   await db.sync({ force: true }); // clears db and matches models to tables
+//   console.log('db synced!');
+// }
   // Creating Users
-  const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ]);
+  // const users = await Promise.all([
+  //   User.create({ username: 'cody', password: '123' }),
+  //   User.create({ username: 'murphy', password: '123' }),
+  // ]);
 
   // Creating Orders
-  const orders = await Promise.all([
-    Order.create({
-      status: 'closed',
-      userId: 1,
-      Order_ProductId: [],
-    }),
-    Order.create({
+  const orders = [
+    {
       status: 'open',
-      userId: 2,
-      Order_ProductId: [],
-    }),
-  ]);
+    },
+    {
+      status: 'closed',
+    }
+  ]
 
 
 // Creating Users
@@ -193,17 +187,24 @@ const seed = async () => {
     await db.sync({ force: true });
     console.log('db synced!');
     // seed users database
-    await Promise.all(
+    const seedUsers = await Promise.all(
       users.map((user) => {
         return User.create(user);
       })
     );
     // seed products database
-    await Promise.all(
+    const seedProducts = await Promise.all(
       products.map((product) => {
         return Product.create(product);
       })
     );
+    const seedOrders = await Promise.all(
+      orders.map((order) => {
+        return Order.create(order);
+      })
+    );
+    console.log('successfully seeded!')
+    return [seedOrders,seedProducts,seedUsers];
   } catch (err) {
     console.log(err);
   }

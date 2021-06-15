@@ -154,7 +154,6 @@ const products = [
   },
 ];
 
-
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
@@ -164,22 +163,21 @@ const products = [
 //   await db.sync({ force: true }); // clears db and matches models to tables
 //   console.log('db synced!');
 // }
-  // Creating Users
-  // const users = await Promise.all([
-  //   User.create({ username: 'cody', password: '123' }),
-  //   User.create({ username: 'murphy', password: '123' }),
-  // ]);
+// Creating Users
+// const users = await Promise.all([
+//   User.create({ username: 'cody', password: '123' }),
+//   User.create({ username: 'murphy', password: '123' }),
+// ]);
 
-  // Creating Orders
-  const orders = [
-    {
-      status: 'open',
-    },
-    {
-      status: 'closed',
-    }
-  ]
-
+// Creating Orders
+const orders = [
+  {
+    status: 'open',
+  },
+  {
+    status: 'closed',
+  },
+];
 
 // Creating Users
 const seed = async () => {
@@ -203,8 +201,8 @@ const seed = async () => {
         return Order.create(order);
       })
     );
-    console.log('successfully seeded!')
-    return [seedOrders,seedProducts,seedUsers];
+    console.log('successfully seeded!');
+    return [seedOrders, seedProducts, seedUsers];
   } catch (err) {
     console.log(err);
   }

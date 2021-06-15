@@ -3,7 +3,7 @@ const db = require('../db');
 //const axios = require('axios');
 
 const Product = db.define('product', {
-  productName: {
+  name: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
@@ -29,13 +29,14 @@ const Product = db.define('product', {
   description: {
     type: Sequelize.TEXT,
   },
-  imageUrl: {
+  imageURL: {
     type: Sequelize.STRING,
   },
   //Replace ENUM types with types Dani chooses
   type: {
     type: Sequelize.ENUM,
-    values: [],
+    allowNull: true,
+    values: ['Strength', 'Mind'],
   },
 });
 

@@ -2,6 +2,30 @@
 
 const {db, models: {User} } = require('../server/db')
 
+const products = [
+  {
+    name: 'Invisibility',
+    price: 10000,
+    inventory: 250,
+    description: 'With this power you can make yourslef completely transparent so that nothing with eyes can detect you.',
+    imageURL: 'http://sciencenewsjournal.com/wp-content/uploads/2016/09/invisibility-990x515.jpg'
+  },
+  {
+    name: 'Flight',
+    price: 15000,
+    inventory: 400,
+    description: 'Take to the skies with this power! This will give you the ability to levitate and soar through the sky!',
+    imageURL: '',
+  },
+  {
+    name: 'Mind Reading',
+    price: 0,
+    inventory: 0,
+    description: '',
+    imageURL: '',
+  }
+]
+
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.

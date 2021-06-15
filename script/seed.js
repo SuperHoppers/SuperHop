@@ -159,6 +159,7 @@ const products = [
  *      match the models, and populates the database.
  */
 
+
 // Creating Users
 const seed = async () => {
   try {
@@ -180,6 +181,75 @@ const seed = async () => {
     console.log(err);
   }
 };
+
+    // Creating Users
+    const users = await Promise.all([
+        // 1
+        User.create({
+            username: "cody",
+            password: "123",
+            email: "cody@gmail.com",
+            address: "123 St",
+            phoneNumber: "123456",
+            isAdmin: false
+        }),
+        // 2
+        User.create({
+            username: "murphy",
+            password: "123",
+            email: "murphy@gmail.com",
+            address: "123 St",
+            phoneNumber: "123456",
+            isAdmin: false
+        }),
+        // 3
+        User.create({
+            username: "ian",
+            password: "123",
+            email: "ian@gmail.com",
+            address: "123 St",
+            phoneNumber: "123456",
+            isAdmin: false
+        }),
+        // 4
+        User.create({
+            username: "bobo",
+            password: "123",
+            email: "bobo@gmail.com",
+            address: "123 St",
+            phoneNumber: "123456",
+            isAdmin: false
+        }),
+        // 5
+        User.create({
+            username: "noah",
+            password: "123",
+            email: "noah@gmail.com",
+            address: "123 St",
+            phoneNumber: "123456",
+            isAdmin: false
+        }),
+        // 6
+        User.create({
+            username: "ava",
+            password: "12345",
+            email: "ava@gmail.com",
+            address: "1234 St",
+            phoneNumber: "1234567",
+            isAdmin: true
+        }),
+        // 7
+        User.create({
+            username: "amy",
+            password: "12345",
+            email: "amy@gmail.com",
+            address: "1234 St",
+            phoneNumber: "1234567",
+            isAdmin: true
+        })
+    ]);
+}
+
 
 /*
  We've separated the `seed` function from the `runSeed` function.

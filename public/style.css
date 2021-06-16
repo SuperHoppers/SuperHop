@@ -20,7 +20,9 @@ form div {
     display: inline-block;
 }
 
-.picListView {
+#picListView img {
+    width: 150px;
+    height: 100px;
 }
 
 .listViewDiv {

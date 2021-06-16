@@ -16,12 +16,12 @@ class AllProducts extends React.Component {
   render() {
     return (
       <div>
-        <h1 className='page-title'>Superpowers Available for Purchase</h1>
+        <h1 className="page-title">Superpowers Available for Purchase</h1>
         <div>
           {this.props.products.length > 0 ? (
             this.props.products.map((product) => {
               return (
-                <div className='productContainer' key={product.id}>
+                <div className="productContainer" key={product.id}>
                   <EachProduct product={product} />
                 </div>
               );

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 /**
  * COMPONENT
  */
-export const EachProduct = (props) => {
+const EachProduct = (props) => {
   //const thisProduct = props.product;
   const thisProduct = {
     name: 'Explody Bugs',
@@ -32,3 +32,5 @@ export const EachProduct = (props) => {
     </div>
   );
 };
+
+export default EachProduct;

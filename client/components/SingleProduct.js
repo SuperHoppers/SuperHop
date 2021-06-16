@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSingleProduct } from '../client/store/products';
+import { fetchSingleProduct } from '../store/products';
 
 class SingleProduct extends Component {
   componentDidMount() {
@@ -11,14 +11,14 @@ class SingleProduct extends Component {
   render() {
     const { name, price, description, imageURL } = this.props.product;
     return (
-      <div className="single-product">
+      <div className='single-product'>
         <h2>{name}</h2>
         <img src={imageURL} />
         <h3>{price}</h3>
         <p>{description}</p>
         {/* feat: add to cart */}
         <div>
-          <button type="button">Add to Cart</button>
+          <button type='button'>Add to Cart</button>
         </div>
       </div>
     );

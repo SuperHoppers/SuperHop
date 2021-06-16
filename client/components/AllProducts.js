@@ -7,34 +7,23 @@ import { fetchAllProducts } from "../store/products";
 /**
  * COMPONENT
  */
-class AllProducts extends React.Component {
-    componentDidMount() {
-        this.props.loadProducts();
-    }
 
-    render() {
-        console.log(this.props);
-        return (
-            <div>
-                <h1 className="page-title">
-                    Superpowers Available for Purchase
-                </h1>
-                <div>
-                    {this.props.products.length > 0 ? (
-                        this.props.products.map((product) => {
-                            return (
-                                <div
-                                    className="productContainer"
-                                    key={product.id}
-                                >
-                                    <EachProduct product={product} />
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <h2>No products currently available.</h2>
-                    )}
-                </div>
+export class AllProducts extends React.Component {
+  componentDidMount() {
+    this.props.loadProducts();
+  }
+
+  render() {
+    return (
+      <div>
+        <h1 className='page-title'>Superpowers Available for Purchase</h1>
+        <div>
+          {this.props.products.length > 0 ? (
+            this.props.products.map((product) => {
+              return (
+                <div className='productContainer' key={product.id}>
+                  <EachProduct product={product} />
+            </div>
             </div>
         );
     }

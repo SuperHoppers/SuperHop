@@ -29,12 +29,12 @@ export const fetchAllProducts = () => async (dispatch) => {
     }
 };
 
-export const fetchSingleProduct = () => async (dispatch) => {
+export const fetchSingleProduct = (productId) => async (dispatch) => {
     try {
         const { data } = await axios.get(`/api/products/${productId}`);
         dispatch(setSingleProducts(data));
     } catch (error) {
-        console.log("error fetching single product", err);
+        console.log("error fetching single product", error);
     }
 };
 

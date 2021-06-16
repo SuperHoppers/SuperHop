@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Product from './Product';
-import { fetchProducts } from '../store/products';
+import EachProduct from './EachProduct';
+import { fetchAllProducts } from '../store/products';
 
 /**
  * COMPONENT
  */
-export class AllProducts extends React.Component {
+class AllProducts extends React.Component {
   componentDidMount() {
     this.props.loadProducts();
   }
@@ -22,7 +22,7 @@ export class AllProducts extends React.Component {
             this.props.products.map((product) => {
               return (
                 <div className='productContainer' key={product.id}>
-                  <Product product={product} />
+                  <EachProduct product={product} />
                 </div>
               );
             })
@@ -37,12 +37,12 @@ export class AllProducts extends React.Component {
 
 const mapState = (state) => {
   return {
-    products: state.products,
+    products: state.allProducts,
   };
 };
 
 const mapDispatch = (dispatch) => ({
-  loadProducts: () => dispatch(fetchProducts()),
+  loadProducts: () => dispatch(fetchAllProducts()),
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

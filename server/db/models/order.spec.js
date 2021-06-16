@@ -4,11 +4,15 @@ const { expect } = require('chai');
 const {
   models: { Order },
 } = require('../index');
-const db = require('../../server/db');
+const db = require('../db');
+const seed = require('../../../script/seed');
 
 
 describe('Order model', () => {
-  beforeEach(() => db.sync({ force: true }));
+  let orders;
+  beforeEach(async () => {
+      orders = (await seed())[0];
+  });
 
   it('has a`totalCost` and `status`', async () => {
     const order = await Order.create({
@@ -20,8 +24,7 @@ describe('Order model', () => {
   });
 
   it('has default value for totalCost and status', async () => {
-    const order = Order.build();
-    await order.validate();
+    const order = await Order.create({});
     expect(order.totalCost).to.equal(0.0);
     expect(order.status).to.equal('open');
   });

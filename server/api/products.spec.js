@@ -6,20 +6,28 @@ const { db, models: { User } } = require('../db')
 const seed = require('../../script/seed');
 const app = require('../app')
 
-describe('User routes', () => {
+describe('Product routes', () => {
   beforeEach(async() => {
     await seed();
   })
 
-  describe('/api/users/', () => {
+  describe('/api/products/', () => {
 
-    it('GET /api/users', async () => {
+    it('GET /api/products', async () => {
       const res = await request(app)
-        .get('/api/users')
+        .get('/api/products')
         .expect(200)
 
       expect(res.body).to.be.an('array');
-      expect(res.body.length).to.equal(7);
+      expect(res.body.length).to.equal(10);
+    })
+    it('GET /api/products/:productId', async () => {
+      const res = await request(app)
+        .get('/api/products/2')
+        .expect(200)
+
+       expect(res.body).to.be.an('object');
+       expect(res.body.name).to.equal('Superhuman Speed');
     })
   }) // end describe('/api/users')
 }) // end describe('User routes')

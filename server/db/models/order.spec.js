@@ -6,6 +6,7 @@ const {
 } = require('../index');
 const db = require('../../server/db');
 
+
 describe('Order model', () => {
   beforeEach(() => db.sync({ force: true }));
 

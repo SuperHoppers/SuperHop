@@ -6,7 +6,7 @@ const { db, models: { User } } = require('../db')
 const seed = require('../../script/seed');
 const app = require('../app')
 
-describe('User routes', () => {
+xdescribe('User routes', () => {
   beforeEach(async() => {
     await seed();
   })

@@ -1,13 +1,13 @@
 //check routes and filenames
-
-import React from 'react';
-import { connect } from 'react-redux';
-import EachProduct from './EachProduct';
-import { fetchAllProducts } from '../store/products';
+import React from "react";
+import { connect } from "react-redux";
+import EachProduct from "./EachProduct";
+import { fetchAllProducts } from "../store/products";
 
 /**
  * COMPONENT
  */
+
 export class AllProducts extends React.Component {
   componentDidMount() {
     this.props.loadProducts();
@@ -23,26 +23,20 @@ export class AllProducts extends React.Component {
               return (
                 <div className='productContainer' key={product.id}>
                   <EachProduct product={product} />
-                </div>
-              );
-            })
-          ) : (
-            <h2>No products currently available.</h2>
-          )}
-        </div>
-      </div>
-    );
-  }
+            </div>
+            </div>
+        );
+    }
 }
 
 const mapState = (state) => {
-  return {
-    products: state.allProducts,
-  };
+    return {
+        products: state.products.allProducts
+    };
 };
 
 const mapDispatch = (dispatch) => ({
-  loadProducts: () => dispatch(fetchAllProducts()),
+    loadProducts: () => dispatch(fetchAllProducts())
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

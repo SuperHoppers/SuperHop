@@ -41,7 +41,7 @@ const User = db.define("user", {
             "https://lh3.googleusercontent.com/proxy/ZPHeJRh5yDBt7aH3EmrHxihA85agsOr_vslPOWuEEuku4tqJZ8SrDcbKYe5iqMuGgJL2JvGQbObmGCU7h5gagKJhhalsqDEdDfCbKSyT1L6V8K3Dc0ofhMGFMm3VjDpODpZbQwFvh0I"
     },
     address: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
         validate: {
             notEmpty: true
@@ -68,7 +68,7 @@ module.exports = User;
 
 // User hasMany Oders
 // Oders BelongsTo User.
- 
+
 /**
  * instanceMethods
  */

@@ -30,7 +30,7 @@ const Product = db.define('product', {
     type: Sequelize.TEXT,
   },
   imageURL: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
   },
   //Replace ENUM types with types Dani chooses
   type: {

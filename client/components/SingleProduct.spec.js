@@ -1,20 +1,27 @@
 /* global describe beforeEach it */
 
-import { expect } from 'chai';
 import React from 'react';
-import enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { expect } from 'chai';
+import { mount } from 'enzyme';
+
 import SingleProduct from './SingleProduct';
 
-const adapter = new Adapter();
-enzyme.configure({ adapter });
+describe('SingleProduct component', () => {
+  const zoolingual = {
+    id: 1,
+    name: 'Animal Translator',
+    imageURL:
+      'https://static.onecms.io/wp-content/uploads/sites/20/2017/04/talking-to-pet.jpg',
+    price: 10000,
+    description: 'Ever wanted to know what your pet was trying to tell you?',
+  };
 
-// describe('SingleProduct', () => {
-//   let singleproduct
-
-//   beforeEach(() => {})
-
-//   it('renders the email in an h3', () => {
-//     expect(home.find('h3').text()).to.be.equal('Welcome, cody')
-//   })
-// })
+  const multilingual = {
+    id: 2,
+    name: 'Multilingual',
+    imageURL:
+      'https://civicreinventions.com/wp-content/uploads/2019/06/Multilingual-Image.jpeg',
+    price: 10000,
+    description: 'Gain the ability to talk to people from all over the world!',
+  };
+});

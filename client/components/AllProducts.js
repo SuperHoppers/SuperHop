@@ -24,10 +24,11 @@ export class AllProducts extends React.Component {
                 <div className='productContainer' key={product.id}>
                   <EachProduct product={product} />
             </div>
-            </div>
+            
         );
+        </div>
     }
-}
+  }
 
 const mapState = (state) => {
     return {

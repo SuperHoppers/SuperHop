@@ -1,26 +1,46 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from "react";
+import { Link } from "react-router-dom";
+const Home = () => {
+    return (
+        <>
+            <div className="home-design">
+                <h1 className="Home-header">Welcome to the Store!</h1>
+                <p>What is your Superpower?</p>
+                <img
+                    src="https://www.flintasbury.org/wp-content/uploads/2019/08/superpower.jpg"
+                    className="homeImg"
+                />
+            </div>
 
-/**
- * COMPONENT
- */
-export const Home = props => {
-  const {username} = props
+            <div className="home-products">
+                <Link to="/products">All Products</Link>
+            </div>
+        </>
+    );
+};
 
-  return (
-    <div>
-      <h3>Welcome, {username}</h3>
-    </div>
-  )
-}
+export default Home;
 
-/**
- * CONTAINER
- */
-const mapState = state => {
-  return {
-    username: state.auth.username
-  }
-}
+// /**
+//  * COMPONENT
+//  */
+// export const Home = props => {
+//   const {username} = props
 
-export default connect(mapState)(Home)
+//   return (
+//     <div>
+//       <h3>Welcome, {username}</h3>
+//     </div>
+//   )
+// }
+
+// /**
+//  * CONTAINER
+//  */
+// const mapState = state => {
+//   return {
+//     username: state.auth.username
+//   }
+// }
+
+// export default connect(mapState)(Home)

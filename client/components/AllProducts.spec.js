@@ -2,10 +2,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import mockAxios from './mock-axios';
-//import sinon from 'sinon';
+import sinon from 'sinon';
 //import configureMockStore from 'redux-mock-store';
 //import thunkMiddleware from 'redux-thunk';
-//import waitForExpect from 'wait-for-expect';
+import waitForExpect from 'wait-for-expect';
 //import { Provider } from 'react-redux';
 //import * as rrd from 'react-router-dom';
 //import store from '../store';
@@ -64,48 +64,66 @@ describe('Tier one: AllProducts view', () => {
   beforeEach(() => {
     mockAxios.onGet('/api/products').replyOnce(200, powers);
   });
-  //line 65
-  it('renders the campuses passed in as props', () => {
-    const wrapper = mount(
-      <UnconnectedAllProducts
-        products={powers}
-        // getCampuses={getCampusesSpy}
-      />
-    );
-    expect(wrapper.text()).to.include('SuperGreasy');
-    expect(wrapper.text()).to.include('SuperNose');
-    const images = wrapper.find('img').map((node) => node.get(0).props.src);
-    expect(images).to.include.members([
-      'https://static.wikia.nocookie.net/zelda_gamepedia_en/images/c/c2/OoT_Bombchu_Render.png',
-    ]);
-  });
-
-  it('renders DIFFERENT products passed in as props', () => {
-    const wrapper = mount(
-      <AllProducts
-        products={[supernose]}
-        // getCampuses={getCampusesSpy}
-      />
-    );
-    expect(wrapper.text()).to.not.include('Forever Young');
-  });
-
-  describe('AllProducts view', () => {
-    it('renders a superpower name, image, and price passed in as state', () => {
-      const wrapper = mount(<AllProducts />);
-      expect(wrapper).to.include.text('Supernose');
-      expect(wrapper).to.include.text('.20');
+  describe('<AllProducts /> component', () => {
+    const fetchAllProductsSpy = sinon.spy();
+    afterEach(() => {
+      fetchAllProductsSpy.resetHistory();
     });
 
-    it('renders a list of products', () => {
-      const wrapper = mount(<AllProducts />);
-      expect(wrapper).to.include.text('Forever Young');
-      expect(wrapper).to.include.text('700');
-      expect(wrapper).to.include.text('SuperNose');
-      expect(wrapper).to.include.text('SuperGrease');
+    //line 65
+    it('renders the products passed in as props', () => {
+      const wrapper = mount(
+        <UnconnectedAllProducts
+          products={powers}
+          fetchAllProducts={fetchAllProductsSpy}
+        />
+      );
+      expect(wrapper.text()).to.include('SuperGreasy');
+      expect(wrapper.text()).to.include('SuperNose');
+      const images = wrapper.find('img').map((node) => node.get(0).props.src);
+      expect(images).to.include.members([
+        'https://static.wikia.nocookie.net/zelda_gamepedia_en/images/c/c2/OoT_Bombchu_Render.png',
+      ]);
+    });
+
+    it('renders DIFFERENT products passed in as props', () => {
+      const wrapper = mount(
+        <UnconnectedAllProducts
+          products={[supernose]}
+          fetchAllProducts={fetchAllProductsSpy}
+        />
+      );
+      expect(wrapper.text()).to.not.include('Forever Young');
+    });
+
+    describe('AllProducts view', () => {
+      it('renders a superpower name, image, and price passed in as state', () => {
+        const wrapper = mount(<AllProducts />);
+        expect(wrapper).to.include.text('Supernose');
+        expect(wrapper).to.include.text('.20');
+      });
+
+      it('renders a list of products', () => {
+        const wrapper = mount(<AllProducts />);
+        expect(wrapper).to.include.text('Forever Young');
+        expect(wrapper).to.include.text('700');
+        expect(wrapper).to.include.text('SuperNose');
+        expect(wrapper).to.include.text('SuperGrease');
+      });
+    });
+
+    it('calls this.props.getCampuses after mount', async () => {
+      mount(
+        <UnconnectedAllProducts
+          products={powers}
+          fetchAllProducts={fetchAllProductsSpy}
+        />
+      );
+      await waitForExpect(() => {
+        expect(fetchAllProductsSpy).to.have.been.called;
+      });
     });
   });
-
   // describe('Connect: react-redux', () => {
 
   //   it('initializes products from the server when the application loads the /products route', async () => {

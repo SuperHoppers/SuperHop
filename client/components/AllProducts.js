@@ -14,6 +14,7 @@ export class AllProducts extends React.Component {
   }
 
   render() {
+
       return (
           <div>
               <h1 className='page-title'>Superpowers Available for Purchase</h1>
@@ -32,8 +33,9 @@ export class AllProducts extends React.Component {
               </div>
           </div>
       )
+
     }
-}
+  }
 
 const mapState = (state) => {
     return {

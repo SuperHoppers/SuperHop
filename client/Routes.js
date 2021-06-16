@@ -26,6 +26,8 @@ const Routes = () => {
                     path="/products/:productId"
                     component={SingleProduct}
                 />
+                <Route path="/login" component={Login} />
+               <Route path="/signup" component={Signup} />
             </Switch>
         </Router>
     );

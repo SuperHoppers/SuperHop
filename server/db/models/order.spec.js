@@ -4,8 +4,7 @@ const { expect } = require('chai');
 const {
   models: { Order },
 } = require('../index');
-const db = require('../../server/db');
-
+const db = require('../db');
 
 describe('Order model', () => {
   beforeEach(() => db.sync({ force: true }));

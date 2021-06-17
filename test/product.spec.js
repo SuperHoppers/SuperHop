@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const {
   models: { Product },
-} = require('../index');
+} = require('../server/db/index');
 
 describe('Order model', () => {
   it('has fields productName, inventory, price, description, imageUrl, type', async () => {

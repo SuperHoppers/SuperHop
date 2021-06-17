@@ -1,7 +1,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import mockAxios from './mock-axios';
+//import mock from "../node_modules";
+import mock from './mock-axios';
 import sinon from 'sinon';
 //import configureMockStore from 'redux-mock-store';
 //import thunkMiddleware from 'redux-thunk';
@@ -18,11 +19,11 @@ import waitForExpect from 'wait-for-expect';
 //  products: [],
 //};
 
-import { fetchAllProducts } from '../store/products';
+import { fetchAllProducts } from '../client/store/products';
 
 import AllProducts, {
   AllProducts as UnconnectedAllProducts,
-} from './AllProducts';
+} from '../client/components/AllProducts';
 
 const supernose = {
   id: 1,
@@ -62,7 +63,7 @@ const powers = [
 ];
 describe('Tier one: AllProducts view', () => {
   beforeEach(() => {
-    mockAxios.onGet('/api/products').replyOnce(200, powers);
+    mock.onGet('/api/products').replyOnce(200, powers);
   });
   describe('<AllProducts /> component', () => {
     const fetchAllProductsSpy = sinon.spy();

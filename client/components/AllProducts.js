@@ -12,7 +12,6 @@ export class AllProducts extends React.Component {
     componentDidMount() {
         this.props.loadProducts();
     }
-
     render() {
         return (
             <div>

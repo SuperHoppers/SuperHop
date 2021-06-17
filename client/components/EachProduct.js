@@ -2,21 +2,25 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import {addToCart} from '../store/orders'
+import { connect } from 'react-redux';
 
 /**
  * COMPONENT
  */
-const EachProduct = (props) => {
-    //const thisProduct = props.product;
-    // const thisProduct = {
-    //   name: 'Explody Bugs',
-    //   price: 900,
-    //   id: 7,
-    //   imageURL:
-    //     'https://static.wikia.nocookie.net/zelda_gamepedia_en/images/c/c2/OoT_Bombchu_Render.png',
-    // };
-    const product = props.product;
-
+class EachProduct extends React.Component{
+    constructor(){
+        super()
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(evt){
+        evt.preventDefault();
+        const orderId = 1;
+        const productId = evt.target.value;
+        this.props.addItem(orderId,productId);
+    }
+    render(){
+        const product = this.props.product;
     return (
         <div className="listViewDiv">
             <div id="picListView">
@@ -37,11 +41,18 @@ const EachProduct = (props) => {
                     <h4>${product.price}</h4>
                 </div>
                 <div className="cart__btn">
-                    <button>Add to Cart</button>
+                    <button value = {product.id} onClick={this.handleClick} >Add to Cart</button>
                 </div>
             </div>
         </div>
     );
+    }
 };
 
-export default EachProduct;
+const mapDispatch = (dispatch) => {
+    return {
+        addItem: (orderId, productId) => dispatch(addToCart(orderId, productId))
+    }
+}
+
+export default connect(null,mapDispatch)(EachProduct);

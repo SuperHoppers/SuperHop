@@ -20,10 +20,10 @@ form div {
     display: inline-block;
 }
 
-#picListView img {
+/* #picListView img {
     width: 150px;
     height: 100px;
-}
+} */
 
 .listViewDiv {
     display: flex;
@@ -57,7 +57,7 @@ form div {
     margin-top: 0px;
 }
 
-.header__search {
+/* .header__search {
     display: flex;
     flex: 1;
     align-items: center;
@@ -75,7 +75,7 @@ form div {
     padding: 5px;
     height: 22px !important;
     background-color: #cd9042;
-}
+} */
 
 .header__optionLineOne {
     font-size: 10px;
@@ -90,11 +90,13 @@ form div {
     display: flex;
     align-items: center;
     color: white;
+    margin-left: auto;
 }
 
 .header__basketCount {
     margin-left: 10px;
     margin-right: 10px;
+    margin-left: auto;
 }
 
 .header__nav {
@@ -108,4 +110,43 @@ form div {
     margin-left: 10px;
     margin-right: 10px;
     color: white;
+}
+
+/* all products */
+.product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.products li {
+    list-style-type: none;
+    flex: 0;
+    /* padding: 0;
+    flex: 0 1 34rem;
+    margin: 1rem;
+    height: 50rem; */
+    border-bottom: 0.1rem #c0c0c0 solid;
+}
+
+.product__name {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.product__price {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.product__image {
+    width: 300px;
+    height: 200px;
+    margin-top: 30px;
+    margin-right: 40px;
+}
+
+.cart__btn {
+    margin-bottom: 20px;
 }

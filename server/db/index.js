@@ -13,8 +13,11 @@ User.hasMany(Order);
 Order.belongsTo(User);
 
 //many-many association
+// foreign key -> orderId
 Order.belongsToMany(Product, { through: Order_Product });
+// foreign key -> productId
 Product.belongsToMany(Order, { through: Order_Product });
+// orderProducts belongs to Product?
 
 module.exports = {
   db,

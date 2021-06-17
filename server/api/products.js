@@ -1,11 +1,11 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
-  models: { Product },
-} = require('../db');
+    models: { Product, Order }
+} = require("../db");
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
-  try {
+router.get("/", async (req, res, next) => {
+    try {
     const products = await Product.findAll({
       attributes: [
         'id',
@@ -17,14 +17,14 @@ router.get('/', async (req, res, next) => {
         'type',
       ],
     });
-    res.json(products);
-  } catch (err) {
-    next(err);
-  }
+        res.json(products);
+    } catch (err) {
+        next(err);
+    }
 });
 
-router.get('/:productId', async (req, res, next) => {
-  try {
+router.get("/:productId", async (req, res, next) => {
+    try {
     const product = await Product.findByPk(req.params.productId, {
       attributes: [
         'id',
@@ -36,8 +36,9 @@ router.get('/:productId', async (req, res, next) => {
         'type',
       ],
     });
-    res.json(product);
-  } catch (error) {
-    next(error);
-  }
+        res.json(product);
+    } catch (error) {
+        next(error);
+    }
 });
+

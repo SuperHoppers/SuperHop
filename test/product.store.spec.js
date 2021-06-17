@@ -16,20 +16,21 @@ const initialState = {
     products: []
 };
 
-import mockAxios from "../mock-axios";
-import { setProducts, fetchAllProducts } from "../store/products";
+//import mockAxios from "../node_modules/";
+import mock from './mock-axios';
+import { setProducts, fetchAllProducts } from "../client/store/products";
 
-import store from "../store/index";
+import store from "../client/store/index";
 
-import reducer from "../store/index";
+import reducer from "../client/store/index";
 import { createStore } from "redux";
 
-const app = require("../../server/app");
+const app = require("../server/app");
 // const agent = require("supertest")(app);
 
-const { db, Product } = require("../../server/db");
+const { db, Product } = require("../server/db");
 
-const seed = require("../../script/seed");
+const seed = require("../script/seed");
 
 // NOTE: Make sure you pay attention to the path below. This is where your React components should live!
 // AllProducts is the default export from that module, and it is connected to Redux.
@@ -37,9 +38,9 @@ const seed = require("../../script/seed");
 // to Redux. We're testing BOTH of these components in here.
 import AllProducts, {
     AllProducts as UnconnectedAllProducts
-} from "../components/AllProducts";
+} from "../client/components/AllProducts";
 
-import Routes from "../components/Routes";
+//import Routes from "../components/Routes";
 
 describe("Redux", () => {
     let fakeStore;

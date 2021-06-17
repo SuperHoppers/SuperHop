@@ -6,19 +6,11 @@ const Sequelize = require('sequelize');
 const Order = require('./models/Order');
 const User = require('./models/user');
 const Product = require('./models/product');
-
+const Order_Product = require('./models/order_product');
 //associations could go here!
 
 User.hasMany(Order);
 Order.belongsTo(User);
-
-//through table for many-many association
-const Order_Product = db.define('order_product', {
-  quantity: {
-    type: Sequelize.INTEGER,
-    defaultValue: 1,
-  },
-});
 
 //many-many association
 // foreign key -> orderId

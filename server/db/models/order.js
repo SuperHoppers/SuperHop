@@ -12,4 +12,26 @@ const Order = db.define('order', {
   },
 });
 
+// class methods
+
+// find order history
+Order.orderHistory = function (userId) {
+  return this.findAll({
+    where: {
+      userId: userId,
+      status: 'closed',
+    },
+  });
+};
+
+// find current open order
+Order.currentOrder = function (userId) {
+  return this.findAll({
+    where: {
+      userId: userId,
+      status: 'open',
+    },
+  });
+};
+
 module.exports = Order;

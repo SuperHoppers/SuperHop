@@ -12,10 +12,10 @@ const Order = db.define('order', {
   },
 });
 
-// instance methods
+// class methods
 
 // find order history
-Order.prototype.orderHistory = function (userId) {
+Order.orderHistory = function (userId) {
   return this.findAll({
     where: {
       userId: userId,
@@ -25,7 +25,7 @@ Order.prototype.orderHistory = function (userId) {
 };
 
 // find current open order
-Order.prototype.currentOrder = function (userId) {
+Order.currentOrder = function (userId) {
   return this.findAll({
     where: {
       userId: userId,

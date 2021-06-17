@@ -40,14 +40,11 @@ const Product = db.define('product', {
   },
 });
 
-// find product's price
-Product.prototype.findPrice = function (productId) {
-  const { price } = this.findAll({
-    where: {
-      id: productId,
-    },
-  });
-  return price;
-};
+//instance method
+// // find product's price
+// Product.prototype.findPrice = function () {
+//   console.log(this.price);
+//   return this.price;
+// };
 
 module.exports = Product;

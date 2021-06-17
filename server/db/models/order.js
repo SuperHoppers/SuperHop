@@ -34,4 +34,11 @@ Order.currentOrder = function (userId) {
   });
 };
 
+//clear current order
+Order.clearOrder = function (userId) {
+  const openOrder = this.currentOrder(userId);
+  const cartItems = openOrder.findItemsInOrder(openOrder.id);
+  return cartItems.destroy();
+};
+
 module.exports = Order;

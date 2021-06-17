@@ -2,15 +2,25 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchSingleProduct } from "../store/products";
+import { addToCart } from '../store/orders';
 
 class SingleProduct extends Component {
     componentDidMount() {
         const { productId } = this.props.match.params;
         this.props.loadSingleProduct(productId);
     }
-
+    constructor(){
+        super()
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(evt){
+        evt.preventDefault();
+        const orderId = 1;
+        const productId = evt.target.value;
+        this.props.addItem(orderId,productId);
+    }
     render() {
-        const { name, price, description, imageURL } = this.props.product;
+        const { id, name, price, description, imageURL } = this.props.product;
         return (
             <>
                 <div className="backTo_products">
@@ -40,7 +50,7 @@ class SingleProduct extends Component {
 
                     {/* feat: add to cart */}
                     <div>
-                        <button type="button">Add to Cart</button>
+                        <button value = {id} onClick={this.handleClick} type="button">Add to Cart</button>
                     </div>
                 </div>
             </>
@@ -53,7 +63,8 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = (dispatch) => ({
-    loadSingleProduct: (productId) => dispatch(fetchSingleProduct(productId))
+    loadSingleProduct: (productId) => dispatch(fetchSingleProduct(productId)),
+    addItem: (productId, orderId) => dispatch(addToCart(productId,orderId))
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);

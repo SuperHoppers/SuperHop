@@ -82,7 +82,7 @@ export const checkout = (orderId) => {
 
 //initial state
 
-initialState = {}
+const initialState = {}
 
 //reducer
 
@@ -98,3 +98,5 @@ const ordersReducer = (state = initialState, action) => {
       return state;
   }
 }
+
+export default ordersReducer;

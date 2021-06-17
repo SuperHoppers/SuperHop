@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
+const Order_Product = require('./order_product');
 
 const Order = db.define('order', {
   totalCost: {
@@ -39,6 +40,16 @@ Order.clearOrder = function (userId) {
   const openOrder = this.currentOrder(userId);
   const cartItems = openOrder.findItemsInOrder(openOrder.id);
   return cartItems.destroy();
+};
+
+// calculate cart total
+Order.prototype.cartTotal = function () {
+  const items = Order_Product.findItemsInOrder(this.id);
+  const orderTotal = items.reduce((accum, item) => {
+    return accum + item.price;
+  }, 0);
+  this.totalCost = orderTotal;
+  return this.totalCost;
 };
 
 module.exports = Order;

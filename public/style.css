@@ -51,10 +51,11 @@ form div {
 
 .header__logo {
     width: 100px;
-    height: 100%;
+    height: 63px;
     object-fit: contain;
     margin: 0 20px;
     margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 /* .header__search {
@@ -149,4 +150,34 @@ form div {
 
 .cart__btn {
     margin-bottom: 20px;
+}
+
+/* single product */
+.backTo_products {
+    padding: 1rem;
+}
+
+.single__product {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+.singleProduct__image {
+    flex: 2 1 60rem;
+}
+
+/* .singleProduct__image img {
+    max-width: 60rem;
+    width: 100%;
+} */
+
+.singleProduct__info {
+    flex: 1 1 30rem;
+}
+
+.singleProduct__info ul {
+    list-style-type: none;
+    padding: 0;
 }

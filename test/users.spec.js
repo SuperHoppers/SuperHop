@@ -2,9 +2,9 @@
 
 const {expect} = require('chai')
 const request = require('supertest')
-const { db, models: { User } } = require('../db')
-const seed = require('../../script/seed');
-const app = require('../app')
+const { db, models: { User } } = require('../server/db')
+const seed = require('../script/seed');
+const app = require('../server/app')
 
 describe('User routes', () => {
   beforeEach(async() => {

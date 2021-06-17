@@ -3,9 +3,9 @@
 const { expect } = require('chai');
 const {
   models: { Order },
-} = require('../index');
-const db = require('../db');
-const seed = require('../../../script/seed');
+} = require('../server/db/index');
+const db = require('../server/db/db');
+const seed = require('../script/seed');
 
 describe('Order model', () => {
   let orders;

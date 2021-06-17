@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import SingleProduct from './SingleProduct';
+import SingleProduct from '../client/components/SingleProduct';
 
 describe('SingleProduct component', () => {
   const zoolingual = {

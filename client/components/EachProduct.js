@@ -20,18 +20,23 @@ const EachProduct = (props) => {
     return (
         <div className="listViewDiv">
             <div id="picListView">
-                <img src={product.imageURL} />
+                <img
+                    className="product__image"
+                    src={product.imageURL}
+                    alt="product"
+                />
             </div>
             <div className="listViewDiv namePrice">
-                <div>
+                <div className="product__name">
                     <Link to={`/products/${product.id}`}>
                         <h3>{product.name}</h3>
                     </Link>
                 </div>
-                <div>
+
+                <div className="product__price">
                     <h4>${product.price}</h4>
                 </div>
-                <div className="cart-btn">
+                <div className="cart__btn">
                     <button>Add to Cart</button>
                 </div>
             </div>

@@ -1,5 +1,3 @@
-/* global describe beforeEach it */
-
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -21,7 +19,7 @@ describe('SingleProduct component', () => {
     name: 'Multilingual',
     imageURL:
       'https://civicreinventions.com/wp-content/uploads/2019/06/Multilingual-Image.jpeg',
-    price: 10000,
+    price: 15000,
     description: 'Gain the ability to talk to people from all over the world!',
   };
 

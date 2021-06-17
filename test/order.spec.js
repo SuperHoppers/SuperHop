@@ -27,4 +27,23 @@ describe('Order model', () => {
     expect(order.totalCost).to.equal(0);
     expect(order.status).to.equal('open');
   });
+
+  // describe('Instance methods on Order model', function () {
+  //   it('returns the order history for a user', function () {
+  //     const ordernot = Order.create({
+  //       status: 'closed',
+  //       userId: 1,
+  //     });
+  //     const orderit = Order.create({
+  //       status: 'closed',
+  //       userId: 2,
+  //     });
+  //     const orderly = Order.create({
+  //       status: 'closed',
+  //       userId: 2,
+  //     });
+
+  //     expect(orderly.orderHistory(2)).to.equal(1);
+  //   });
+  // });
 }); // end describe('Order model')

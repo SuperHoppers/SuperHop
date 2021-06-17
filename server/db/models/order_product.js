@@ -32,7 +32,8 @@ const Order_Product = db.define('order_product', {
   },
 });
 
-Order_Product.prototype.findItemsInOrder = function (orderId) {
+//class method
+Order_Product.findItemsInOrder = function (orderId) {
   return this.findAll({
     where: {
       orderId: orderId,

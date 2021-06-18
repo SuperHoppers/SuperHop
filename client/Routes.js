@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 // import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
+// import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import { me } from "./store";
 
@@ -11,6 +11,8 @@ import Header from "./components/Header";
 import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
 import Cart from "./components/Cart";
+import { Login } from "./components/LoginPage";
+import { Signup } from "./components/SignupPage";
 
 const Routes = () => {
     return (

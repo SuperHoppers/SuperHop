@@ -5,7 +5,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { connect } from 'react-redux';
 import { logout } from '../store';
 
-const Header = ({ handleClick, isLoggedIn, username }) => {
+const Header = ({ handleClick, isLoggedIn, username, isAdmin }) => {
   return (
     <div className='header'>
       <Link to='/'>
@@ -27,13 +27,17 @@ const Header = ({ handleClick, isLoggedIn, username }) => {
             Hello {!username ? 'Guest' : username}!
           </span>
           {isLoggedIn ? (
-            <div>
-              {/* The navbar will show these links after you log in */}
-              <Link to='/'>Home</Link>
-              <a href='#' onClick={handleClick}>
-                Logout
-              </a>
-            </div>
+            isAdmin ? (
+              <Link to='/admin'>Admin Tools</Link>
+            ) : (
+              <div>
+                {/* The navbar will show these links after you log in */}
+                <Link to='/'>Home</Link>
+                <a href='#' onClick={handleClick}>
+                  Logout
+                </a>
+              </div>
+            )
           ) : (
             <div>
               {/* The navbar will show these links before you log in */}
@@ -44,6 +48,7 @@ const Header = ({ handleClick, isLoggedIn, username }) => {
             </div>
           )}
         </div>
+        <div></div>
       </div>
 
       <Link to='/cart'>
@@ -63,6 +68,7 @@ const mapState = (state) => {
   return {
     isLoggedIn: !!state.auth.id,
     username: state.auth.username,
+    isAdmin: state.auth.isAdmin,
   };
 };
 

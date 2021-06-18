@@ -43,6 +43,7 @@ const mapLogin = (state) => {
   return {
     name: 'login',
     error: state.auth.error,
+    isAdmin: state.auth.isAdmin,
   };
 };
 
@@ -51,12 +52,14 @@ const mapDispatch = (dispatch, { history }) => {
     handleSubmit(evt) {
       console.log(evt);
       evt.preventDefault();
-      // const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
-      // const email = evt.target.email.value;
       dispatch(authenticate(username, password, 'login'));
+      // if (this.isAdmin) {
+      //   history.push('/admin');
+      // } else {
       history.push('/');
+      // }
     },
   };
 };

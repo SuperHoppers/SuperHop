@@ -4,12 +4,21 @@ const {
 } = require('../db');
 module.exports = router;
 
+router.get('/', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.body.orderId);
+    res.json(order);
+  } catch (error) {
+    console.log('errors in order get route /', error);
+    next(error);
+  }
+})
+
 router.put('/addToCart', async (req, res, next) => {
   // cartTotal
   try {
     const cart = await Order.findByPk(req.body.orderId);
     const orderProduct = await Product.findByPk(req.body.productId);
-    console.log(await cart.hasProduct(orderProduct));
     if(await cart.hasProduct(orderProduct)){
       console.log('this ran')
       let currentItem = await Order_Product.findOne({

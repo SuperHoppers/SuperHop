@@ -9,14 +9,15 @@ router.put('/addToCart', async (req, res, next) => {
   try {
     const cart = await Order.findByPk(req.body.orderId);
     const orderProduct = await Product.findByPk(req.body.productId);
-    if(cart.hasProduct(orderProduct)){
-      let currentItem = await Order_Product.findAll({
+    console.log(await cart.hasProduct(orderProduct));
+    if(await cart.hasProduct(orderProduct)){
+      console.log('this ran')
+      let currentItem = await Order_Product.findOne({
         where: {
           orderId: req.body.orderId,
           productId: req.body.productId
         },
       });
-      currentItem = currentItem[0];
       const newQuantity = currentItem.quantity +1;
       await currentItem.update({quantity: newQuantity})
     } else {
@@ -34,21 +35,25 @@ router.put('/removeFromCart', async (req, res, next) => {
   try {
     const cart = await Order.findByPk(req.body.orderId);
     const orderProduct = await Product.findByPk(req.body.productId);
-    let currentItem = await Order_Product.findAll({
+    let currentItem = await Order_Product.findOne({
       where: {
         orderId: req.body.orderId,
         productId: req.body.productId
       },
     });
-    currentItem = currentItem[0];
-    if(currentItem.quantity > 1){
-      const newQuantity = currentItem.quantity -1;
-      await currentItem.update({quantity: newQuantity})
+    if(!currentItem){
+      console.log('You don\'t have any of these in your cart')
+      res.send('You don\'t have any of these in your cart')
     } else {
-      cart.removeProduct(orderProduct);
+      if(currentItem.quantity > 1){
+        const newQuantity = currentItem.quantity -1;
+        await currentItem.update({quantity: newQuantity})
+      } else {
+        cart.removeProduct(orderProduct);
+      }
+      // cart = await cart.update({totalCost: cart.cartTotal()})
+      res.json(cart);
     }
-    // cart = await cart.update({totalCost: cart.cartTotal()})
-    res.json(cart);
   } catch (error) {
     console.log('errors in order put route /removeFromCart', error);
     next(error);

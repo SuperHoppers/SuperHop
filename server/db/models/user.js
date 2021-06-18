@@ -24,12 +24,12 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: false,
+      notEmpty: true,
     },
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
       notEmpty: true,
       isEmail: true,
@@ -42,14 +42,14 @@ const User = db.define('user', {
   },
   address: {
     type: Sequelize.TEXT,
-    allowNull: false,
+    // allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   phoneNumber: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    // allowNull: false,
     validate: {
       notEmpty: true,
       //   len: [10,12]

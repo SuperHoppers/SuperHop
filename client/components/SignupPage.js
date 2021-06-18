@@ -6,42 +6,42 @@ import { signupAuthenticate } from '../store';
 const SignupPage = (props) => {
   const { name, handleSubmit, error } = props;
   return (
-    <div className="form">
+    <div className='form'>
       <form onSubmit={handleSubmit} name={name}>
-        <ul className="form__container">
+        <ul className='form__container'>
           <li>
             <h2>Create Account</h2>
           </li>
           <li>{error && <div>{error.response.data}</div>}</li>
           <li>
-            <label htmlFor="username">Username:</label>
-            <input name="username" type="text" />
+            <label htmlFor='username'>Username:</label>
+            <input name='username' type='text' />
           </li>
           <li>
-            <label htmlFor="email">Email:</label>
-            <input name="email" type="email" />
+            <label htmlFor='email'>Email:</label>
+            <input name='email' type='email' />
           </li>
           <li>
-            <label htmlFor="password">Password:</label>
-            <input name="password" type="password" />
+            <label htmlFor='password'>Password:</label>
+            <input name='password' type='password' />
           </li>
           <li>
-            <label htmlFor="address">Address:</label>
-            <textarea name="address" type="text" />
+            <label htmlFor='address'>Address:</label>
+            <textarea name='address' type='text' />
           </li>
           <li>
-            <label htmlFor="phoneNumber">Phone Number:</label>
-            <input name="phoneNumber" type="text" />
+            <label htmlFor='phoneNumber'>Phone Number:</label>
+            <input name='phoneNumber' type='text' />
           </li>
           <li>
-            <button type="submit" className="primary__btn">
+            <button type='submit' className='primary__btn'>
               Register
             </button>
           </li>
           <li>Already have an Account?</li>
           <li>
-            <Link to="/login">
-              <button className="secondary__btn">Log In</button>
+            <Link to='/login'>
+              <button className='secondary__btn'>Log In</button>
             </Link>
           </li>
         </ul>
@@ -57,7 +57,7 @@ const mapSignup = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     handleSubmit(evt) {
       console.log(evt);
@@ -78,6 +78,7 @@ const mapDispatch = (dispatch) => {
           'signup'
         )
       );
+      history.push('/');
     },
   };
 };

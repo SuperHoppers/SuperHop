@@ -20,7 +20,6 @@ router.put('/addToCart', async (req, res, next) => {
     const cart = await Order.findByPk(req.body.orderId);
     const orderProduct = await Product.findByPk(req.body.productId);
     if(await cart.hasProduct(orderProduct)){
-      console.log('this ran')
       let currentItem = await Order_Product.findOne({
         where: {
           orderId: req.body.orderId,

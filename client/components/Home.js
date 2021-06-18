@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 const Home = () => {
   return (
     <>
@@ -19,7 +20,12 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapState = state => {
+  return {
+    isLoggedIn: !!state.auth.id
+  }
+}
+export default connect(mapState)(Home);
 
 // /**
 //  * COMPONENT

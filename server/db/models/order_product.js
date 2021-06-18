@@ -23,15 +23,17 @@ const Order_Product = db.define(
   },
   {
     hooks: {
-      beforeCreate: () => {
-        const product = Product.findByPk(this.productId);
+      beforeCreate: async (order) => {
+        //console.log('THIS IS IN CREATE', order);
+        const product = await Product.findByPk(order.productId);
         const price = product.price;
-        this.lineTotal = this.quantity * price;
+        order.lineTotal = order.quantity * price;
       },
-      beforeUpdate: () => {
-        const product = Product.findByPk(this.productId);
+      beforeUpdate: async (order) => {
+        //console.log('THIS IS IN UPDATE', order);
+        const product = await Product.findByPk(order.productId);
         const price = product.price;
-        this.lineTotal += this.quantity * price;
+        order.lineTotal += order.quantity * price;
       },
     },
   }

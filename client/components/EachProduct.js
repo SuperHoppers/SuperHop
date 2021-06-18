@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import {addToCart} from '../store/orders'
+import {addToCart, removeFromCart} from '../store/orders'
 import { connect } from 'react-redux';
 
 /**
@@ -11,13 +11,20 @@ import { connect } from 'react-redux';
 class EachProduct extends React.Component{
     constructor(){
         super()
-        this.handleClick = this.handleClick.bind(this)
+        this.handleAdd = this.handleAdd.bind(this)
+        this.handleRemove = this.handleRemove.bind(this)
     }
-    handleClick(evt){
+    handleAdd(evt){
         evt.preventDefault();
         const orderId = 1;
         const productId = evt.target.value;
         this.props.addItem(orderId,productId);
+    }
+    handleRemove(evt){
+        evt.preventDefault();
+        const orderId = 1;
+        const productId = evt.target.value;
+        this.props.removeItem(orderId,productId);
     }
     render(){
         const product = this.props.product;
@@ -40,8 +47,13 @@ class EachProduct extends React.Component{
                 <div className="product__price">
                     <h4>${product.price}</h4>
                 </div>
-                <div className="cart__btn">
+                {/* <div className="cart__btn">
                     <button value = {product.id} onClick={this.handleClick} >Add to Cart</button>
+                </div> */}
+                <div>
+                <button value = {product.id} onClick={this.handleAdd} >+</button>
+                <span>0</span>
+                <button value = {product.id} onClick={this.handleRemove}>-</button>
                 </div>
             </div>
         </div>
@@ -51,7 +63,8 @@ class EachProduct extends React.Component{
 
 const mapDispatch = (dispatch) => {
     return {
-        addItem: (orderId, productId) => dispatch(addToCart(orderId, productId))
+        addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
+        removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
     }
 }
 

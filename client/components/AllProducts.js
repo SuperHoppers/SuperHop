@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import EachProduct from "./EachProduct";
 import { fetchAllProducts } from "../store/products";
+import { fetchOrder } from "../store/orders";
 
 /**
  * COMPONENT
@@ -10,9 +11,14 @@ import { fetchAllProducts } from "../store/products";
 
 export class AllProducts extends React.Component {
     componentDidMount() {
+        const orderNum = 19;
+        window.localStorage.setItem('orderNum', orderNum)
         this.props.loadProducts();
+        const orderId = window.localStorage.getItem('orderNum')
+        this.props.loadOrder(orderId);
     }
     render() {
+    console.log(this.props.isLoggedIn)
         return (
             <div>
                 <h1 className="page-title">
@@ -41,12 +47,14 @@ export class AllProducts extends React.Component {
 
 const mapState = (state) => {
     return {
-        products: state.products.allProducts
+        products: state.products.allProducts,
+        isLoggedIn: !!state.auth.id
     };
 };
 
 const mapDispatch = (dispatch) => ({
-    loadProducts: () => dispatch(fetchAllProducts())
+    loadProducts: () => dispatch(fetchAllProducts()),
+    loadOrder: (orderId) => dispatch(fetchOrder(orderId))
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

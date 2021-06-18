@@ -7,12 +7,12 @@ import { logout } from '../store';
 
 const Header = ({ handleClick, isLoggedIn, username }) => {
   return (
-    <div className="header">
-      <Link to="/">
+    <div className='header'>
+      <Link to='/'>
         <img
-          className="header__logo"
-          src="../../superhoplogo.png"
-          alt="the logo"
+          className='header__logo'
+          src='../../superhoplogo.png'
+          alt='the logo'
         />
       </Link>
 
@@ -21,35 +21,35 @@ const Header = ({ handleClick, isLoggedIn, username }) => {
         <SearchIcon className="header__searchIcon" />
       </div> */}
 
-      <div className="header__nav">
-        <div className="header__option">
-          <span className="header__optionLineOne">
+      <div className='header__nav'>
+        <div className='header__option'>
+          <span className='header__optionLineOne'>
             Hello {!username ? 'Guest' : username}!
           </span>
           {isLoggedIn ? (
             <div>
               {/* The navbar will show these links after you log in */}
-              <Link to="/home">Home</Link>
-              <a href="#" onClick={handleClick}>
+              <Link to='/'>Home</Link>
+              <a href='#' onClick={handleClick}>
                 Logout
               </a>
             </div>
           ) : (
             <div>
               {/* The navbar will show these links before you log in */}
-              <Link to="/login">
-                <span className="header__optionLineTwo">Sign In</span>
+              <Link to='/login'>
+                <span className='header__optionLineTwo'>Sign In</span>
               </Link>
-              <Link to="/signup">Sign Up</Link>
+              <Link to='/signup'>Sign Up</Link>
             </div>
           )}
         </div>
       </div>
 
-      <Link to="/cart">
-        <div className="header__optionBasket">
+      <Link to='/cart'>
+        <div className='header__optionBasket'>
           <ShoppingBasketIcon />
-          <span className="header__optionLineTwo header__basketCount">0</span>
+          <span className='header__optionLineTwo header__basketCount'>0</span>
         </div>
       </Link>
     </div>

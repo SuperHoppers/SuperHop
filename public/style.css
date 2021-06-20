@@ -173,7 +173,6 @@ form div {
 #home-products {
   display: flex;
   justify-content: center;
-
   border-radius: 15px;
   font-weight: bolder;
   font-size: larger;

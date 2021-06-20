@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 // import SearchIcon from "@material-ui/icons/Search";
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import { connect } from 'react-redux';
-import { logout } from '../store';
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import { connect } from "react-redux";
+import { logout } from "../store";
 
 const Header = ({ handleClick, isLoggedIn, username, isAdmin }) => {
   return (
@@ -23,14 +23,20 @@ const Header = ({ handleClick, isLoggedIn, username, isAdmin }) => {
 
       <div className='header__nav'>
         <div className='header__option'>
-          <span className='header__optionLineOne'>
-            Hello {!username ? 'Guest' : username}!
-          </span>
+          <div className='header__optionLineOne'>
+            Hello {!username ? "Guest" : username}!
+          </div>
           {isLoggedIn ? (
             isAdmin ? (
-              <Link to='/admin'>Admin Tools</Link>
+              <div className='header__links'>
+                <Link to='/admin'>Admin Tools</Link>
+                <Link to='/'>Home</Link>
+                <a href='#' onClick={handleClick}>
+                  Logout
+                </a>
+              </div>
             ) : (
-              <div>
+              <div className='header__links'>
                 {/* The navbar will show these links after you log in */}
                 <Link to='/'>Home</Link>
                 <a href='#' onClick={handleClick}>
@@ -39,16 +45,13 @@ const Header = ({ handleClick, isLoggedIn, username, isAdmin }) => {
               </div>
             )
           ) : (
-            <div>
+            <div className='header__links'>
               {/* The navbar will show these links before you log in */}
-              <Link to='/login'>
-                <span className='header__optionLineTwo'>Sign In</span>
-              </Link>
+              <Link to='/login'>Sign In</Link>
               <Link to='/signup'>Sign Up</Link>
             </div>
           )}
         </div>
-        <div></div>
       </div>
 
       <Link to='/cart'>

@@ -4,15 +4,11 @@ body {
 
 a:link {
   text-decoration: none;
-  color: "#edb061";
+  color: #cb3434;
 }
-
 a:visited {
-  color: "#ed9f50";
-}
-
-a:hover {
-  color: "#dab850";
+  text-decoration: none;
+  color: #9a3737;
 }
 
 label {
@@ -46,6 +42,12 @@ form div {
   align-items: space-evenly;
 }
 
+.page-title {
+  text-align: center;
+  font-family: cursive, Impact, Haettenschweiler, "Arial Narrow Bold",
+    sans-serif;
+}
+
 /* Header */
 
 .header {
@@ -57,6 +59,23 @@ form div {
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header a {
+  margin: 0px 5px;
+}
+
+.header a:link {
+  text-decoration: none;
+  color: #edb061;
+}
+
+.header a:visited {
+  color: #ff9f50;
+}
+
+.header a:hover {
+  color: #dabb50;
 }
 
 .header__logo {
@@ -88,13 +107,29 @@ form div {
     background-color: #cd9042;
 } */
 
-.header__optionLineOne {
-  font-size: 10px;
+.header__option {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: white;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.header__optionLineTwo {
+.header__optionLineOne {
+  font-size: large;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__links {
   font-size: 13px;
   font-weight: 800;
+  padding: 2px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .header__optionBasket {
@@ -113,19 +148,36 @@ form div {
 .header__nav {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  width: 30%;
 }
 
-.header__option {
+/* home */
+.home-design {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
-  margin-right: 10px;
-  color: white;
-  justify-content: space-around;
+  justify-content: center;
 }
 
-.header__option.links {
-  justify-content: space-evenly;
+#homeImg {
+  display: block;
+}
+
+#home-header {
+  font-family: cursive, Impact, Haettenschweiler, "Arial Narrow Bold",
+    sans-serif;
+  justify-content: center;
+  text-align: center;
+}
+
+#home-products {
+  display: flex;
+  justify-content: center;
+
+  border-radius: 15px;
+  font-weight: bolder;
+  font-size: larger;
+  padding: 1rem;
 }
 
 /* all products */

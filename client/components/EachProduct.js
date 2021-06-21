@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import {addToCart, removeFromCart} from '../store/orders'
+import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
 import { connect } from 'react-redux';
 
 /**
@@ -61,11 +61,18 @@ class EachProduct extends React.Component{
     }
 };
 
+const mapState = (state) => {
+    return {
+        order: state.orders
+    }
+}
+
 const mapDispatch = (dispatch) => {
     return {
         addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
         removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
+        loadOrder: (orderId) => dispatch(fetchOrder(orderId))
     }
 }
 
-export default connect(null,mapDispatch)(EachProduct);
+export default connect(mapState,mapDispatch)(EachProduct);

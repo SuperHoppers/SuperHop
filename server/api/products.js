@@ -18,7 +18,7 @@ const isAdminMiddleware = (req, res, next) => {
   }
 };
 
-router.get('/', isAdminMiddleware, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({
       attributes: [

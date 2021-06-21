@@ -25,10 +25,10 @@ form div {
   display: inline-block;
 }
 
-/* #picListView img {
-    width: 150px;
-    height: 100px;
-} */
+.picListView img {
+  width: 150px;
+  height: 100px;
+}
 
 .listViewDiv {
   display: flex;
@@ -36,6 +36,13 @@ form div {
 }
 
 .listViewDiv.namePrice {
+  color: blue;
+  font-weight: bolder;
+  flex-direction: column;
+  align-items: space-evenly;
+}
+
+.listViewDiv.details {
   color: blue;
   font-weight: bolder;
   flex-direction: column;

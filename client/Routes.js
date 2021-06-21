@@ -4,36 +4,53 @@ import { connect } from "react-redux";
 import Home from "./components/Home";
 import { me } from "./store";
 
-import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import AdminHome from './components/AdminHome';
-import Header from './components/Header';
-import AllProducts from './components/AllProducts';
-import SingleProduct from './components/SingleProduct';
-import Cart from './components/Cart';
-import { Login } from './components/LoginPage';
-import { Signup } from './components/SignupPage';
-import CheckoutPage from './components/CheckoutPage';
+import React from "react";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import AdminHome from "./components/AdminHome";
+import Header from "./components/Header";
+import AllProducts from "./components/AllProducts";
+import SingleProduct from "./components/SingleProduct";
+import Cart from "./components/Cart";
+import { Login } from "./components/LoginPage";
+import { Signup } from "./components/SignupPage";
+import CheckoutPage from "./components/CheckoutPage";
+import AdminProductForm from "./components/AdminCreateProductForm";
+import AdminUpdateProductForm from "./components/AdminUpdateProductForm";
+import AdminProductList from "./components/AdminProductList";
 
 const Routes = () => {
-  return (
-    <Router>
-      <div className="overall-view">
-        <Header />
-      </div>
+    return (
+        <Router>
+            <div className="overall-view">
+                <Header />
+            </div>
 
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/products" component={AllProducts} />
-        <Route exact path="/products/:productId" component={SingleProduct} />
-        <Route path="/login" component={Login} />
-        <Route path="/admin" component={AdminHome} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/cart" component={Cart} />
-        <Route path="/checkout" component={CheckoutPage} />
-      </Switch>
-    </Router>
-  );
+            <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/products" component={AllProducts} />
+                <Route
+                    exact
+                    path="/products/:productId"
+                    component={SingleProduct}
+                />
+                <Route path="/login" component={Login} />
+                <Route exact path="/admin" component={AdminHome} />
+                <Route
+                    exact
+                    path="/admin/products"
+                    component={AdminProductList}
+                />
+                <Route
+                    exact
+                    path="/admin/products/create"
+                    component={AdminProductForm}
+                />
+                <Route path="/signup" component={Signup} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/checkout" component={CheckoutPage} />
+            </Switch>
+        </Router>
+    );
 };
 
 export default Routes;

@@ -1,7 +1,12 @@
+
 import React from "react";
+  import { render } from "enzyme";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import AdminProductForm from "./AdminProductForm";
+import AdminProductList from "./AdminProductList";
+import AdminOrderList from "./AdminOrderList";
+  
 const AdminHome = (props) => {
   return (
     <>
@@ -25,6 +30,47 @@ const AdminHome = (props) => {
           </p>
         </div>
       </div>
+            {/* <div className="test div">
+                <AdminOrderList />
+            </div> */}
+
+            <div className="admin__tools">
+                <div className="admin__product">
+                    <h2>Product Tools</h2>
+                    <Link to="/admin/products">
+                        <button className="admin__btn">
+                            Current Products
+                        </button>
+                    </Link>
+                    <Link to="/admin/products/create">
+                        <button className="admin__btn">
+                            Add new Product
+                        </button>
+                    </Link>
+                </div>
+
+                <div className="admin__order">
+                    <h2>Order Tools</h2>
+                    <Link to="/admin/orders">
+                        <button className="admin__btn">
+                            Orders Page
+                        </button>
+                    </Link>
+                </div>
+
+                {/* Not sure if we need this */}
+                {/* <div className="admin__users">
+                    <h2>User Tools</h2>
+                    <Link to="/admin/users">
+                        <button className="admin__btn">
+                            Users List
+                        </button>
+                    </Link>
+                </div> */}
+            </div>
+        </>
+    );
+};
 
       <div id='home-products'>
         <Link to='/products'>All Products</Link>
@@ -35,24 +81,10 @@ const AdminHome = (props) => {
 
 const mapState = (state) => {
   return {
+  isAdmin: state.auth.isAdmin
     username: state.auth.username,
   };
 };
 
 export default connect(mapState)(AdminHome);
-// /**
-//  * COMPONENT
-//  */
-// export const Home = props => {
-//   const {username} = props
 
-//   return (
-//     <div>
-//       <h3>Welcome, {username}</h3>
-//     </div>
-//   )
-// }
-
-/**
- * CONTAINER
- */

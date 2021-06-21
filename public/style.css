@@ -27,10 +27,10 @@ form div {
   display: inline-block;
 }
 
-/* #picListView img {
-    width: 150px;
-    height: 100px;
-} */
+.picListView img {
+  width: 150px;
+  height: 100px;
+}
 
 .listViewDiv {
   display: flex;
@@ -38,6 +38,13 @@ form div {
 }
 
 .listViewDiv.namePrice {
+  color: blue;
+  font-weight: bolder;
+  flex-direction: column;
+  align-items: space-evenly;
+}
+
+.listViewDiv.details {
   color: blue;
   font-weight: bolder;
   flex-direction: column;
@@ -189,7 +196,6 @@ form div {
 #home-products {
   display: flex;
   justify-content: center;
-
   border-radius: 15px;
   font-weight: bolder;
   font-size: larger;
@@ -362,6 +368,27 @@ input {
   border-radius: 0.5rem;
 }
 
+
+/* Admin product & order tables */
+.product__list {
+    margin: 1rem;
+}
+
+.order__list {
+    margin: 1rem;
+}
+
+.table {
+    width: 100%;
+}
+
+th {
+    text-align: left;
+}
+
+tbody > tr:nth-child(odd) {
+    background-color: #f0f0f0;
+
 .checkout-container {
   display: flex;
   justify-content: space-evenly;
@@ -407,4 +434,4 @@ input {
   padding: 0.75rem 1.25rem;
   background-color: #fff;
   border: 1px solid lightgrey;
-}
+  }

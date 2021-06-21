@@ -5,6 +5,7 @@ const GET_ALL_USERS = "GET_ALL_USERS";
 const GET_SINGLE_USER = "GET_SINGLE_USER";
 const UPDATE_USER = "UPDATE_USER";
 const DELETE_USER = "DELETE_USER";
+const GET_OPEN_ORDER_ID = "GET_OPEN_ORDER_ID";
 
 // ACTION CREATORS
 const setUsers = (users) => {
@@ -32,6 +33,13 @@ const deleteSingleUser = (user) => {
   return {
     type: DELETE_USER,
     user,
+  };
+};
+
+const setOpenOrderId = (userCart) => {
+  return {
+    type: GET_OPEN_ORDER_ID,
+    userCart,
   };
 };
 
@@ -72,10 +80,20 @@ export const deleteUser = (userId, history) => {
   };
 };
 
+export const fetchUserCart = (userId) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/api/users/${userId}/cart`);
+    dispatch(setOpenOrderId(data));
+  } catch (error) {
+    console.log("error fetching single user", error);
+  }
+};
+
 // initial state
 const initialState = {
   allUsers: [],
   singleUser: {},
+  cartId: "",
 };
 
 // REDUCER
@@ -94,6 +112,8 @@ const usersReducer = (state = initialState, action) => {
           return user.id !== action.user.id;
         }),
       };
+    case GET_OPEN_ORDER_ID:
+      return { ...state, cartId: action.userCart };
     default:
       return state;
   }

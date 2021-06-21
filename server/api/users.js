@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const {
-    models: { User }
+  models: { User, Order },
 } = require("../db");
-const Product = require("../db/models/product");
+
 const { isAdminMiddleware } = require("./gatekeepingMiddleware");
 module.exports = router;
 
@@ -28,21 +28,19 @@ const isUserMiddleware = (req, res, next) => {
 };
 
 router.get("/", isAdminMiddleware, async (req, res, next) => {
-    // orderHistory(user/admin)
-    try {
-        const users = await User.findAll({
-            // explicitly select only the id and username fields - even though
-            // users' passwords are encrypted, it won't help if we just
-            // send everything to anyone who asks!
-            attributes: ["id", "username"]
-        });
-        if (!users) {
-            res.status(404).send("No users found");
-        } else {
-            res.json(users);
-        }
-    } catch (err) {
-        next(err);
+
+  // list of all user ids and usernames
+  try {
+    const users = await User.findAll({
+      // explicitly select only the id and username fields - even though
+      // users' passwords are encrypted, it won't help if we just
+      // send everything to anyone who asks!
+      attributes: ["id", "username"],
+    });
+    if (!users) {
+      res.status(404).send("No users found");
+    } else {
+      res.json(users);
     }
 });
 
@@ -68,11 +66,13 @@ router.get("/", isAdminMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
 });
 
 //admin find one user by userid
 router.get("/:userId", isAdminMiddleware, async (req, res, next) => {
+
     try {
         const user = await User.findByPk(req.params.userId, {
             attributes: [
@@ -92,11 +92,13 @@ router.get("/:userId", isAdminMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
 });
 
 //admin find one user by username
 router.get("/:username", isAdminMiddleware, async (req, res, next) => {
+
     try {
         const user = await User.findAll({
             where: {
@@ -151,11 +153,13 @@ router.post("/create", isAdminMiddleware, async (req, res, next) => {
     } catch (error) {
         console.log("error creating new products", error);
         next(error);
+
     }
 });
 
 //admin update user info
 router.put("/:userId", isAdminMiddleware, async (req, res, next) => {
+
     try {
         const [updatedRowCount, updatedUserInfo] = await User.update(req.body, {
             where: {
@@ -166,10 +170,12 @@ router.put("/:userId", isAdminMiddleware, async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+
 });
 
 //admin delete user
 router.delete("/userId", isAdminMiddleware, async (req, res, next) => {
+
     try {
         let destroyedUser = await User.destroy({
             where: {
@@ -185,12 +191,14 @@ router.delete("/userId", isAdminMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
 });
 
 //USER SELF-EDIT ROUTES
 //user get info by id
 router.get("/:userId", isUserMiddleware, async (req, res, next) => {
+
     try {
         const user = await User.findByPk(req.params.userId, {
             attributes: [
@@ -210,11 +218,13 @@ router.get("/:userId", isUserMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
 });
 
 //user find one user by username
 router.get("/:username", isUserMiddleware, async (req, res, next) => {
+
     try {
         const user = await User.findAll({
             where: {
@@ -237,11 +247,13 @@ router.get("/:username", isUserMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
 });
 
 //user update user info
 router.put("/:userId", isUserMiddleware, async (req, res, next) => {
+
     try {
         const [updatedRowCount, updatedUserInfo] = await User.update(req.body, {
             where: {
@@ -252,10 +264,12 @@ router.put("/:userId", isUserMiddleware, async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+
 });
 
 //user delete self
 router.delete("/userId", isUserMiddleware, async (req, res, next) => {
+
     try {
         let destroyedUser = await User.destroy({
             where: {
@@ -271,5 +285,26 @@ router.delete("/userId", isUserMiddleware, async (req, res, next) => {
         }
     } catch (error) {
         next(error);
+
     }
+});
+
+//User GET CART with eager loading
+router.get("/:id/cart", isUserMiddleware, async (req, res, next) => {
+  try {
+    let user = await User.findByPk(req.params.id, {
+      attributes: ["id", "username"],
+      include: [
+        {
+          model: Order,
+          where: { status: "open" },
+          attributes: ["id"],
+        },
+      ],
+    });
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
 });

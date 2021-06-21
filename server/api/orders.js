@@ -17,22 +17,26 @@ router.get('/', async (req, res, next) => {
 router.put('/addToCart', async (req, res, next) => {
   // cartTotal
   try {
-    const cart = await Order.findByPk(req.body.orderId);
-    const orderProduct = await Product.findByPk(req.body.productId);
-    if(await cart.hasProduct(orderProduct)){
-      console.log('this ran')
-      let currentItem = await Order_Product.findOne({
-        where: {
-          orderId: req.body.orderId,
-          productId: req.body.productId
-        },
-      });
-      const newQuantity = currentItem.quantity +1;
-      await currentItem.update({quantity: newQuantity})
-    } else {
-      await cart.addProduct(orderProduct);
+    let cart;
+    if(!req.body.orderId){
+      cart = await Order.create({})
+    } else{
+      cart = await Order.findByPk(req.body.orderId);
     }
-    res.json(cart);
+      const orderProduct = await Product.findByPk(req.body.productId);
+      if(await cart.hasProduct(orderProduct)){
+        let currentItem = await Order_Product.findOne({
+          where: {
+            orderId: cart.id,
+            productId: req.body.productId
+          },
+        });
+        const newQuantity = currentItem.quantity +1;
+        await currentItem.update({quantity: newQuantity})
+      } else {
+        await cart.addProduct(orderProduct);
+      }
+      res.json(cart);
   } catch (error) {
     console.log('errors in order put route /addToCart', error);
     next(error);

@@ -1,27 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const AdminHome = () => {
+const AdminHome = (props) => {
   return (
     <>
       <div className='home-design'>
-        <h1 className='Home-header'>Welcome to the Store, Admin!</h1>
-        <p>Hi!</p>
         <img
           src='https://www.flintasbury.org/wp-content/uploads/2019/08/superpower.jpg'
-          className='homeImg'
+          id='homeImg'
         />
+        <div id='home-header'>
+          <h1>
+            Welcome to the Store
+            {props.username
+              ? `, Admin ${props.username}`
+              : `, sneaky supervillain`}
+            !
+          </h1>
+          <p>
+            {props.username
+              ? "What are your goals for today?"
+              : `You can do no harm here, for this area is troll-, villain-, and Ben-resistant. \nHave fun and enjoy the aesthetics.`}
+          </p>
+        </div>
       </div>
 
-      <div className='home-products'>
+      <div id='home-products'>
         <Link to='/products'>All Products</Link>
       </div>
     </>
   );
 };
 
-export default AdminHome;
+const mapState = (state) => {
+  return {
+    username: state.auth.username,
+  };
+};
 
+export default connect(mapState)(AdminHome);
 // /**
 //  * COMPONENT
 //  */
@@ -35,13 +53,6 @@ export default AdminHome;
 //   )
 // }
 
-// /**
-//  * CONTAINER
-//  */
-// const mapState = state => {
-//   return {
-//     username: state.auth.username
-//   }
-// }
-
-// export default connect(mapState)(Home)
+/**
+ * CONTAINER
+ */

@@ -2,31 +2,32 @@ const router = require("express").Router();
 const {
   models: { User },
 } = require("../db");
+const { isAdminMiddleware } = require('./gatekeepingMiddleware');
 module.exports = router;
 
-const isAdminMiddleware = (req, res, next) => {
-  if (!req.authorization || !req.authorization.isAdmin) {
-    const err = new Error(`You aren't authorized to do that`);
-    err.status = 401;
-    next(err);
-  } else {
-    next();
-  }
-};
+// const isAdminMiddleware = (req, res, next) => {
+//   if (!req.authorization || !req.authorization.isAdmin) {
+//     const err = new Error(`You aren't authorized to do that`);
+//     err.status = 401;
+//     next(err);
+//   } else {
+//     next();
+//   }
+// };
 
-const isUserMiddleware = (req, res, next) => {
-  if (!req.headers.authorization) {
-    const err = new Error(
-      `You aren't authorized to do that as a guest, or to someone else\'s information. Please log in. Or, if this is not you, stop trying to find someone else\'s address. We do not give away secret lair information here.`
-    );
-    err.status = 401;
-    next(err);
-  } else {
-    next();
-  }
-};
+// const isUserMiddleware = (req, res, next) => {
+//   if (!req.headers.authorization) {
+//     const err = new Error(
+//       `You aren't authorized to do that as a guest, or to someone else\'s information. Please log in. Or, if this is not you, stop trying to find someone else\'s address. We do not give away secret lair information here.`
+//     );
+//     err.status = 401;
+//     next(err);
+//   } else {
+//     next();
+//   }
+// };
 
-router.get("/", async (req, res, next) => {
+router.get('/', isAdminMiddleware, async (req, res, next) => {
   // orderHistory(user/admin)
   try {
     const users = await User.findAll({

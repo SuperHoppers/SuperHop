@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { authenticate } from '../store';
 
 const LoginPage = (props) => {
-  const { name, handleSubmit, error } = props;
+  const { name, handleSubmit, error, isAdmin } = props;
   console.log(props);
+
   return (
     <div className="form">
       <form onSubmit={handleSubmit} name={name}>

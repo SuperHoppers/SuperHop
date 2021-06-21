@@ -1,19 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <>
-      <div className="home-design">
-        <h1 className="Home-header">Welcome to the Store!</h1>
-        <p>What is your Superpower?</p>
+      <div className='home-design'>
         <img
-          src="https://www.flintasbury.org/wp-content/uploads/2019/08/superpower.jpg"
-          className="homeImg"
+          src='https://www.flintasbury.org/wp-content/uploads/2019/08/superpower.jpg'
+          id='homeImg'
         />
+        <div id='home-header'>
+          <h1>Welcome to the Super-Store!</h1>
+          <p>What Superpowers do you need?</p>
+        </div>
       </div>
 
-      <div className="home-products">
-        <Link to="/products">All Products</Link>
+      <div id='home-products'>
+        <Link to='/products'>See All Products</Link>
       </div>
     </>
   );

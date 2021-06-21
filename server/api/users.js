@@ -2,9 +2,11 @@ const router = require('express').Router();
 const {
   models: { User },
 } = require('../db');
+const { isAdminMiddleware } = require('./gatekeepingMiddleware');
+
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
+router.get('/', isAdminMiddleware, async (req, res, next) => {
   // orderHistory(user/admin)
   try {
     const users = await User.findAll({

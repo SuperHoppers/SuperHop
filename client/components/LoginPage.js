@@ -4,33 +4,34 @@ import { connect } from 'react-redux';
 import { authenticate } from '../store';
 
 const LoginPage = (props) => {
-  const { name, handleSubmit, error } = props;
+  const { name, handleSubmit, error, isAdmin } = props;
   console.log(props);
+
   return (
-    <div className='form'>
+    <div className="form">
       <form onSubmit={handleSubmit} name={name}>
-        <ul className='form__container'>
+        <ul className="form__container">
           <li>
             <h2>Sign In</h2>
           </li>
           <li>{error && <div>{error.response.data}</div>}</li>
           <li>
-            <label htmlFor='username'>Username:</label>
-            <input name='username' type='text' />
+            <label htmlFor="username">Username:</label>
+            <input name="username" type="text" />
           </li>
           <li>
-            <label htmlFor='password'>Password:</label>
-            <input name='password' type='password' />
+            <label htmlFor="password">Password:</label>
+            <input name="password" type="password" />
           </li>
           <li>
-            <button type='submit' className='primary__btn'>
+            <button type="submit" className="primary__btn">
               Login
             </button>
           </li>
           <li>New to SuperHop?</li>
           <li>
-            <Link to='/signup'>
-              <button className='secondary__btn'>Create New Account</button>
+            <Link to="/signup">
+              <button className="secondary__btn">Create New Account</button>
             </Link>
           </li>
         </ul>

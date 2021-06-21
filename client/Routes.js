@@ -13,22 +13,24 @@ import SingleProduct from './components/SingleProduct';
 import Cart from './components/Cart';
 import { Login } from './components/LoginPage';
 import { Signup } from './components/SignupPage';
+import CheckoutPage from './components/CheckoutPage';
 
 const Routes = () => {
   return (
     <Router>
-      <div className='overall-view'>
+      <div className="overall-view">
         <Header />
       </div>
 
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/products' component={AllProducts} />
-        <Route exact path='/products/:productId' component={SingleProduct} />
-        <Route path='/login' component={Login} />
-        <Route path='/admin' component={AdminHome} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/cart' component={Cart} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/products" component={AllProducts} />
+        <Route exact path="/products/:productId" component={SingleProduct} />
+        <Route path="/login" component={Login} />
+        <Route path="/admin" component={AdminHome} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/checkout" component={CheckoutPage} />
       </Switch>
     </Router>
   );

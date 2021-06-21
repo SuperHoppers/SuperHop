@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import productsReducer from "./products";
 import ordersReducer from "./orders";
-import usersReducer from "./user";
+import usersReducer from "./users";
 
 const reducer = combineReducers({
   auth,

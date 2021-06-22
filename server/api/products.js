@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-    models: { Product, Order }
+  models: { Product, Order },
 } = require("../db");
 const { isAdminMiddleware } = require("./gatekeepingMiddleware");
 module.exports = router;
@@ -20,39 +20,71 @@ module.exports = router;
 // };
 
 router.get("/", async (req, res, next) => {
-    try {
-        const products = await Product.findAll({
-            attributes: [
-                "id",
-                "price",
-                "name",
-                "inventory",
-                "description",
-                "imageURL",
-                "type"
-            ]
-        });
-        res.json(products);
-    } catch (err) {
-        next(err);
-    }
+  try {
+    const products = await Product.findAll({
+      attributes: [
+        "id",
+        "price",
+        "name",
+        "inventory",
+        "description",
+        "imageURL",
+        "type",
+      ],
+    });
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.get("/:productId", async (req, res, next) => {
-    try {
-        const product = await Product.findByPk(req.params.productId, {
-            attributes: [
-                "id",
-                "price",
-                "name",
-                "inventory",
-                "description",
-                "imageURL",
-                "type"
-            ]
-        });
-        res.json(product);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const product = await Product.findByPk(req.params.productId, {
+      attributes: [
+        "id",
+        "price",
+        "name",
+        "inventory",
+        "description",
+        "imageURL",
+        "type",
+      ],
+    });
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//
+// router.get("/products", isAdminMiddleware, async (req, res, next) => {
+//     try {
+//       const products = await Product.findAll({
+//         attributes: [
+//           "id",
+//           "price",
+//           "name",
+//           "inventory",
+//           "description",
+//           "imageURL",
+//           "type",
+//         ],
+//       });
+//       res.json(products);
+//     } catch (error) {
+//       console.log("error getting product list", error);
+//       next(error);
+//     }
+//   });
+
+// /admin/products/create
+router.post("/create", isAdminMiddleware, async (req, res, next) => {
+  try {
+    const newProduct = await Product.create(req.body);
+    res.json(newProduct);
+  } catch (error) {
+    console.log("error creating new products", error);
+    next(error);
+  }
 });

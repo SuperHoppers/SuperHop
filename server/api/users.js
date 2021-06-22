@@ -27,28 +27,28 @@ const isUserMiddleware = (req, res, next) => {
   }
 };
 
-router.get("/", isAdminMiddleware, async (req, res, next) => {
-  // list of all user ids and usernames
-  try {
-    const users = await User.findAll({
-      // explicitly select only the id and username fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ["id", "username"],
-    });
-    if (!users) {
-      res.status(404).send("No users found");
-    } else {
-      res.json(users);
-    }
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/", isAdminMiddleware, async (req, res, next) => {
+//   // list of all user ids and usernames
+//   try {
+//     const users = await User.findAll({
+//       // explicitly select only the id and username fields - even though
+//       // users' passwords are encrypted, it won't help if we just
+//       // send everything to anyone who asks!
+//       attributes: ["id", "username"],
+//     });
+//     if (!users) {
+//       res.status(404).send("No users found");
+//     } else {
+//       res.json(users);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 //ADMIN ROUTES
 //admin find all users
-router.get("/", isAdminMiddleware, async (req, res, next) => {
+router.get("/admin", isAdminMiddleware, async (req, res, next) => {
   try {
     const users = await User.findAll({
       attributes: [
@@ -56,7 +56,7 @@ router.get("/", isAdminMiddleware, async (req, res, next) => {
         "username",
         "email",
         "address",
-        "phone number",
+        "phoneNumber",
         "imageURL",
         "isAdmin",
       ],
@@ -72,7 +72,7 @@ router.get("/", isAdminMiddleware, async (req, res, next) => {
 });
 
 //admin find one user by userid
-router.get("/:userId", isAdminMiddleware, async (req, res, next) => {
+router.get("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId, {
       attributes: [
@@ -80,7 +80,7 @@ router.get("/:userId", isAdminMiddleware, async (req, res, next) => {
         "username",
         "email",
         "address",
-        "phone number",
+        "phoneNumber",
         "imageURL",
         "isAdmin",
       ],
@@ -96,80 +96,59 @@ router.get("/:userId", isAdminMiddleware, async (req, res, next) => {
 });
 
 //admin find one user by username
-router.get("/:username", isAdminMiddleware, async (req, res, next) => {
-  try {
-    const user = await User.findAll({
-      where: {
-        username: req.params.username,
-      },
-      attributes: [
-        "id",
-        "username",
-        "email",
-        "address",
-        "phone number",
-        "imageURL",
-        "isAdmin",
-      ],
-    });
-    if (!user) {
-      res.status(404).send("User not found");
-    } else {
-      res.json(user);
+router.get(
+  "/search/:username/admin",
+  isAdminMiddleware,
+  async (req, res, next) => {
+    try {
+      const user = await User.findAll({
+        where: {
+          username: req.params.username,
+        },
+        attributes: [
+          "id",
+          "username",
+          "email",
+          "address",
+          "phoneNumber",
+          "imageURL",
+          "isAdmin",
+        ],
+      });
+      if (!user) {
+        res.status(404).send("User not found");
+      } else {
+        res.json(user);
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
-
-// admin/products
-router.get("/products", isAdminMiddleware, async (req, res, next) => {
-  try {
-    const products = await Product.findAll({
-      attributes: [
-        "id",
-        "price",
-        "name",
-        "inventory",
-        "description",
-        "imageURL",
-        "type",
-      ],
-    });
-    res.json(products);
-  } catch (error) {
-    console.log("error getting product list", error);
-    next(error);
-  }
-});
-
-// /admin/products/create
-router.post("/create", isAdminMiddleware, async (req, res, next) => {
-  try {
-    const newProduct = await Product.create(req.body);
-    res.json(newProduct);
-  } catch (error) {
-    console.log("error creating new products", error);
-    next(error);
-  }
-});
+);
 
 //admin update user info
-router.put("/:userId", isAdminMiddleware, async (req, res, next) => {
+router.put("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
   try {
-    const [updatedRowCount, updatedUserInfo] = await User.update(req.body, {
-      where: {
-        id: req.params.userId,
-      },
+    const user = await User.findByPk(req.params.userId);
+    console.log("req.body", req.body);
+    //destructured req.body to avoid input security problems
+    const { username, address, phoneNumber, email, isAdmin } = req.body;
+    let updatedUser = await user.update({
+      username,
+      address,
+      phoneNumber,
+      email,
+      isAdmin,
     });
-    res.json(updatedUserInfo);
+    updatedUser = updatedUser.dataValues;
+    res.json(updatedUser);
   } catch (error) {
     next(error);
   }
 });
 
 //admin delete user
-router.delete("/userId", isAdminMiddleware, async (req, res, next) => {
+router.delete("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
   try {
     let destroyedUser = await User.destroy({
       where: {
@@ -200,7 +179,7 @@ router.get("/:userId", isUserMiddleware, async (req, res, next) => {
         "username",
         "email",
         "address",
-        "phone number",
+        "phoneNumber",
         "imageURL",
         "isAdmin",
       ],
@@ -216,40 +195,47 @@ router.get("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //user find one user by username
-router.get("/:username", isUserMiddleware, async (req, res, next) => {
-  try {
-    const user = await User.findAll({
-      where: {
-        username: req.params.username,
-      },
-      attributes: [
-        "id",
-        "username",
-        "email",
-        "address",
-        "phone number",
-        "imageURL",
-        "isAdmin",
-      ],
-    });
-    if (!user) {
-      res.status(404).send("User not found");
-    } else {
-      res.json(user);
+router.get(
+  "/search/:username",
+  isUserMiddleware,
+  async (req, res, next) => {
+    try {
+      const user = await User.findAll({
+        where: {
+          username: req.params.username,
+        },
+        attributes: [
+          "id",
+          "username",
+          "email",
+          "address",
+          "phoneNumber",
+          "imageURL",
+        ],
+      });
+      if (!user) {
+        res.status(404).send("User not found");
+      } else {
+        res.json(user);
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 //user update user info
 router.put("/:userId", isUserMiddleware, async (req, res, next) => {
   try {
-    const [updatedRowCount, updatedUserInfo] = await User.update(req.body, {
-      where: {
-        id: req.params.userId,
-      },
-    });
+    const { username, address, phoneNumber, email } = req.body;
+    const [updatedRowCount, updatedUserInfo] = await User.update(
+      { username, address, phoneNumber, email },
+      {
+        where: {
+          id: req.params.userId,
+        },
+      }
+    );
     res.json(updatedUserInfo);
   } catch (error) {
     next(error);
@@ -257,7 +243,7 @@ router.put("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //user delete self
-router.delete("/userId", isUserMiddleware, async (req, res, next) => {
+router.delete("/:userId", isUserMiddleware, async (req, res, next) => {
   try {
     let destroyedUser = await User.destroy({
       where: {
@@ -279,7 +265,7 @@ router.delete("/userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //User GET CART with eager loading
-router.get("/:id/cart", async (req, res, next) => {
+router.get("/orders/:id", async (req, res, next) => {
   try {
     let user = await User.findByPk(req.params.id, {
       attributes: ["id", "username"],

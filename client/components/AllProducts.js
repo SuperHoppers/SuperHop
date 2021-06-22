@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import EachProduct from "./EachProduct";
 import { fetchAllProducts } from "../store/products";
-import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
+import {addToCart, createOrder, fetchOrder} from '../store/orders'
 /**
  * COMPONENT
  */
@@ -17,28 +17,28 @@ export class AllProducts extends React.Component {
     this.handleAdd = this.handleAdd.bind(this)
 }
   componentDidMount() {
-    if ( this.props.isLoggedIn ){
-      this.props.loadOrder(this.props.user)
-    } else{
-      console.log('not logged in')
-      window.localStorage.setItem('cart', JSON.stringify(this.state.cart))
-      const currentCart = window.localStorage.getItem('cart');
-      if(currentCart){
-        this.setState(JSON.parse(currentCart))
-        console.log(this.state)
-      }
-    }
+    // if ( this.props.isLoggedIn ){
+    //   this.props.loadOrder(this.props.user)
+    // } else{
+    //   console.log('not logged in')
+    //   window.localStorage.setItem('cart', JSON.stringify(this.state.cart))
+    //   const currentCart = window.localStorage.getItem('cart');
+    //   if(currentCart){
+    //     this.setState(JSON.parse(currentCart))
+    //     console.log(this.state)
+    //   }
+    // }
     this.props.loadProducts()
   }
   handleAdd(evt){
     evt.preventDefault();
+    console.log(this.props.order)
     const productId = evt.target.value;
-    if(this.props.order === 'no-order'){
-      this.props.addItem(undefined,productId);
+    if(!this.props.order.id){
+      this.props.createOrder(productId);
     } else {
-      console.log('IN REACT part 2')
-      const orderId = 1;
-      this.props.addItem(2,productId);
+      const orderId = this.props.order.id;
+      this.props.addItem(orderId,productId);
     }
 }
   render() {
@@ -70,7 +70,8 @@ export class AllProducts extends React.Component {
 
 const mapState = (state) => {
   return {
-    order: state.orders.cartItems,
+    items: state.orders.cartItems,
+    order: state.orders.order,
     products: state.products.allProducts,
     isLoggedIn: !!state.auth.id,
     user: state.auth.id,
@@ -81,6 +82,7 @@ const mapDispatch = (dispatch) => ({
   loadProducts: () => dispatch(fetchAllProducts()),
   loadOrder: (userId) => dispatch(fetchOrder(userId)),
   addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
+  createOrder: (productId) => dispatch(createOrder(productId))
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

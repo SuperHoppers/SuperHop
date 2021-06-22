@@ -44,10 +44,10 @@ const setOrder = (items) => {
 }
 
 //thunk creators
-export const createOrder = () => {
+export const createOrder = (productId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.post('/api/orders')
+      const {data} = await axios.post('/api/orders/newOrder', {productId:productId})
       dispatch(newOrder(data))
     } catch (error) {
       console.log('error creating new order', error);
@@ -91,7 +91,7 @@ export const checkout = (orderId) => {
 export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/orders/${userId}`);
+      const {data} = await axios.get(`/api/orders/users/${userId}`);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);

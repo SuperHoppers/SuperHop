@@ -4,6 +4,7 @@ const {
 } = require('../db');
 module.exports = router;
 
+// /api/orders/users/:userId
 router.get('/:userId', async (req, res, next) => {
   try {
     const order = await Order.currentOrder(req.params.userId)
@@ -27,13 +28,9 @@ router.get('/:userId', async (req, res, next) => {
 router.put('/addToCart', async (req, res, next) => {
   // cartTotal
   try {
-    let cart;
-    if(!req.body.orderId){
-      cart = await Order.create({})
-    } else{
-      cart = await Order.findByPk(req.body.orderId);
-    }
-      const orderProduct = await Product.findByPk(req.body.productId);
+
+     const cart = await Order.findByPk(req.body.orderId);
+    const orderProduct = await Product.findByPk(req.body.productId);
       if(await cart.hasProduct(orderProduct)){
         let currentItem = await Order_Product.findOne({
           where: {
@@ -44,7 +41,7 @@ router.put('/addToCart', async (req, res, next) => {
         const newQuantity = currentItem.quantity +1;
         await currentItem.update({quantity: newQuantity})
       } else {
-        await cart.addProduct(orderProduct);
+        await cart.addProduct(orderProduct, {individualHooks: true});
       }
 
       res.json(cart);
@@ -89,6 +86,7 @@ router.put('/checkout', async (req, res, next) => {
   try {
     const cart = await Order.findByPk(req.body.orderId);
     cart.update({ status: 'closed' });
+
     res.json(cart);
   } catch (error) {
     console.log('errors in order put route /checkout', error);
@@ -96,3 +94,14 @@ router.put('/checkout', async (req, res, next) => {
   }
 });
 
+router.post('/newOrder', async (req, res, next) => {
+  try {
+    const newOrder = await Order.create({});
+    const orderProduct = await Product.findByPk(req.body.productId);
+    await newOrder.addProduct(orderProduct, {individualHooks: true});
+    res.json(newOrder);
+  } catch (error) {
+    console.log('errors in order put route /checkout', error);
+    next(error)
+  }
+})

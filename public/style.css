@@ -390,6 +390,8 @@ tbody > tr:nth-child(odd) {
     background-color: #f0f0f0;
 }
 
+/* Checkout Page  */
+
 .checkout-container {
     display: flex;
     justify-content: space-evenly;
@@ -435,4 +437,14 @@ tbody > tr:nth-child(odd) {
     padding: 0.75rem 1.25rem;
     background-color: #fff;
     border: 1px solid lightgrey;
+}
+
+/* Profile  */
+.profile {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profile__info {
+    flex: 1 1 30rem;
 }

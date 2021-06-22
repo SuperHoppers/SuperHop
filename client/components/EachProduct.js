@@ -3,16 +3,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
+import {fetchUserCart} from '../store/users'
 import { connect } from 'react-redux';
 
 /**
  * COMPONENT
  */
+
+// is logged in? yes: currentOrder(this.props.user) no: is Local storage? -> yes: getItem no:
 class EachProduct extends React.Component{
     constructor(){
         super()
         this.handleAdd = this.handleAdd.bind(this)
         this.handleRemove = this.handleRemove.bind(this)
+    }
+    componentDidMount(){
+        if(this.props.isLoggedIn){
+            console.log(this.props)
+          this.props.loadUserOrderId(this.props.user);
+           console.log(this.props.cartId);
+        }
     }
     handleAdd(evt){
         evt.preventDefault();
@@ -63,7 +73,10 @@ class EachProduct extends React.Component{
 
 const mapState = (state) => {
     return {
-        order: state.orders
+        order: state.orders,
+        isLoggedIn: !!state.auth.id,
+        user: state.auth.id,
+        cartId: state.users.cartId,
     }
 }
 
@@ -71,7 +84,8 @@ const mapDispatch = (dispatch) => {
     return {
         addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
         removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
-        loadOrder: (orderId) => dispatch(fetchOrder(orderId))
+        loadOrder: (orderId) => dispatch(fetchOrder(orderId)),
+        loadUserOrderId: (userId) => dispatch(fetchUserCart(userId))
     }
 }
 

@@ -18,6 +18,7 @@ import AdminProductForm from "./components/AdminCreateProductForm";
 import AdminUpdateProductForm from "./components/AdminUpdateProductForm";
 import AdminProductList from "./components/AdminProductList";
 import AllUsers from "./components/AllUsers";
+import SingleUser from "./components/SingleUser";
 
 const Routes = () => {
   return (
@@ -41,7 +42,8 @@ const Routes = () => {
         <Route path='/signup' component={Signup} />
         <Route path='/cart' component={Cart} />
         <Route path='/checkout' component={CheckoutPage} />
-        <Route path='/admin/users' component={AllUsers} />
+        <Route exact path='/admin/users' component={AllUsers} />
+        <Route path='/admin/users/:userId' component={SingleUser} />
       </Switch>
     </Router>
   );

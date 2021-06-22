@@ -24,13 +24,11 @@ const Order_Product = db.define(
   {
     hooks: {
       beforeCreate: async (order) => {
-        console.log('THIS IS IN CREATE', order);
         const product = await Product.findByPk(order.productId);
         const price = product.price;
         order.lineTotal = order.quantity * price;
       },
       beforeUpdate: async (order) => {
-        //console.log('THIS IS IN UPDATE', order);
         const product = await Product.findByPk(order.productId);
         const price = product.price;
         order.lineTotal += order.quantity * price;

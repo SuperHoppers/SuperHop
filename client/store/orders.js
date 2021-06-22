@@ -6,6 +6,7 @@ const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 const CHECKOUT = 'CHECKOUT';
 const SET_ORDER = 'SET_ORDER';
+const INCREASE_QUANT = 'INCREASE_QUANT';
 
 //action creators
 const newOrder = (order) => {
@@ -18,6 +19,13 @@ const newOrder = (order) => {
 const addProductToCart = (order) => {
   return {
     type: ADD_TO_CART,
+    order
+  }
+}
+
+const increaseQuant = (order) => {
+  return {
+    type: INCREASE_QUANT,
     order
   }
 }
@@ -44,10 +52,10 @@ const setOrder = (items) => {
 }
 
 //thunk creators
-export const createOrder = () => {
+export const createOrder = (productId, userId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.post('/api/orders')
+      const {data} = await axios.post('/api/orders/newOrder', {productId:productId, userId: userId})
       dispatch(newOrder(data))
     } catch (error) {
       console.log('error creating new order', error);
@@ -60,6 +68,17 @@ export const addToCart = (orderId,productId) => {
     try {
       const { data } = await axios.put('/api/orders/addToCart', {orderId: orderId,productId: productId});
       dispatch(addProductToCart(data))
+    } catch (error) {
+      console.log('error adding to cart', error);
+    }
+  }
+}
+
+export const increaseQuantity = (orderId,productId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put('/api/orders/increaseQuant', {orderId: orderId,productId: productId});
+      dispatch(increaseQuant(data))
     } catch (error) {
       console.log('error adding to cart', error);
     }
@@ -91,7 +110,7 @@ export const checkout = (orderId) => {
 export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/orders/${userId}`);
+      const {data} = await axios.get(`/api/orders/users/${userId}`);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);
@@ -110,6 +129,8 @@ const ordersReducer = (state = initialState, action) => {
     case CREATE_ORDER:
       return {...state, order: action.order};
     case ADD_TO_CART:
+      return {...state, order: action.order};
+    case INCREASE_QUANT:
       return {...state, order: action.order};
     case REMOVE_FROM_CART:
       return {...state, order: action.order};

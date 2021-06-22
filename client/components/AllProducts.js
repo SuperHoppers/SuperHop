@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import EachProduct from "./EachProduct";
 import { fetchAllProducts } from "../store/products";
-import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
+import {addToCart, createOrder, fetchOrder} from '../store/orders'
 /**
  * COMPONENT
  */
@@ -12,7 +12,7 @@ export class AllProducts extends React.Component {
   constructor(){
     super()
     this.state = {
-        cart: ['d0', {'hey': 'hello'}, 2]
+        cart: {}
     }
     this.handleAdd = this.handleAdd.bind(this)
 }
@@ -20,31 +20,35 @@ export class AllProducts extends React.Component {
     if ( this.props.isLoggedIn ){
       this.props.loadOrder(this.props.user)
     } else{
-      console.log('not logged in')
       window.localStorage.setItem('cart', JSON.stringify(this.state.cart))
-      const currentCart = window.localStorage.getItem('cart');
-      if(currentCart){
-        this.setState(JSON.parse(currentCart))
-        console.log(this.state)
-      }
     }
     this.props.loadProducts()
   }
   handleAdd(evt){
     evt.preventDefault();
     const productId = evt.target.value;
-    if(this.props.order === 'no-order'){
-      this.props.addItem(undefined,productId);
+    if(this.props.isLoggedIn){
+      if(!this.props.order.id){
+        const userId = this.props.user;
+        this.props.createOrder(productId, userId);
+      } else {
+        const orderId = this.props.order.id;
+        this.props.addItem(orderId,productId);
+      }
     } else {
-      console.log('IN REACT part 2')
-      const orderId = 1;
-      this.props.addItem(2,productId);
+      let cart = JSON.parse(window.localStorage.getItem('cart'))
+      if(cart[productId]){
+        cart[productId] += 1
+      } else {
+        cart[productId] = 1;
+      }
+      //cart.push(evt.target.value)
+      this.setState({cart:cart})
+      window.localStorage.setItem('cart', JSON.stringify(cart))
     }
 }
   render() {
-   // console.log(this.props.isLoggedIn);
-   console.log('IN REACT', this.props.order)
-   console.log(this.state)
+   console.log('THIS IS IN THE RENDER FUNCTION',this.state)
     return (
       <div id='products-page'>
         <div>
@@ -70,7 +74,8 @@ export class AllProducts extends React.Component {
 
 const mapState = (state) => {
   return {
-    order: state.orders.cartItems,
+    items: state.orders.cartItems,
+    order: state.orders.order,
     products: state.products.allProducts,
     isLoggedIn: !!state.auth.id,
     user: state.auth.id,
@@ -81,6 +86,7 @@ const mapDispatch = (dispatch) => ({
   loadProducts: () => dispatch(fetchAllProducts()),
   loadOrder: (userId) => dispatch(fetchOrder(userId)),
   addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
+  createOrder: (productId, userId) => dispatch(createOrder(productId, userId))
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

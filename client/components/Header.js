@@ -4,19 +4,18 @@ import { Link } from 'react-router-dom';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { connect } from 'react-redux';
 import { logout } from '../store';
-import me from '../store/auth';
+import { me } from '../store/auth';
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  // componentDidMount() {
-  //   console.log(this.props.checkForLogin());
-  //   if (!this.props.isLoggedIn) {
-  //     this.props.checkForLogin();
-  //   }
-  // }
+  componentDidMount() {
+    if (!this.props.isLoggedIn) {
+      this.props.checkForLogin();
+    }
+  }
 
   render() {
     return (
@@ -94,7 +93,7 @@ const mapDispatch = (dispatch) => {
     handleClick() {
       dispatch(logout());
     },
-    // checkForLogin: () => dispatch(me()),
+    checkForLogin: () => dispatch(me()),
   };
 };
 

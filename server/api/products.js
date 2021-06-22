@@ -1,8 +1,8 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   models: { Product, Order },
-} = require("../db");
-const { isAdminMiddleware } = require("./gatekeepingMiddleware");
+} = require('../db');
+const { isAdminMiddleware } = require('./gatekeepingMiddleware');
 module.exports = router;
 
 // // isAdmin middleware
@@ -19,17 +19,17 @@ module.exports = router;
 //   }
 // };
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll({
       attributes: [
-        "id",
-        "price",
-        "name",
-        "inventory",
-        "description",
-        "imageURL",
-        "type",
+        'id',
+        'price',
+        'name',
+        'inventory',
+        'description',
+        'imageURL',
+        'type',
       ],
     });
     res.json(products);
@@ -38,17 +38,17 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:productId", async (req, res, next) => {
+router.get('/:productId', async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.productId, {
       attributes: [
-        "id",
-        "price",
-        "name",
-        "inventory",
-        "description",
-        "imageURL",
-        "type",
+        'id',
+        'price',
+        'name',
+        'inventory',
+        'description',
+        'imageURL',
+        'type',
       ],
     });
     res.json(product);
@@ -79,12 +79,12 @@ router.get("/:productId", async (req, res, next) => {
 //   });
 
 // /admin/products/create
-router.post("/create", isAdminMiddleware, async (req, res, next) => {
+router.post('/create', isAdminMiddleware, async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.json(newProduct);
   } catch (error) {
-    console.log("error creating new products", error);
+    console.log('error creating new products', error);
     next(error);
   }
 });

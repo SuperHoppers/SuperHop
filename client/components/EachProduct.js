@@ -3,29 +3,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
+import {fetchUserCart} from '../store/users'
 import { connect } from 'react-redux';
 
 /**
  * COMPONENT
  */
+
 class EachProduct extends React.Component{
-    constructor(){
-        super()
-        this.handleAdd = this.handleAdd.bind(this)
-        this.handleRemove = this.handleRemove.bind(this)
-    }
-    handleAdd(evt){
-        evt.preventDefault();
-        const orderId = 1;
-        const productId = evt.target.value;
-        this.props.addItem(orderId,productId);
-    }
-    handleRemove(evt){
-        evt.preventDefault();
-        const orderId = 1;
-        const productId = evt.target.value;
-        this.props.removeItem(orderId,productId);
-    }
+    // constructor(){
+    //     super()
+    //     this.handleAdd = this.handleAdd.bind(this)
+    // }
+    // handleAdd(evt){
+    //     evt.preventDefault();
+    //     const orderId = 1;
+    //     const productId = evt.target.value;
+    //     this.props.addItem(10,productId);
+    // }
     render(){
         const product = this.props.product;
     return (
@@ -51,9 +46,7 @@ class EachProduct extends React.Component{
                     <button value = {product.id} onClick={this.handleClick} >Add to Cart</button>
                 </div> */}
                 <div>
-                <button value = {product.id} onClick={this.handleAdd} >+</button>
-                <span>0</span>
-                <button value = {product.id} onClick={this.handleRemove}>-</button>
+                <button value = {product.id} onClick={this.props.handleAdd} >Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -63,7 +56,10 @@ class EachProduct extends React.Component{
 
 const mapState = (state) => {
     return {
-        order: state.orders
+        order: state.orders,
+        isLoggedIn: !!state.auth.id,
+        user: state.auth.id,
+        cartId: state.users.cartId,
     }
 }
 
@@ -71,7 +67,8 @@ const mapDispatch = (dispatch) => {
     return {
         addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
         removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
-        loadOrder: (orderId) => dispatch(fetchOrder(orderId))
+        loadOrder: (orderId) => dispatch(fetchOrder(orderId)),
+        loadUserOrderId: (userId) => dispatch(fetchUserCart(userId))
     }
 }
 

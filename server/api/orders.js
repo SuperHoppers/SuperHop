@@ -4,15 +4,25 @@ const {
 } = require('../db');
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.body.orderId);
-    res.json(order);
+    const order = await Order.currentOrder(req.params.userId)
+    if(order.length > 0){
+      const cartItems = await Order_Product.findAll({
+        where: {
+          orderId: order[0].id
+        }
+      })
+      res.json(cartItems);
+    } else {
+      res.send('no-order')
+    }
   } catch (error) {
     console.log('errors in order get route /', error);
     next(error);
   }
 })
+
 
 router.put('/addToCart', async (req, res, next) => {
   // cartTotal
@@ -36,6 +46,7 @@ router.put('/addToCart', async (req, res, next) => {
       } else {
         await cart.addProduct(orderProduct);
       }
+
       res.json(cart);
   } catch (error) {
     console.log('errors in order put route /addToCart', error);
@@ -78,21 +89,10 @@ router.put('/checkout', async (req, res, next) => {
   try {
     const cart = await Order.findByPk(req.body.orderId);
     cart.update({ status: 'closed' });
-    const newCart = await Order.create({ status: 'open' });
-    res.json(newCart);
+    res.json(cart);
   } catch (error) {
     console.log('errors in order put route /checkout', error);
     next(error);
   }
 });
 
-// post after checkout only
-router.post('/', async (req, res, next) => {
-  try {
-    const OrderProduct = await Order.create({ status: 'open' });
-    res.json(OrderProduct);
-  } catch (error) {
-    console.log('error posting order', error);
-    next(error);
-  }
-});

@@ -279,7 +279,7 @@ router.delete("/userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //User GET CART with eager loading
-router.get("/:id/cart", isUserMiddleware, async (req, res, next) => {
+router.get("/:id/cart", async (req, res, next) => {
   try {
     let user = await User.findByPk(req.params.id, {
       attributes: ["id", "username"],
@@ -291,7 +291,6 @@ router.get("/:id/cart", isUserMiddleware, async (req, res, next) => {
         },
       ],
     });
-    console.log(user);
     res.send(user);
   } catch (error) {
     next(error);

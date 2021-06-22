@@ -6,7 +6,7 @@ import { me } from "./store";
 
 import React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import AdminHome from "./components/AdminHome";
+import AdminHome from "./components/Admin/AdminHome";
 import Header from "./components/Header";
 import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
@@ -14,9 +14,9 @@ import Cart from "./components/Cart";
 import { Login } from "./components/LoginPage";
 import { Signup } from "./components/SignupPage";
 import CheckoutPage from "./components/CheckoutPage";
-import AdminProductForm from "./components/AdminCreateProductForm";
-import AdminUpdateProductForm from "./components/AdminUpdateProductForm";
-import AdminProductList from "./components/AdminProductList";
+import AdminProductForm from "./components/Admin/AdminCreateProductForm";
+import AdminUpdateProductForm from "./components/Admin/AdminUpdateProductForm";
+import AdminProductList from "./components/Admin/AdminProductList";
 
 const Routes = () => {
     return (

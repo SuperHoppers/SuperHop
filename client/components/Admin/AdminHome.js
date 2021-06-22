@@ -40,7 +40,7 @@ const AdminHome = (props) => {
           <Link to='/admin/products'>
             <button className='admin__btn'>Current Products</button>
           </Link>
-          <Link to='/admin/products/create'>
+          <Link to='/create'>
             <button className='admin__btn'>Add new Product</button>
           </Link>
         </div>

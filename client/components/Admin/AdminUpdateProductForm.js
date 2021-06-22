@@ -7,11 +7,11 @@ class AdminUpdateProductForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: props.product.name,
-      price: props.product.price,
-      inventory: props.product.inventory,
-      image: props.product.imageURL,
-      description: props.product.description,
+      name: '',
+      price: '',
+      inventory: '',
+      image: '',
+      description: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,18 +20,13 @@ class AdminUpdateProductForm extends React.Component {
   componentDidMount() {
     const { productId } = this.props.match.params;
     this.props.loadProduct(productId);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.product.id !== this.props.product.id) {
-      this.setState({
-        name: this.props.product.name || '',
-        price: this.props.product.price || '',
-        inventory: this.props.product.inventory || '',
-        image: this.props.product.imageURL || '',
-        description: this.props.product.description || '',
-      });
-    }
+    this.setState({
+      name: this.props.product.name || '',
+      price: this.props.product.price || '',
+      inventory: this.props.product.inventory || '',
+      image: this.props.product.imageURL || '',
+      description: this.props.product.description || '',
+    })
   }
 
   handleChange(evt) {
@@ -50,9 +45,11 @@ class AdminUpdateProductForm extends React.Component {
 
   render() {
     const { name, price, inventory, imageURL, description } = this.props;
+    const {handleChange, handleSubmit} = this
+
     return (
       <div className="form">
-        <form>
+        <form onSubmit={handleSubmit}>
           <ul className="form__container">
             <li>
               <h2>Update Product</h2>
@@ -63,7 +60,7 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="name"
                 type="text"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 value={name || ''}
               />
             </li>
@@ -73,7 +70,7 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="price"
                 type="text"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 value={price || ''}
               />
             </li>
@@ -83,7 +80,7 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="inventory"
                 type="text"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 value={inventory || ''}
               />
             </li>
@@ -93,7 +90,7 @@ class AdminUpdateProductForm extends React.Component {
               <textarea
                 name="description"
                 type="text"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 value={description || ''}
               />
             </li>
@@ -103,7 +100,7 @@ class AdminUpdateProductForm extends React.Component {
               <textarea
                 name="image"
                 type="text"
-                onChange={this.handleChange}
+                onChange={handleChange}
                 value={imageURL || ''}
               />
               {/* {uploading && <div>Uploading...</div>} */}

@@ -109,8 +109,14 @@ class AdminProductForm extends React.Component {
   }
 }
 
+const mapState = (state) => {
+  return {
+    newProduct: state.products.newProduct
+  }
+}
+
 const mapDispatch = (dispatch) => ({
   createProduct: (newProduct) => dispatch(createNewProduct(newProduct)),
 });
 
-export default connect(null, mapDispatch)(AdminProductForm);
+export default connect(mapState, mapDispatch)(AdminProductForm);

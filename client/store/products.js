@@ -54,7 +54,7 @@ export const fetchSingleProduct = (productId) => async (dispatch) => {
 
 export const createNewProduct = (newProduct) => async (dispatch) => {
   try {
-    const { data } = await axios.post('/admin/create', newProduct);
+    const { data } = await axios.post('/api/products', newProduct);
     dispatch(addNewProduct(data));
   } catch (error) {
     console.log('error creating new product thunk', error);
@@ -64,12 +64,12 @@ export const createNewProduct = (newProduct) => async (dispatch) => {
 export const updateProduct = (product, history) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(
-        `/admin/products/${product.id}`,
+      const { data: updated } = await axios.put(
+        `/api/products/${product.id}`,
         product
       );
-      dispatch(_updateProduct(data));
-      history.push('/admin/products');
+      dispatch(_updateProduct(updated));
+      history.push(`/api/products/${product.id}`);
     } catch (error) {
       console.log(error);
     }

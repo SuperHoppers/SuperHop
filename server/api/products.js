@@ -78,8 +78,8 @@ router.get('/:productId', async (req, res, next) => {
 //     }
 //   });
 
-// /admin/products/create
-router.post('/create', isAdminMiddleware, async (req, res, next) => {
+// /products/create
+router.post('/', async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.json(newProduct);
@@ -88,3 +88,13 @@ router.post('/create', isAdminMiddleware, async (req, res, next) => {
     next(error);
   }
 });
+
+// /products/:productId
+router.put('/:productId', async (req, res, next) => {
+  try {
+    const updatedProduct = await Product.findByPk(req.params.productId)
+    res.json(await updatedProduct.update(req.body))
+  } catch (error) {
+    next(error)
+  }
+})

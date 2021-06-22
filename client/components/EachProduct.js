@@ -11,16 +11,16 @@ import { connect } from 'react-redux';
  */
 
 class EachProduct extends React.Component{
-    constructor(){
-        super()
-        this.handleAdd = this.handleAdd.bind(this)
-    }
-    handleAdd(evt){
-        evt.preventDefault();
-        const orderId = 1;
-        const productId = evt.target.value;
-        this.props.addItem(10,productId);
-    }
+    // constructor(){
+    //     super()
+    //     this.handleAdd = this.handleAdd.bind(this)
+    // }
+    // handleAdd(evt){
+    //     evt.preventDefault();
+    //     const orderId = 1;
+    //     const productId = evt.target.value;
+    //     this.props.addItem(10,productId);
+    // }
     render(){
         const product = this.props.product;
     return (
@@ -46,7 +46,7 @@ class EachProduct extends React.Component{
                     <button value = {product.id} onClick={this.handleClick} >Add to Cart</button>
                 </div> */}
                 <div>
-                <button value = {product.id} onClick={this.handleAdd} >Add to Cart</button>
+                <button value = {product.id} onClick={this.props.handleAdd} >Add to Cart</button>
                 </div>
             </div>
         </div>

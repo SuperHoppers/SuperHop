@@ -7,12 +7,16 @@ module.exports = router;
 router.get('/:userId', async (req, res, next) => {
   try {
     const order = await Order.currentOrder(req.params.userId)
-    const cartItems = await Order_Product.findAll({
-      where: {
-        orderId: order[0].id
-      }
-    })
-    res.json(cartItems);
+    if(order.length > 0){
+      const cartItems = await Order_Product.findAll({
+        where: {
+          orderId: order[0].id
+        }
+      })
+      res.json(cartItems);
+    } else {
+      res.send('no-order')
+    }
   } catch (error) {
     console.log('errors in order get route /', error);
     next(error);

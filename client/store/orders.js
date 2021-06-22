@@ -58,7 +58,7 @@ export const createOrder = () => {
 export const addToCart = (orderId,productId, userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put('/api/orders/addToCart', {orderId: orderId,productId: productId, userId: userId});
+      const { data } = await axios.put('/api/orders/addToCart', {orderId: orderId,productId: productId});
       dispatch(addProductToCart(data))
     } catch (error) {
       console.log('error adding to cart', error);

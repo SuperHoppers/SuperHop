@@ -40,7 +40,7 @@ class EachProduct extends React.Component{
         evt.preventDefault();
         const orderId = 1;
         const productId = evt.target.value;
-        this.props.addItem(undefined,productId, 2);
+        this.props.addItem(2,productId);
     }
     handleRemove(evt){
         evt.preventDefault();

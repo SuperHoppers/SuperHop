@@ -6,16 +6,19 @@ module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
-    const order = await Order.findAll({where: {
-      userId: req.body.userId,
-      status: 'open'
-    }});
-    res.json(order);
+    const order = await Order.currentOrder(req.body.userId)
+    const cartItems = await Order_Product.findAll({
+      where: {
+        orderId: order[0].id
+      }
+    })
+    res.json(cartItems);
   } catch (error) {
     console.log('errors in order get route /', error);
     next(error);
   }
 })
+
 
 router.put('/addToCart', async (req, res, next) => {
   // cartTotal

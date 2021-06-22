@@ -23,7 +23,7 @@ import SingleUser from "./components/SingleUser";
 const Routes = () => {
   return (
     <Router>
-      <div className='overall-view'>
+      <div className="overall-view">
         <Header />
       </div>
 

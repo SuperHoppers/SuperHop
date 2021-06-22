@@ -36,10 +36,10 @@ const closeOrder = (order) => {
   }
 }
 
-const setOrder = (order) => {
+const setOrder = (items) => {
   return {
     type: SET_ORDER,
-    order
+    items
   }
 }
 
@@ -88,10 +88,10 @@ export const checkout = (orderId) => {
   }
 }
 
-export const fetchOrder = (orderId) => {
+export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get('/api/orders', {orderId: orderId});
+      const {data} = await axios.get(`/api/orders/${userId}`);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);
@@ -101,22 +101,22 @@ export const fetchOrder = (orderId) => {
 
 //initial state
 
-const initialState = {}
+const initialState = { order: {}, cartItems: []}
 
 //reducer
 
 const ordersReducer = (state = initialState, action) => {
   switch(action.type) {
     case CREATE_ORDER:
-      return action.order;
+      return {...state, order: action.order};
     case ADD_TO_CART:
-      return action.order;
+      return {...state, order: action.order};
     case REMOVE_FROM_CART:
-      return action.order;
+      return {...state, order: action.order};
     case SET_ORDER:
-      return action.order;
+      return {...state, cartItems: action.items};
     case CHECKOUT:
-      return action.order;
+      return {...state, order: action.order};
     default:
       return state;
   }

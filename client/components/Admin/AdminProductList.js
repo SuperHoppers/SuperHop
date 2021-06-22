@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchAllProducts } from "../store/products";
+import { fetchAllProducts } from "../../store/products";
 
 export class AdminProductList extends React.Component {
     // constructor() {

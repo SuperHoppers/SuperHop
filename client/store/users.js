@@ -80,12 +80,14 @@ export const deleteUser = (userId, history) => {
   };
 };
 
-export const fetchUserCart = (userId) => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/api/users/${userId}/cart`);
-    dispatch(setOpenOrderId(data));
-  } catch (error) {
-    console.log("error fetching single user", error);
+export const fetchUserCart = (userId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/api/users/orders/${userId}`);
+      dispatch(setOpenOrderId(data.orders[0].id));
+    } catch (error) {
+      console.log("error fetching single user", error);
+    }
   }
 };
 

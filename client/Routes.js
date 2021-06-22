@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 // import { Login, Signup } from "./components/AuthForm";
 import Home from './components/Home';
 import { me } from './store';
-
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import AdminHome from './components/Admin/AdminHome';
@@ -17,6 +16,9 @@ import CheckoutPage from './components/CheckoutPage';
 import AdminProductForm from './components/Admin/AdminCreateProductForm';
 import AdminUpdateProductForm from './components/Admin/AdminUpdateProductForm';
 import AdminProductList from './components/Admin/AdminProductList';
+import AllUsers from "./components/AllUsers";
+import SingleUser from "./components/SingleUser";
+
 
 const Routes = () => {
   return (
@@ -34,12 +36,19 @@ const Routes = () => {
         <Route exact path="/admin/products" component={AdminProductList} />
         <Route
           exact
+          path="/admin/products/:productId"
+          component={AdminUpdateProductForm}
+        />
+        <Route
+          exact
           path="/admin/products/create"
           component={AdminProductForm}
         />
         <Route path="/signup" component={Signup} />
         <Route path="/cart" component={Cart} />
         <Route path="/checkout" component={CheckoutPage} />
+        <Route exact path='/admin/users' component={AllUsers} />
+        <Route path='/admin/users/:userId' component={SingleUser} />
       </Switch>
     </Router>
   );

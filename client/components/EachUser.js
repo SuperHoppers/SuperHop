@@ -20,12 +20,12 @@ class EachUser extends React.Component {
           <img
             className='picListView'
             src={user.imageURL}
-            alt={`${user.name} picture`}
+            alt={`${user.username} picture`}
           />
         </div>
         <div className='listViewDiv details'>
           <div>
-            <Link to={`/users/${user.id}`}>
+            <Link to={`users/${user.id}`}>
               <div>
                 <h3>Alias: {user.username}</h3>
               </div>
@@ -37,6 +37,4 @@ class EachUser extends React.Component {
   }
 }
 
-const mapDispatch = (dispatch) => {};
-
-export default connect(null, mapDispatch)(EachUser);
+export default EachUser;

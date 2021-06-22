@@ -4,6 +4,7 @@ import axios from 'axios';
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
+const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 
 // ACTION CREATORS
 const setProducts = (products) => {
@@ -26,6 +27,11 @@ const addNewProduct = (newProduct) => {
     newProduct,
   };
 };
+
+const _updateProduct = (product) => ({
+  type: UPDATE_PRODUCT,
+  product,
+});
 
 // THUNK
 export const fetchAllProducts = () => async (dispatch) => {
@@ -55,6 +61,21 @@ export const createNewProduct = (newProduct) => async (dispatch) => {
   }
 };
 
+export const updateProduct = (product, history) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(
+        `/admin/products/${product.id}`,
+        product
+      );
+      dispatch(_updateProduct(data));
+      history.push('/admin/products');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 // initial state
 const initialState = {
   allProducts: [],
@@ -74,6 +95,11 @@ const productsReducer = (state = initialState, action) => {
         ...state,
         allProducts: [...state.allProducts, action.newProduct],
         newProduct: action.newProduct,
+      };
+    case UPDATE_PRODUCT:
+      return {
+        ...state,
+        singleProduct: action.product,
       };
     default:
       return state;

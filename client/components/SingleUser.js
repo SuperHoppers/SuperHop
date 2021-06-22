@@ -16,6 +16,17 @@ class SingleUser extends Component {
     evt.preventDefault();
   }
   render() {
+    console.log(this.props, "SingleUser");
+    if (!this.props.user || !this.props.isAdmin) {
+      return (
+        <div>
+          <h2>
+            This user has purchased invisibility. What a great superpower! Maybe
+            you should buy some, too.
+          </h2>
+        </div>
+      );
+    }
     const { id, username, address, phoneNumber, email, imageURL } =
       this.props.user;
     return (
@@ -57,7 +68,8 @@ class SingleUser extends Component {
 }
 
 const mapState = (state) => ({
-  product: state.user.singleUser,
+  user: state.user,
+  isAdmin: state.auth.isAdmin,
 });
 
 const mapDispatch = (dispatch) => ({

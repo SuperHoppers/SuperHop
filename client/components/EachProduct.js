@@ -11,16 +11,6 @@ import { connect } from 'react-redux';
  */
 
 class EachProduct extends React.Component{
-    // constructor(){
-    //     super()
-    //     this.handleAdd = this.handleAdd.bind(this)
-    // }
-    // handleAdd(evt){
-    //     evt.preventDefault();
-    //     const orderId = 1;
-    //     const productId = evt.target.value;
-    //     this.props.addItem(10,productId);
-    // }
     render(){
         const product = this.props.product;
     return (

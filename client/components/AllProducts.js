@@ -12,7 +12,7 @@ export class AllProducts extends React.Component {
   constructor(){
     super()
     this.state = {
-        cart: []
+        cart: {}
     }
     this.handleAdd = this.handleAdd.bind(this)
 }
@@ -20,20 +20,13 @@ export class AllProducts extends React.Component {
     if ( this.props.isLoggedIn ){
       this.props.loadOrder(this.props.user)
     } else{
-      //console.log('not logged in')
       window.localStorage.setItem('cart', JSON.stringify(this.state.cart))
-      const currentCart = window.localStorage.getItem('cart');
-      if(currentCart){
-        this.setState(JSON.parse(currentCart))
-        console.log(this.state)
-      }
     }
     this.props.loadProducts()
   }
   handleAdd(evt){
     evt.preventDefault();
     const productId = evt.target.value;
-    console.log(this.props.order)
     if(this.props.isLoggedIn){
       if(!this.props.order.id){
         const userId = this.props.user;
@@ -43,13 +36,19 @@ export class AllProducts extends React.Component {
         this.props.addItem(orderId,productId);
       }
     } else {
-      const cart = window.localStorage.getItem('cart')
-      console.log(cart)
+      let cart = JSON.parse(window.localStorage.getItem('cart'))
+      if(cart[productId]){
+        cart[productId] += 1
+      } else {
+        cart[productId] = 1;
+      }
+      //cart.push(evt.target.value)
+      this.setState({cart:cart})
+      window.localStorage.setItem('cart', JSON.stringify(cart))
     }
 }
   render() {
-
-   console.log(this.state)
+   console.log('THIS IS IN THE RENDER FUNCTION',this.state)
     return (
       <div id='products-page'>
         <div>

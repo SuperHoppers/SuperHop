@@ -6,7 +6,10 @@ module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.body.orderId);
+    const order = await Order.findAll({where: {
+      userId: req.body.userId,
+      status: 'open'
+    }});
     res.json(order);
   } catch (error) {
     console.log('errors in order get route /', error);
@@ -35,6 +38,10 @@ router.put('/addToCart', async (req, res, next) => {
         await currentItem.update({quantity: newQuantity})
       } else {
         await cart.addProduct(orderProduct);
+      }
+      if(req.body.userId){
+        console.log('does this run');
+        cart.setUser(req.body.userId);
       }
       res.json(cart);
   } catch (error) {
@@ -78,21 +85,10 @@ router.put('/checkout', async (req, res, next) => {
   try {
     const cart = await Order.findByPk(req.body.orderId);
     cart.update({ status: 'closed' });
-    const newCart = await Order.create({ status: 'open' });
-    res.json(newCart);
+    res.json(cart);
   } catch (error) {
     console.log('errors in order put route /checkout', error);
     next(error);
   }
 });
 
-// post after checkout only
-router.post('/', async (req, res, next) => {
-  try {
-    const OrderProduct = await Order.create({ status: 'open' });
-    res.json(OrderProduct);
-  } catch (error) {
-    console.log('error posting order', error);
-    next(error);
-  }
-});

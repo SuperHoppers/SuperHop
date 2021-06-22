@@ -14,21 +14,33 @@ import { connect } from 'react-redux';
 class EachProduct extends React.Component{
     constructor(){
         super()
+        this.state = {
+            cart: []
+        }
         this.handleAdd = this.handleAdd.bind(this)
         this.handleRemove = this.handleRemove.bind(this)
     }
+    // componentDidUpdate(){
+    //     if(this.props.isLoggedIn){
+    //         console.log(this.props)
+    //         this.props.loadUserOrderId(this.props.user);
+    //         const order = this.props.loadOrder(this.props.cartId);
+    //         this.setState({cart:order})
+    //     } else {
+    //         const order = window.localStorage.getItem('cart')
+    //         this.setState({cart:order})
+    //     }
+    // }
     componentDidMount(){
-        if(this.props.isLoggedIn){
-            console.log(this.props)
-          this.props.loadUserOrderId(this.props.user);
-           console.log(this.props.cartId);
-        }
+        console.log(this.props.user)
+        this.props.loadOrder(this.props.user);
+        console.log(this.props.order);
     }
     handleAdd(evt){
         evt.preventDefault();
         const orderId = 1;
         const productId = evt.target.value;
-        this.props.addItem(orderId,productId);
+        this.props.addItem(undefined,productId, 2);
     }
     handleRemove(evt){
         evt.preventDefault();

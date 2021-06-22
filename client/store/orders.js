@@ -55,10 +55,10 @@ export const createOrder = () => {
   }
 }
 
-export const addToCart = (orderId,productId) => {
+export const addToCart = (orderId,productId, userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put('/api/orders/addToCart', {orderId: orderId,productId: productId});
+      const { data } = await axios.put('/api/orders/addToCart', {orderId: orderId,productId: productId, userId: userId});
       dispatch(addProductToCart(data))
     } catch (error) {
       console.log('error adding to cart', error);
@@ -88,10 +88,10 @@ export const checkout = (orderId) => {
   }
 }
 
-export const fetchOrder = (orderId) => {
+export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get('/api/orders', {orderId: orderId});
+      const {data} = await axios.get('/api/orders', {userId: userId});
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);

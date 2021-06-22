@@ -47,7 +47,6 @@ export class AdminProductList extends React.Component {
                   <Link to={`/admin/products/${product.id}`}>
                     <button className="button">Edit </button>
                   </Link>
-
                   <button className="button">Delete</button>
                 </td>
               </tr>

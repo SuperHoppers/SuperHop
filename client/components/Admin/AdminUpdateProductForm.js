@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSingleProduct, updateProduct } from '../store/products';
+import { fetchSingleProduct, updateProduct } from '../../store/products';
 
 class AdminUpdateProductForm extends React.Component {
   constructor(props) {

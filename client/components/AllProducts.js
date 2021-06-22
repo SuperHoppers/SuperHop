@@ -3,22 +3,36 @@ import React from "react";
 import { connect } from "react-redux";
 import EachProduct from "./EachProduct";
 import { fetchAllProducts } from "../store/products";
-import { fetchOrder } from "../store/orders";
-
+import {addToCart, removeFromCart, fetchOrder} from '../store/orders'
 /**
  * COMPONENT
  */
 
 export class AllProducts extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+        cart: []
+    }
+    this.handleAdd = this.handleAdd.bind(this)
+}
   componentDidMount() {
-    const orderNum = 19;
-    window.localStorage.setItem("orderNum", orderNum);
-    this.props.loadProducts();
-    const orderId = window.localStorage.getItem("orderNum");
-    this.props.loadOrder(orderId);
+    if ( this.props.isLoggedIn ){
+      this.props.loadOrder(this.props.user)
+    } else{
+      console.log('not logged in')
+    }
+    this.props.loadProducts()
   }
+  handleAdd(evt){
+    evt.preventDefault();
+    const orderId = 1;
+    const productId = evt.target.value;
+    this.props.addItem(2,productId);
+}
   render() {
-    console.log(this.props.isLoggedIn);
+   // console.log(this.props.isLoggedIn);
+   // console.log(this.props.order)
     return (
       <div id='products-page'>
         <div>
@@ -44,14 +58,16 @@ export class AllProducts extends React.Component {
 
 const mapState = (state) => {
   return {
+    order: state.orders.cartItems,
     products: state.products.allProducts,
     isLoggedIn: !!state.auth.id,
+    user: state.auth.id,
   };
 };
 
 const mapDispatch = (dispatch) => ({
   loadProducts: () => dispatch(fetchAllProducts()),
-  loadOrder: (orderId) => dispatch(fetchOrder(orderId)),
+  loadOrder: (userId) => dispatch(fetchOrder(userId)),
 });
 
 export default connect(mapState, mapDispatch)(AllProducts);

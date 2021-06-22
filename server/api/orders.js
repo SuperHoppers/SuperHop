@@ -4,9 +4,9 @@ const {
 } = require('../db');
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const order = await Order.currentOrder(req.body.userId)
+    const order = await Order.currentOrder(req.params.userId)
     const cartItems = await Order_Product.findAll({
       where: {
         orderId: order[0].id

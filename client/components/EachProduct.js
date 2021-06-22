@@ -14,39 +14,13 @@ import { connect } from 'react-redux';
 class EachProduct extends React.Component{
     constructor(){
         super()
-        this.state = {
-            cart: []
-        }
         this.handleAdd = this.handleAdd.bind(this)
-        this.handleRemove = this.handleRemove.bind(this)
-    }
-    // componentDidUpdate(){
-    //     if(this.props.isLoggedIn){
-    //         console.log(this.props)
-    //         this.props.loadUserOrderId(this.props.user);
-    //         const order = this.props.loadOrder(this.props.cartId);
-    //         this.setState({cart:order})
-    //     } else {
-    //         const order = window.localStorage.getItem('cart')
-    //         this.setState({cart:order})
-    //     }
-    // }
-    componentDidMount(){
-        console.log(this.props.user)
-        this.props.loadOrder(this.props.user);
-        console.log(this.props.order);
     }
     handleAdd(evt){
         evt.preventDefault();
         const orderId = 1;
         const productId = evt.target.value;
         this.props.addItem(2,productId);
-    }
-    handleRemove(evt){
-        evt.preventDefault();
-        const orderId = 1;
-        const productId = evt.target.value;
-        this.props.removeItem(orderId,productId);
     }
     render(){
         const product = this.props.product;
@@ -73,9 +47,7 @@ class EachProduct extends React.Component{
                     <button value = {product.id} onClick={this.handleClick} >Add to Cart</button>
                 </div> */}
                 <div>
-                <button value = {product.id} onClick={this.handleAdd} >+</button>
-                <span>0</span>
-                <button value = {product.id} onClick={this.handleRemove}>-</button>
+                <button value = {product.id} onClick={this.handleAdd} >Add to Cart</button>
                 </div>
             </div>
         </div>

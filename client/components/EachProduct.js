@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
  * COMPONENT
  */
 
-// is logged in? yes: currentOrder(this.props.user) no: is Local storage? -> yes: getItem no:
 class EachProduct extends React.Component{
     constructor(){
         super()
@@ -20,7 +19,7 @@ class EachProduct extends React.Component{
         evt.preventDefault();
         const orderId = 1;
         const productId = evt.target.value;
-        this.props.addItem(2,productId);
+        this.props.addItem(10,productId);
     }
     render(){
         const product = this.props.product;

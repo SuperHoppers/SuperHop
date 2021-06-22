@@ -42,10 +42,7 @@ router.put('/addToCart', async (req, res, next) => {
       } else {
         await cart.addProduct(orderProduct);
       }
-      if(req.body.userId){
-        console.log('does this run');
-        cart.setUser(req.body.userId);
-      }
+
       res.json(cart);
   } catch (error) {
     console.log('errors in order put route /addToCart', error);

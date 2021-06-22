@@ -56,10 +56,8 @@ class EachProduct extends React.Component{
 
 const mapState = (state) => {
     return {
-        order: state.orders,
         isLoggedIn: !!state.auth.id,
         user: state.auth.id,
-        cartId: state.users.cartId,
     }
 }
 

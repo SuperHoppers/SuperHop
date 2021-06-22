@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const {
-  models: { Product, Order, Order_Product },
+  models: { Product, Order, Order_Product, User },
 } = require('../db');
 module.exports = router;
 
 // /api/orders/users/:userId
-router.get('/:userId', async (req, res, next) => {
+router.get('/users/:userId', async (req, res, next) => {
   try {
     const order = await Order.currentOrder(req.params.userId)
     if(order.length > 0){
@@ -30,7 +30,7 @@ router.put('/addToCart', async (req, res, next) => {
   try {
 
      const cart = await Order.findByPk(req.body.orderId);
-    const orderProduct = await Product.findByPk(req.body.productId);
+      const orderProduct = await Product.findByPk(req.body.productId);
       if(await cart.hasProduct(orderProduct)){
         let currentItem = await Order_Product.findOne({
           where: {
@@ -40,17 +40,33 @@ router.put('/addToCart', async (req, res, next) => {
         });
         const newQuantity = currentItem.quantity +1;
         await currentItem.update({quantity: newQuantity})
+        res.send('You already have that Item in your cart')
       } else {
         await cart.addProduct(orderProduct, {individualHooks: true});
+        res.json(cart);
       }
 
-      res.json(cart);
   } catch (error) {
     console.log('errors in order put route /addToCart', error);
     next(error);
   }
 });
 
+// router.put('/increaseQuant', async (req, res, next) => {
+//   try {
+//     let currentItem = await Order_Product.findOne({
+//           where: {
+//             orderId: req.body,orderId,
+//             productId: req.body.productId
+//           },
+//         });
+//         const newQuantity = currentItem.quantity +1;
+//         await currentItem.update({quantity: newQuantity})
+//         res.json(currentItem);
+//   } catch (error) {
+//     next(error);
+//   }
+// })
 router.put('/removeFromCart', async (req, res, next) => {
   // cartTotal
   try {
@@ -99,6 +115,7 @@ router.post('/newOrder', async (req, res, next) => {
     const newOrder = await Order.create({});
     const orderProduct = await Product.findByPk(req.body.productId);
     await newOrder.addProduct(orderProduct, {individualHooks: true});
+    await newOrder.setUser(req.body.userId)
     res.json(newOrder);
   } catch (error) {
     console.log('errors in order put route /checkout', error);

@@ -48,7 +48,7 @@ const isUserMiddleware = (req, res, next) => {
 
 //ADMIN ROUTES
 //admin find all users
-router.get("/admin", async (req, res, next) => {
+router.get("/admin", isAdminMiddleware, async (req, res, next) => {
   try {
     const users = await User.findAll({
       attributes: [
@@ -97,7 +97,7 @@ router.get("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
 
 //admin find one user by username
 router.get(
-  "/name-search/:username/admin",
+  "/search/:username/admin",
   isAdminMiddleware,
   async (req, res, next) => {
     try {
@@ -196,7 +196,7 @@ router.get("/:userId", isUserMiddleware, async (req, res, next) => {
 
 //user find one user by username
 router.get(
-  "/name-search/:username",
+  "/search/:username",
   isUserMiddleware,
   async (req, res, next) => {
     try {
@@ -265,7 +265,7 @@ router.delete("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //User GET CART with eager loading
-router.get("/:id/cart", async (req, res, next) => {
+router.get("/orders/:id", async (req, res, next) => {
   try {
     let user = await User.findByPk(req.params.id, {
       attributes: ["id", "username"],

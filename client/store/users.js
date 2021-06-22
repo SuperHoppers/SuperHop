@@ -46,7 +46,7 @@ const setOpenOrderId = (userCart) => {
 // THUNK
 export const fetchAllUsers = () => async (dispatch) => {
   try {
-    const { data } = await axios.get("/api/users");
+    const { data } = await axios.get("/api/users/admin");
     dispatch(setUsers(data));
   } catch (error) {
     console.log("error fetching all users", error);
@@ -55,7 +55,7 @@ export const fetchAllUsers = () => async (dispatch) => {
 
 export const fetchSingleUser = (userId) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`/api/users/${userId}`);
+    const { data } = await axios.get(`/api/users/${userId}/admin`);
     dispatch(setSingleUser(data));
   } catch (error) {
     console.log("error fetching single user", error);

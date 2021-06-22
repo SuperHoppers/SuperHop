@@ -42,7 +42,6 @@ export class AllProducts extends React.Component {
       } else {
         cart[productId] = 1;
       }
-      //cart.push(evt.target.value)
       this.setState({cart:cart})
       window.localStorage.setItem('cart', JSON.stringify(cart))
     }

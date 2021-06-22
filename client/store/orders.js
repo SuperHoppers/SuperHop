@@ -7,6 +7,7 @@ const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 const CHECKOUT = 'CHECKOUT';
 const SET_ORDER = 'SET_ORDER';
 const INCREASE_QUANT = 'INCREASE_QUANT';
+const GUEST_CHECKOUT = 'GUEST_CHECKOUT'
 
 //action creators
 const newOrder = (order) => {
@@ -48,6 +49,13 @@ const setOrder = (items) => {
   return {
     type: SET_ORDER,
     items
+  }
+}
+
+const guestCheck = (order) => {
+  return {
+    type: GUEST_CHECKOUT,
+    order
   }
 }
 
@@ -118,6 +126,16 @@ export const fetchOrder = (userId) => {
   }
 }
 
+export const guestCheckout = (cart) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.post('/api/orders/guestCheckout', cart)
+      dispatch(guestCheck(data))
+    } catch (error) {
+      console.log('error in guest checkout', error)
+    }
+  }
+}
 //initial state
 
 const initialState = { order: {}, cartItems: []}
@@ -138,6 +156,8 @@ const ordersReducer = (state = initialState, action) => {
       return {...state, cartItems: action.items};
     case CHECKOUT:
       return {...state, order: action.order};
+    case GUEST_CHECKOUT:
+      return {...state, order: {}};
     default:
       return state;
   }

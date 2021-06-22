@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import from store
+import {guestCheckout} from '../store/orders';
+ // import from store
 
 class Cart extends Component {
+  constructor(){
+    super()
+    this.handleCheckout = this.handleCheckout.bind(this);
+  }
+  handleCheckout(evt){
+    evt.preventDefault()
+    const cart = JSON.parse(window.localStorage.getItem('cart'));
+    this.props.guestCheck(cart);
+
+  }
   render() {
     return (
       <div className="cart">
@@ -46,7 +57,7 @@ class Cart extends Component {
         <div className="cart__action">
           <h3>Subtotal:</h3>
           <Link to="/checkout">
-            <button>Proceed to Checkout</button>
+            <button onClick ={this.handleCheckout}>Proceed to Checkout</button>
           </Link>
         </div>
       </div>
@@ -54,8 +65,11 @@ class Cart extends Component {
   }
 }
 
-const mapState = (state) => {};
 
-const mapDispatch = (dispatch) => {};
+const mapDispatch = (dispatch) => {
+  return {
+    guestCheck: (cart) => dispatch(guestCheckout(cart))
+  }
+};
 
-export default connect(mapState, mapDispatch)(Cart);
+export default connect(null, mapDispatch)(Cart);

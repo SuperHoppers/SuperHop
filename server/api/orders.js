@@ -122,3 +122,16 @@ router.post('/newOrder', async (req, res, next) => {
     next(error)
   }
 })
+
+router.post('/guestCheckout', async (req, res, next) => {
+  try {
+    const cart = req.body;
+    const newOrder = await Order.create({status: 'closed'})
+    for(let product in cart){
+      const line = await Order_Product.create({orderId: newOrder.id, productId: product, quantity: cart[product]})
+    }
+    res.json(newOrder)
+  } catch (error) {
+    next(error)
+  }
+})

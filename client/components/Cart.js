@@ -63,6 +63,9 @@ handleRemove(evt){
     } else {
       const localCart = JSON.parse(window.localStorage.getItem('cart'));
       this.props.guestCheck(localCart);
+      const newCart = {}
+      this.setState({cart:newCart})
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
     }
   }
   render() {

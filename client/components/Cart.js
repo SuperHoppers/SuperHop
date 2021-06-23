@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,14 +8,15 @@ import { fetchAllProducts } from '../store/products';
  // import from store
 
 class Cart extends Component {
-  constructor(){
-    super()
-    this.state = {
-      cart: {}
+    constructor() {
+        super();
+        this.state = {
+            cart: {}
+        };
+        this.handleCheckout = this.handleCheckout.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
     }
-    this.handleCheckout = this.handleCheckout.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
-    this.handleRemove = this.handleRemove.bind(this);
   }
   componentDidMount(){
     if( this.props.isLoggedIn ){
@@ -97,7 +99,17 @@ handleRemove(evt){
         key = {cartItem.id}
         quantity = {cartState[cartItem.id]}/>)}) : 'Your cart is empty!'}
         <div className="cart__action">
-          <h3>Subtotal:</h3>
+          <h3>
+                        Subtotal: $
+                        {cartItems.length > 0
+                            ? cartItems.reduce((accum, item) => {
+                                  console.log("accum>>>", accum);
+                                  return (
+                                      accum + item.price * cartState[item.id]
+                                  );
+                              }, 0)
+                            : "Nothing in cart"}
+                    </h3>
           <Link to="/checkout">
             <button onClick ={this.handleCheckout}>Proceed to Checkout</button>
           </Link>
@@ -108,15 +120,14 @@ handleRemove(evt){
 }
 
 const mapState = (state) => {
-  return {
-    items: state.orders.cartItems,
-    order: state.orders.order,
-    products: state.products.allProducts,
-    isLoggedIn: !!state.auth.id,
-    user: state.auth.id,
-  };
+    return {
+        items: state.orders.cartItems,
+        order: state.orders.order,
+        products: state.products.allProducts,
+        isLoggedIn: !!state.auth.id,
+        user: state.auth.id
+    };
 };
-
 
 const mapDispatch = (dispatch) => {
   return {
@@ -127,7 +138,7 @@ const mapDispatch = (dispatch) => {
     getCartItems: (userId) => dispatch(fetchOpenCart(userId)),
     getOrder: (userId) => dispatch(fetchOrder(userId)),
     userCheck: (orderId) => dispatch(checkout(orderId))
-  }
+  
 };
 
 export default connect(mapState, mapDispatch)(Cart);

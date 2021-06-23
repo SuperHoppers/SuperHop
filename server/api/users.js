@@ -3,49 +3,10 @@ const {
   models: { User, Order },
 } = require('../db');
 
-const { requireToken, isAdminMiddleware } = require('./gatekeepingMiddleware');
 
+const { requireToken} = require('./gatekeepingMiddleware');
 module.exports = router;
 
-// const isAdminMiddleware = (req, res, next) => {
-//   if (!req.authorization || !req.authorization.isAdmin) {
-//     const err = new Error(`You aren't authorized to do that`);
-//     err.status = 401;
-//     next(err);
-//   } else {
-//     next();
-//   }
-// };
-
-// const isUserMiddleware = (req, res, next) => {
-//   if (!req.headers.authorization) {
-//     const err = new Error();
-//     // `You aren't authorized to do that as a guest, or to someone else\'s information. Please log in. Or, if this is not you, stop trying to find someone else\'s address. We do not give away secret lair information here.`
-//     err.status = 401;
-//     next(err);
-//   } else {
-//     next();
-//   }
-// };
-
-// router.get("/", isAdminMiddleware, async (req, res, next) => {
-//   // list of all user ids and usernames
-//   try {
-//     const users = await User.findAll({
-//       // explicitly select only the id and username fields - even though
-//       // users' passwords are encrypted, it won't help if we just
-//       // send everything to anyone who asks!
-//       attributes: ["id", "username"],
-//     });
-//     if (!users) {
-//       res.status(404).send("No users found");
-//     } else {
-//       res.json(users);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 //ADMIN ROUTES
 //admin find all users

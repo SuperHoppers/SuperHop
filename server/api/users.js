@@ -3,7 +3,7 @@ const {
   models: { User, Order },
 } = require("../db");
 
-const { isAdminMiddleware } = require("./gatekeepingMiddleware");
+const { isAdminMiddleware, isUserMiddleware } = require("./gatekeepingMiddleware");
 module.exports = router;
 
 // const isAdminMiddleware = (req, res, next) => {
@@ -16,16 +16,16 @@ module.exports = router;
 //   }
 // };
 
-const isUserMiddleware = (req, res, next) => {
-  if (!req.headers.authorization) {
-    const err = new Error();
-    // `You aren't authorized to do that as a guest, or to someone else\'s information. Please log in. Or, if this is not you, stop trying to find someone else\'s address. We do not give away secret lair information here.`
-    err.status = 401;
-    next(err);
-  } else {
-    next();
-  }
-};
+// const isUserMiddleware = (req, res, next) => {
+//   if (!req.headers.authorization) {
+//     const err = new Error();
+//     // `You aren't authorized to do that as a guest, or to someone else\'s information. Please log in. Or, if this is not you, stop trying to find someone else\'s address. We do not give away secret lair information here.`
+//     err.status = 401;
+//     next(err);
+//   } else {
+//     next();
+//   }
+// };
 
 // router.get("/", isAdminMiddleware, async (req, res, next) => {
 //   // list of all user ids and usernames

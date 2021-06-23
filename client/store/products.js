@@ -1,11 +1,13 @@
 import axios from 'axios';
 
+const TOKEN = 'token';
+
 // ACTION TYPES
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
-const DELETE_PRODUCT = 'DELETE_PRODUCT'
+const DELETE_PRODUCT = 'DELETE_PRODUCT';
 
 // ACTION CREATORS
 const setProducts = (products) => {
@@ -35,15 +37,19 @@ const _updateProduct = (product) => ({
 });
 
 const deleteProduct = (product) => ({
-    type: DELETE_PRODUCT,
-    product
-})
-
+  type: DELETE_PRODUCT,
+  product,
+});
 
 // THUNK
 export const fetchAllProducts = () => async (dispatch) => {
   try {
-    const { data } = await axios.get('/api/products');
+    const token = window.localStorage.getItem('token');
+    const { data } = await axios.get('/api/products', {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(setProducts(data));
   } catch (error) {
     console.log('error fetching all products', error);
@@ -79,20 +85,20 @@ export const updateProduct = (product, history) => {
       dispatch(_updateProduct(updated));
       history.push('/admin/products');
     } catch (error) {
-      console.log('error updating product',error);
+      console.log('error updating product', error);
     }
   };
 };
 
-export const deleteProductThunk = (id, history) => async(dispatch) => {
-    try {
-        const {data: product} = await axios.delete(`/api/products/${id}`)
-        dispatch(deleteProduct(product))
-        history.push('/admin/products')
-    } catch (error) {
-        console.log('error deleting product', error)
-    }
-}
+export const deleteProductThunk = (id, history) => async (dispatch) => {
+  try {
+    const { data: product } = await axios.delete(`/api/products/${id}`);
+    dispatch(deleteProduct(product));
+    history.push('/admin/products');
+  } catch (error) {
+    console.log('error deleting product', error);
+  }
+};
 
 // initial state
 const initialState = {
@@ -120,10 +126,12 @@ const productsReducer = (state = initialState, action) => {
         singleProduct: action.product,
       };
     case DELETE_PRODUCT:
-        return {
-            ...state,
-            allProducts: state.allProducts.filter((product) => product.id !== action.product)
-        }
+      return {
+        ...state,
+        allProducts: state.allProducts.filter(
+          (product) => product.id !== action.product
+        ),
+      };
     default:
       return state;
   }

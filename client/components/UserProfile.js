@@ -43,8 +43,11 @@ export class UserProfile extends React.Component {
                         </thead>
                         <tbody>
                             <tr>
+                                {/* {username} */}
                                 <td>cody</td>
+                                {/* {email} */}
                                 <td>cody@gmail.com</td>
+                                {/* {address} */}
                                 <td>123 St</td>
                                 <td>12345</td>
                                 <td>
@@ -83,7 +86,7 @@ export class UserProfile extends React.Component {
                                     <td>{order.paidAt}</td>
                                     <td>{order.deliveredAt}</td>
                                     <td>
-                                        {/* <Link to="/order/:orderId"> */}
+                                        {/* <Link to="/orders/users/:userId/:orderId"> */}
                                         <button>DETAILS</button>
                                         {/* </Link> */}
                                     </td>

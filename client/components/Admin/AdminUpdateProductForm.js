@@ -20,13 +20,14 @@ class AdminUpdateProductForm extends React.Component {
   componentDidMount() {
     const { productId } = this.props.match.params;
     this.props.loadProduct(productId);
+    // console.log(this.props.loadProduct(productId));
     this.setState({
-      name: this.props.product.name || '',
-      price: this.props.product.price || '',
-      inventory: this.props.product.inventory || '',
-      image: this.props.product.imageURL || '',
-      description: this.props.product.description || '',
-    })
+      name: this.props.product.name,
+      price: this.props.product.price,
+      inventory: this.props.product.inventory,
+      image: this.props.product.imageURL,
+      description: this.props.product.description,
+    });
   }
 
   handleChange(evt) {
@@ -44,8 +45,8 @@ class AdminUpdateProductForm extends React.Component {
   }
 
   render() {
-    const { name, price, inventory, imageURL, description } = this.props;
-    const {handleChange, handleSubmit} = this
+    const { name, price, inventory, imageURL, description } = this.state;
+    const { handleChange, handleSubmit } = this;
 
     return (
       <div className="form">
@@ -61,7 +62,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="name"
                 type="text"
                 onChange={handleChange}
-                value={name}
+                value={name || ''}
               />
             </li>
 
@@ -71,7 +72,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="price"
                 type="text"
                 onChange={handleChange}
-                value={price}
+                value={price || ''}
               />
             </li>
 
@@ -81,7 +82,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="inventory"
                 type="text"
                 onChange={handleChange}
-                value={inventory}
+                value={inventory || ''}
               />
             </li>
 
@@ -91,7 +92,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="description"
                 type="text"
                 onChange={handleChange}
-                value={description}
+                value={description || ''}
               />
             </li>
 
@@ -101,7 +102,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="imageURL"
                 type="text"
                 onChange={handleChange}
-                value={imageURL}
+                value={imageURL || ''}
               />
               {/* {uploading && <div>Uploading...</div>} */}
             </li>
@@ -133,7 +134,7 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch, {history}) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     loadProduct: (productId) => dispatch(fetchSingleProduct(productId)),
     updateProduct: (product) => dispatch(updateProduct(product, history)),

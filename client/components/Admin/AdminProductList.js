@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 export class AdminProductList extends React.Component {
   constructor() {
-      super();
-      this.handleDelete = this.handleDelete.bind(this);
+    super();
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -14,7 +14,7 @@ export class AdminProductList extends React.Component {
   }
 
   handleDelete(id) {
-      this.props.deleteProduct(id);
+    this.props.deleteProduct(id);
   }
 
   render() {
@@ -47,7 +47,13 @@ export class AdminProductList extends React.Component {
                   <Link to={`/admin/products/${product.id}`}>
                     <button className="button">Edit </button>
                   </Link>
-                  <button className="button" type='button' onClick={()=>this.handleDelete(product.id)}>Delete</button>
+                  <button
+                    className="button"
+                    type="button"
+                    onClick={() => this.handleDelete(product.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -64,10 +70,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch, {history}) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     loadProducts: () => dispatch(fetchAllProducts()),
-    deleteProduct: (id) => dispatch(deleteProductThunk(id, history))
+    deleteProduct: (id) => dispatch(deleteProductThunk(id, history)),
   };
 };
 

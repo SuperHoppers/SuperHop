@@ -52,21 +52,6 @@ router.put('/addToCart', requireToken, async (req, res, next) => {
   }
 });
 
-// router.put('/increaseQuant', async (req, res, next) => {
-//   try {
-//     let currentItem = await Order_Product.findOne({
-//           where: {
-//             orderId: req.body,orderId,
-//             productId: req.body.productId
-//           },
-//         });
-//         const newQuantity = currentItem.quantity +1;
-//         await currentItem.update({quantity: newQuantity})
-//         res.json(currentItem);
-//   } catch (error) {
-//     next(error);
-//   }
-// })
 router.put('/removeFromCart', requireToken, async (req, res, next) => {
   // cartTotal
   try {

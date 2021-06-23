@@ -2,22 +2,8 @@ const router = require('express').Router();
 const {
   models: { Product, Order },
 } = require('../db');
-const { requireToken, isAdminMiddleware } = require('./gatekeepingMiddleware');
+const { requireToken, } = require('./gatekeepingMiddleware');
 module.exports = router;
-
-// // isAdmin middleware
-// const isAdminMiddleware = (req, res, next) => {
-//   // if the current user doesn't have an account/not logged in
-//   // or if the current user is logged in but is not admin
-//   // they cannot add/edit/delete products
-//   if (!req.authorization || !req.authorization.isAdmin) {
-//     const err = new Error(`You aren't authorized to do that`);
-//     err.status = 401;
-//     next(err);
-//   } else {
-//     next();
-//   }
-// };
 
 router.get('/', async (req, res, next) => {
   try {
@@ -57,26 +43,26 @@ router.get('/:productId', async (req, res, next) => {
   }
 });
 
-//
-// router.get("/products", isAdminMiddleware, async (req, res, next) => {
-//     try {
-//       const products = await Product.findAll({
-//         attributes: [
-//           "id",
-//           "price",
-//           "name",
-//           "inventory",
-//           "description",
-//           "imageURL",
-//           "type",
-//         ],
-//       });
-//       res.json(products);
-//     } catch (error) {
-//       console.log("error getting product list", error);
-//       next(error);
-//     }
-//   });
+//admin route for all products
+router.get("/admin", requireToken, async (req, res, next) => {
+    try {
+      const products = await Product.findAll({
+        attributes: [
+          "id",
+          "price",
+          "name",
+          "inventory",
+          "description",
+          "imageURL",
+          "type",
+        ],
+      });
+      res.json(products);
+    } catch (error) {
+      console.log("error getting product list", error);
+      next(error);
+    }
+  });
 
 // /products/create
 router.post('/', requireToken, async (req, res, next) => {

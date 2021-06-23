@@ -4,6 +4,7 @@ const TOKEN = 'token';
 
 // ACTION TYPES
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
+const GET_ALL_PRODUCTS_ADMIN = "GET_ALL_PRODUCTS_ADMIN";
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
@@ -13,6 +14,13 @@ const DELETE_PRODUCT = 'DELETE_PRODUCT';
 const setProducts = (products) => {
   return {
     type: GET_ALL_PRODUCTS,
+    products,
+  };
+};
+
+const setProductsAdmin = (products) => {
+  return {
+    type: GET_ALL_PRODUCTS_ADMIN,
     products,
   };
 };
@@ -44,8 +52,17 @@ const deleteProduct = (product) => ({
 // THUNK
 export const fetchAllProducts = () => async (dispatch) => {
   try {
+    const { data } = await axios.get('/api/products');
+    dispatch(setProducts(data));
+  } catch (error) {
+    console.log('error fetching all products', error);
+  }
+};
+
+export const fetchAllProductsAdmin = () => async (dispatch) => {
+  try {
     const token = window.localStorage.getItem(TOKEN);
-    const { data } = await axios.get('/api/products', {
+    const { data } = await axios.get('/api/products/admin', {
       headers: {
         authorization: token,
       },
@@ -127,6 +144,8 @@ const productsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_PRODUCTS:
       return { ...state, allProducts: action.products };
+      case GET_ALL_PRODUCTS_ADMIN:
+        return { ...state, allProducts: action.products };
     case GET_SINGLE_PRODUCT:
       return { ...state, singleProduct: action.product };
     case ADD_NEW_PRODUCT:

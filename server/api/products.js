@@ -19,8 +19,9 @@ module.exports = router;
 //   }
 // };
 
-router.get('/', requireToken, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
+    console.log('REQ.headers>>>', req.headers);
     const products = await Product.findAll({
       attributes: [
         'id',

@@ -119,6 +119,7 @@ export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.get(`/api/orders/users/${userId}`);
+      console.log(data);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);

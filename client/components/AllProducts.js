@@ -19,8 +19,6 @@ export class AllProducts extends React.Component {
   componentDidMount() {
     if ( this.props.isLoggedIn ){
       this.props.loadOrder(this.props.user)
-    } else{
-      window.localStorage.setItem('cart', JSON.stringify(this.state.cart))
     }
     this.props.loadProducts()
   }
@@ -47,7 +45,8 @@ export class AllProducts extends React.Component {
     }
 }
   render() {
-   //console.log('THIS IS IN THE RENDER FUNCTION',this.state)
+   console.log('THIS IS IN THE RENDER FUNCTION',this.props.order)
+   console.log('cart items', this.props.items)
     return (
       <div id='products-page'>
         <div>

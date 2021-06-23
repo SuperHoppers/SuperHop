@@ -14,6 +14,7 @@ class Cart extends Component {
     }
     this.handleCheckout = this.handleCheckout.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
   componentDidMount(){
     let localCart = JSON.parse(window.localStorage.getItem('cart'));

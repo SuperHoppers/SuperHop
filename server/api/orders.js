@@ -9,6 +9,15 @@ module.exports = router;
 router.get('/users/:userId', requireToken, async (req, res, next) => {
   try {
     const order = await Order.currentOrder(req.params.userId)
+    res.json(order);
+  } catch (error) {
+    console.log('errors in order get route /', error);
+    next(error);
+  }
+})
+router.get('/users/:userId/openCart', async (req, res, next) => {
+  try {
+    const order = await Order.currentOrder(req.params.userId)
     if(order.length > 0){
       const cartItems = await Order_Product.findAll({
         where: {
@@ -39,12 +48,11 @@ router.put('/addToCart', requireToken, async (req, res, next) => {
           },
         });
         const newQuantity = currentItem.quantity +1;
-        await currentItem.update({quantity: newQuantity})
-        res.send('You already have that Item in your cart')
+        await currentItem.update({quantity: newQuantity}, {individualHooks: true})
       } else {
         await cart.addProduct(orderProduct, {individualHooks: true});
-        res.json(cart);
       }
+      res.json(cart);
 
   } catch (error) {
     console.log('errors in order put route /addToCart', error);
@@ -52,21 +60,6 @@ router.put('/addToCart', requireToken, async (req, res, next) => {
   }
 });
 
-// router.put('/increaseQuant', async (req, res, next) => {
-//   try {
-//     let currentItem = await Order_Product.findOne({
-//           where: {
-//             orderId: req.body,orderId,
-//             productId: req.body.productId
-//           },
-//         });
-//         const newQuantity = currentItem.quantity +1;
-//         await currentItem.update({quantity: newQuantity})
-//         res.json(currentItem);
-//   } catch (error) {
-//     next(error);
-//   }
-// })
 router.put('/removeFromCart', requireToken, async (req, res, next) => {
   // cartTotal
   try {

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {guestCheckout, fetchOpenCart, fetchOrder, checkout} from '../store/orders';
+import {guestCheckout, fetchOpenCart, fetchOrder, checkout, addToCart, removeFromCart} from '../store/orders';
 import CartItem from './CartItem';
 import { fetchAllProducts } from '../store/products';
  // import from store

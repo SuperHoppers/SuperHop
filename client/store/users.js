@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const TOKEN = 'token';
+
 // ACTION TYPES
 const GET_ALL_USERS = "GET_ALL_USERS";
 const GET_SINGLE_USER = "GET_SINGLE_USER";
@@ -46,7 +48,12 @@ const setOpenOrderId = (userCart) => {
 // THUNK
 export const fetchAllUsers = () => async (dispatch) => {
   try {
-    const { data } = await axios.get("/api/users/admin");
+    const token = window.localStorage.getItem(TOKEN);
+    const { data } = await axios.get("/api/users/admin", {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(setUsers(data));
   } catch (error) {
     console.log("error fetching all users", error);
@@ -55,7 +62,12 @@ export const fetchAllUsers = () => async (dispatch) => {
 
 export const fetchSingleUser = (userId) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`/api/users/${userId}/admin`);
+    const token = window.localStorage.getItem(TOKEN);
+    const { data } = await axios.get(`/api/users/${userId}/admin`, {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(setSingleUser(data));
   } catch (error) {
     console.log("error fetching single user", error);
@@ -64,7 +76,9 @@ export const fetchSingleUser = (userId) => async (dispatch) => {
 
 export const updateUser = (userId, history) => async (dispatch) => {
   try {
+    const token = window.localStorage.getItem(TOKEN);
     const { data: updated } = await axios.put(`api/users/${userId}`);
+    //*III
     dispatch(updateSingleUser(updated));
     history.push("/users");
   } catch (error) {
@@ -74,7 +88,12 @@ export const updateUser = (userId, history) => async (dispatch) => {
 
 export const deleteUser = (userId, history) => {
   return async (dispatch) => {
-    const { data: user } = await axios.delete(`/api/users/${userId}`);
+    const token = window.localStorage.getItem(TOKEN);
+    const { data: user } = await axios.delete(`/api/users/${userId}`, {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(deleteSingleUser(user));
     history.push("/users");
   };
@@ -83,7 +102,12 @@ export const deleteUser = (userId, history) => {
 export const fetchUserCart = (userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/users/orders/${userId}`);
+      const token = window.localStorage.getItem(TOKEN);
+      const { data } = await axios.get(`/api/users/orders/${userId}`, {
+        headers: {
+          authorization: token,
+        },
+      });
       dispatch(setOpenOrderId(data.orders[0].id));
     } catch (error) {
       console.log("error fetching single user", error);

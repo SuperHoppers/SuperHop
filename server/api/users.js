@@ -1,9 +1,10 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   models: { User, Order },
-} = require("../db");
+} = require('../db');
 
-const { isAdminMiddleware, isUserMiddleware } = require("./gatekeepingMiddleware");
+const { requireToken, isAdminMiddleware } = require('./gatekeepingMiddleware');
+
 module.exports = router;
 
 // const isAdminMiddleware = (req, res, next) => {
@@ -48,45 +49,49 @@ module.exports = router;
 
 //ADMIN ROUTES
 //admin find all users
-router.get("/admin", isAdminMiddleware, async (req, res, next) => {
-  try {
-    const users = await User.findAll({
-      attributes: [
-        "id",
-        "username",
-        "email",
-        "address",
-        "phoneNumber",
-        "imageURL",
-        "isAdmin",
-      ],
-    });
-    if (!users) {
-      res.status(404).send("No users found");
-    } else {
-      res.json(users);
+router.get(
+  '/admin',
+  requireToken,
+   async (req, res, next) => {
+    try {
+      const users = await User.findAll({
+        attributes: [
+          'id',
+          'username',
+          'email',
+          'address',
+          'phoneNumber',
+          'imageURL',
+          'isAdmin',
+        ],
+      });
+      if (!users) {
+        res.status(404).send('No users found');
+      } else {
+        res.json(users);
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 //admin find one user by userid
-router.get("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
+router.get('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId, {
       attributes: [
-        "id",
-        "username",
-        "email",
-        "address",
-        "phoneNumber",
-        "imageURL",
-        "isAdmin",
+        'id',
+        'username',
+        'email',
+        'address',
+        'phoneNumber',
+        'imageURL',
+        'isAdmin',
       ],
     });
     if (!user) {
-      res.status(404).send("User not found");
+      res.status(404).send('User not found');
     } else {
       res.json(user);
     }
@@ -97,8 +102,8 @@ router.get("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
 
 //admin find one user by username
 router.get(
-  "/search/:username/admin",
-  isAdminMiddleware,
+  '/search/:username/admin',
+  requireToken,
   async (req, res, next) => {
     try {
       const user = await User.findAll({
@@ -106,17 +111,17 @@ router.get(
           username: req.params.username,
         },
         attributes: [
-          "id",
-          "username",
-          "email",
-          "address",
-          "phoneNumber",
-          "imageURL",
-          "isAdmin",
+          'id',
+          'username',
+          'email',
+          'address',
+          'phoneNumber',
+          'imageURL',
+          'isAdmin',
         ],
       });
       if (!user) {
-        res.status(404).send("User not found");
+        res.status(404).send('User not found');
       } else {
         res.json(user);
       }
@@ -127,10 +132,10 @@ router.get(
 );
 
 //admin update user info
-router.put("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
+router.put('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId);
-    console.log("req.body", req.body);
+    console.log('req.body', req.body);
     //destructured req.body to avoid input security problems
     const { username, address, phoneNumber, email, isAdmin } = req.body;
     let updatedUser = await user.update({
@@ -148,7 +153,7 @@ router.put("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
 });
 
 //admin delete user
-router.delete("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
+router.delete('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     let destroyedUser = await User.destroy({
       where: {
@@ -159,10 +164,10 @@ router.delete("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
       res
         .status(404)
         .send(
-          "Nothing to destroy. Either this user did not exist, or someone else beat you to it."
+          'Nothing to destroy. Either this user did not exist, or someone else beat you to it.'
         );
     } else {
-      res.status(200).redirect("/");
+      res.status(200).redirect('/');
     }
   } catch (error) {
     next(error);
@@ -171,21 +176,21 @@ router.delete("/:userId/admin", isAdminMiddleware, async (req, res, next) => {
 
 //USER SELF-EDIT ROUTES
 //user get info by id
-router.get("/:userId", isUserMiddleware, async (req, res, next) => {
+router.get('/:userId', requireToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId, {
       attributes: [
-        "id",
-        "username",
-        "email",
-        "address",
-        "phoneNumber",
-        "imageURL",
-        "isAdmin",
+        'id',
+        'username',
+        'email',
+        'address',
+        'phoneNumber',
+        'imageURL',
+        'isAdmin',
       ],
     });
     if (!user) {
-      res.status(404).send("User not found");
+      res.status(404).send('User not found');
     } else {
       res.json(user);
     }
@@ -195,37 +200,33 @@ router.get("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //user find one user by username
-router.get(
-  "/search/:username",
-  isUserMiddleware,
-  async (req, res, next) => {
-    try {
-      const user = await User.findAll({
-        where: {
-          username: req.params.username,
-        },
-        attributes: [
-          "id",
-          "username",
-          "email",
-          "address",
-          "phoneNumber",
-          "imageURL",
-        ],
-      });
-      if (!user) {
-        res.status(404).send("User not found");
-      } else {
-        res.json(user);
-      }
-    } catch (error) {
-      next(error);
+router.get('/search/:username', requireToken, async (req, res, next) => {
+  try {
+    const user = await User.findAll({
+      where: {
+        username: req.params.username,
+      },
+      attributes: [
+        'id',
+        'username',
+        'email',
+        'address',
+        'phoneNumber',
+        'imageURL',
+      ],
+    });
+    if (!user) {
+      res.status(404).send('User not found');
+    } else {
+      res.json(user);
     }
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 //user update user info
-router.put("/:userId", isUserMiddleware, async (req, res, next) => {
+router.put('/:userId', requireToken, async (req, res, next) => {
   try {
     const { username, address, phoneNumber, email } = req.body;
     const [updatedRowCount, updatedUserInfo] = await User.update(
@@ -243,7 +244,7 @@ router.put("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //user delete self
-router.delete("/:userId", isUserMiddleware, async (req, res, next) => {
+router.delete('/:userId', requireToken, async (req, res, next) => {
   try {
     let destroyedUser = await User.destroy({
       where: {
@@ -254,10 +255,10 @@ router.delete("/:userId", isUserMiddleware, async (req, res, next) => {
       res
         .status(404)
         .send(
-          "Nothing to destroy. Either this user did not exist, or someone else beat you to it."
+          'Nothing to destroy. Either this user did not exist, or someone else beat you to it.'
         );
     } else {
-      res.status(200).redirect("/");
+      res.status(200).redirect('/');
     }
   } catch (error) {
     next(error);
@@ -265,15 +266,15 @@ router.delete("/:userId", isUserMiddleware, async (req, res, next) => {
 });
 
 //User GET CART with eager loading
-router.get("/orders/:id", async (req, res, next) => {
+router.get('/orders/:id',  requireToken,async (req, res, next) => {
   try {
     let user = await User.findByPk(req.params.id, {
-      attributes: ["id", "username"],
+      attributes: ['id', 'username'],
       include: [
         {
           model: Order,
-          where: { status: "open" },
-          attributes: ["id"],
+          where: { status: 'open' },
+          attributes: ['id'],
         },
       ],
     });

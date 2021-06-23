@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {
   models: { Product, Order },
 } = require('../db');
-const { isAdminMiddleware } = require('./gatekeepingMiddleware');
+const { requireToken, isAdminMiddleware } = require('./gatekeepingMiddleware');
 module.exports = router;
 
 // // isAdmin middleware
@@ -19,7 +19,7 @@ module.exports = router;
 //   }
 // };
 
-router.get('/', async (req, res, next) => {
+router.get('/', requireToken, async (req, res, next) => {
   try {
     const products = await Product.findAll({
       attributes: [
@@ -92,20 +92,20 @@ router.post('/', async (req, res, next) => {
 // /products/:productId
 router.put('/:productId', async (req, res, next) => {
   try {
-    const updatedProduct = await Product.findByPk(req.params.productId)
-    res.json(await updatedProduct.update(req.body))
+    const updatedProduct = await Product.findByPk(req.params.productId);
+    res.json(await updatedProduct.update(req.body));
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 // /products/:productId
 router.delete('/:productId', async (req, res, next) => {
   try {
-    const removedProduct = await Product.findByPk(req.params.productId)
-    await removedProduct.destroy()
-    res.json(removedProduct)
+    const removedProduct = await Product.findByPk(req.params.productId);
+    await removedProduct.destroy();
+    res.json(removedProduct);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});

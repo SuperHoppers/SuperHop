@@ -16,7 +16,6 @@ class SingleUser extends Component {
     evt.preventDefault();
   }
   render() {
-    console.log(this.props, "SingleUser");
     if (!this.props.user || !this.props.isAdmin) {
       return (
         <div>

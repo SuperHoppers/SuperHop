@@ -5,8 +5,6 @@ import { authenticate } from '../store';
 
 const LoginPage = (props) => {
   const { name, handleSubmit, error, isAdmin } = props;
-  console.log(props);
-
   return (
     <div className="form">
       <form onSubmit={handleSubmit} name={name}>
@@ -51,19 +49,13 @@ const mapLogin = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     handleSubmit(evt) {
-      console.log(evt);
       evt.preventDefault();
       const username = evt.target.username.value;
       const password = evt.target.password.value;
       dispatch(authenticate(username, password, 'login'));
-      // if (this.isAdmin) {
-      //   history.push('/admin');
-      // } else {
       history.push('/');
-      // }
     },
   };
 };
 
-// export default LoginPage;
 export const Login = connect(mapLogin, mapDispatch)(LoginPage);

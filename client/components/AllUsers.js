@@ -18,8 +18,6 @@ export class AllUsers extends React.Component {
     this.props.loadOrder(orderId);
   }
   render() {
-    console.log(this.props);
-
     if (this.props.isAdmin) {
       return (
         <div id='users-page'>

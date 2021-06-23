@@ -4,7 +4,6 @@ const {
 
 const requireToken = async (req, res, next) => {
   try {
-    console.log('REQUIRETOKEN>>>', req.headers);
     const token = req.headers.authorization;
     // const token = window.localStorage.getItem('token');
     const user = await User.findByToken(token);

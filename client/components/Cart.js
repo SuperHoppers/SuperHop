@@ -66,7 +66,6 @@ handleRemove(evt){
     }
   }
   render() {
-    console.log(this.props.order)
     let cartItems = [];
     const cartState =  this.state.cart;
     if(this.props.isLoggedIn){
@@ -102,7 +101,6 @@ handleRemove(evt){
                         Subtotal: $
                         {cartItems.length > 0
                             ? cartItems.reduce((accum, item) => {
-                                  console.log("accum>>>", accum);
                                   return (
                                       accum + item.price * cartState[item.id]
                                   );

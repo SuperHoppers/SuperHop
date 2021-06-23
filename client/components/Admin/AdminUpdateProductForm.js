@@ -20,7 +20,7 @@ class AdminUpdateProductForm extends React.Component {
   componentDidMount() {
     const { productId } = this.props.match.params;
     this.props.loadProduct(productId);
-    // console.log(this.props.loadProduct(productId));
+    console.log(this.props.loadProduct(productId));
     this.setState({
       name: this.props.product.name,
       price: this.props.product.price,

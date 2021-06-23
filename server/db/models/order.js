@@ -44,12 +44,28 @@ Order.clearOrder = function (userId) {
 
 // calculate cart total
 Order.prototype.cartTotal = function () {
-  const items = Order_Product.findItemsInOrder(this.id);
+  const items = Order_Product.findAll({where: {order}});
   const orderTotal = items.reduce((accum, item) => {
     return accum + item.price;
   }, 0);
   this.totalCost = orderTotal;
   return this.totalCost;
 };
+Order.beforeUpdate(async (order) => {
+  const items = await Order_Product.findAll({where: {orderId: order.id}});
+  console.log('this is in the order model update hook',items);
+  const orderTotal = items.reduce((accum, item) => {
+    return accum + item.price;
+  }, 0);
+  order.totalCost = 50
+})
+Order.beforeCreate(async (order) => {
+  const items = await Order_Product.findAll({where: {orderId: order.id}});
+  console.log('this is in the order model crate hook',items);
+  const orderTotal = items.reduce((accum, item) => {
+    return accum + item.price;
+  }, 0);
+  order.totalCost = 10
+})
 
 module.exports = Order;

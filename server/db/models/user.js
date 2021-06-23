@@ -3,6 +3,8 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+if (process.env.NODE_ENV !== 'production') require('../../../secrets')
+const JWT = process.env.JWT;
 
 const SALT_ROUNDS = 5;
 
@@ -79,7 +81,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 };
 
 User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT);
+  return jwt.sign({ id: this.id }, JWT);
 };
 
 /**
@@ -96,15 +98,26 @@ User.authenticate = async function ({ username, password }) {
 };
 
 User.findByToken = async function (token) {
+  // try {
+  //   const { id } = await jwt.verify(token, process.env.JWT);
+  //   const user = User.findByPk(id);
+  //   if (!user) {
+  //     throw 'nooo';
+  //   }
+  //   return user;
+  // } catch (ex) {
+  //   const error = Error('bad token');
+  //   error.status = 401;
+  //   throw error;
+  // }
   try {
-    const { id } = await jwt.verify(token, process.env.JWT);
+    const { id } = await jwt.verify(token, JWT);
     const user = User.findByPk(id);
     if (!user) {
       throw 'nooo';
     }
-    return user;
   } catch (ex) {
-    const error = Error('bad token');
+    const error = Error('bad credentials');
     error.status = 401;
     throw error;
   }

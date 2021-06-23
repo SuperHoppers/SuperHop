@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { guestCheckout } from "../store/orders";
-import CartItem from "./CartItem";
-import { fetchAllProducts } from "../store/products";
-// import from store
+
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import {guestCheckout, fetchOpenCart, fetchOrder, checkout} from '../store/orders';
+import CartItem from './CartItem';
+import { fetchAllProducts } from '../store/products';
+ // import from store
 
 class Cart extends Component {
     constructor() {
@@ -16,75 +17,89 @@ class Cart extends Component {
         this.handleAdd = this.handleAdd.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
     }
-    componentDidMount() {
-        let localCart = JSON.parse(window.localStorage.getItem("cart"));
-        this.setState({ cart: localCart });
-        this.props.getProducts();
+  }
+  componentDidMount(){
+    if( this.props.isLoggedIn ){
+      this.props.getOrder(this.props.user)
+      this.props.getCartItems(this.props.user)
     }
-    handleAdd(evt) {
-        evt.preventDefault();
-        const productId = evt.target.value;
-        if (this.props.isLoggedIn) {
-            const orderId = this.props.order.id;
-            this.props.addItem(orderId, productId);
-        } else {
-            let localCart = JSON.parse(window.localStorage.getItem("cart"));
-            if (localCart[productId]) {
-                localCart[productId] += 1;
-            } else {
-                localCart[productId] = 1;
-            }
-            this.setState({ cart: localCart });
-            window.localStorage.setItem("cart", JSON.stringify(localCart));
+    let localCart = JSON.parse(window.localStorage.getItem('cart'));
+    this.setState({cart:localCart})
+    this.props.getProducts();
+  }
+  handleAdd(evt){
+    evt.preventDefault();
+    const productId = evt.target.value;
+    if(this.props.isLoggedIn){
+        const orderId = this.props.order.id;
+        this.props.addItem(orderId,productId);
+    } else {
+      let localCart = JSON.parse(window.localStorage.getItem('cart'))
+      if(localCart[productId]){
+        localCart[productId] += 1
+      } else {
+        localCart[productId] = 1;
+      }
+      this.setState({cart:localCart})
+      window.localStorage.setItem('cart', JSON.stringify(localCart))
+    }
+}
+handleRemove(evt){
+  evt.preventDefault();
+  const productId = evt.target.value;
+  if(this.props.isLoggedIn){
+      const orderId = this.props.order.id;
+      this.props.removeItem(orderId,productId);
+  } else {
+    let localCart = JSON.parse(window.localStorage.getItem('cart'))
+    localCart[productId] -= 1;
+    this.setState({cart:localCart})
+    window.localStorage.setItem('cart', JSON.stringify(localCart))
+  }
+}
+  handleCheckout(evt){
+    evt.preventDefault()
+    if(this.props.isLoggedIn){
+      this.props.userCheck(this.props.order.id)
+    } else {
+      const localCart = JSON.parse(window.localStorage.getItem('cart'));
+      this.props.guestCheck(localCart);
+    }
+  }
+  render() {
+    console.log(this.props.order)
+    let cartItems = [];
+    const cartState =  this.state.cart;
+    if(this.props.isLoggedIn){
+      let cartKeys = [];
+      // (this.props.items).forEach(product => cartKeys.push(product.productId))
+      // (this.props.products).forEach((product) => {
+      //   let productIdString = product.id.toString()
+      //   if (cartKeys.includes(productIdString)){
+      //     cartItems.push(product)
+      //   }
+      // })
+    } else {
+      const cartKeys = (Object.keys(cartState));
+      (this.props.products).forEach((product) => {
+        let productIdString = product.id.toString()
+        if (cartKeys.includes(productIdString)){
+          cartItems.push(product)
         }
+      })
     }
-    handleRemove(evt) {
-        evt.preventDefault();
-        const productId = evt.target.value;
-        if (this.props.isLoggedIn) {
-            const orderId = this.props.order.id;
-            this.props.removeItem(orderId, productId);
-        } else {
-            let localCart = JSON.parse(window.localStorage.getItem("cart"));
-            localCart[productId] -= 1;
-            this.setState({ cart: localCart });
-            window.localStorage.setItem("cart", JSON.stringify(localCart));
-        }
-    }
-    handleCheckout(evt) {
-        evt.preventDefault();
-        const localCart = JSON.parse(window.localStorage.getItem("cart"));
-        this.props.guestCheck(localCart);
-    }
-    render() {
-        const cartState = this.state.cart;
-        const cartKeys = Object.keys(cartState);
-        let cartItems = [];
-        this.props.products.forEach((product) => {
-            let productIdString = product.id.toString();
-            if (cartKeys.includes(productIdString)) {
-                cartItems.push(product);
-            }
-        });
 
-        return (
-            <div className="cart">
-                {cartItems.length > 0
-                    ? cartItems.map((cartItem) => {
-                          return (
-                              <CartItem
-                                  handleAdd={this.handleAdd}
-                                  handleRemove={this.handleRemove}
-                                  product={cartItem}
-                                  key={cartItem.id}
-                                  quantity={cartState[cartItem.id]}
-                              />
-                          );
-                      })
-                    : "Your cart is empty!"}
-
-                <div className="cart__action">
-                    <h3>
+    return (
+      <div className="cart">
+        {cartItems.length > 0 ?
+        cartItems.map((cartItem) => { return (<CartItem
+        handleAdd ={this.handleAdd}
+        handleRemove = {this.handleRemove}
+        product = {cartItem}
+        key = {cartItem.id}
+        quantity = {cartState[cartItem.id]}/>)}) : 'Your cart is empty!'}
+        <div className="cart__action">
+          <h3>
                         Subtotal: $
                         {cartItems.length > 0
                             ? cartItems.reduce((accum, item) => {
@@ -95,15 +110,13 @@ class Cart extends Component {
                               }, 0)
                             : "Nothing in cart"}
                     </h3>
-                    <Link to="/checkout">
-                        <button onClick={this.handleCheckout}>
-                            Proceed to Checkout
-                        </button>
-                    </Link>
-                </div>
-            </div>
-        );
-    }
+          <Link to="/checkout">
+            <button onClick ={this.handleCheckout}>Proceed to Checkout</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapState = (state) => {
@@ -117,14 +130,15 @@ const mapState = (state) => {
 };
 
 const mapDispatch = (dispatch) => {
-    return {
-        getProducts: () => dispatch(fetchAllProducts()),
-        guestCheck: (cart) => dispatch(guestCheckout(cart)),
-        addItem: (orderId, productId) =>
-            dispatch(addToCart(orderId, productId)),
-        removeItem: (orderId, productId) =>
-            dispatch(removeFromCart(orderId, productId))
-    };
+  return {
+    getProducts: () => dispatch(fetchAllProducts()),
+    guestCheck: (cart) => dispatch(guestCheckout(cart)),
+    addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
+    removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
+    getCartItems: (userId) => dispatch(fetchOpenCart(userId)),
+    getOrder: (userId) => dispatch(fetchOrder(userId)),
+    userCheck: (orderId) => dispatch(checkout(orderId))
+  
 };
 
 export default connect(mapState, mapDispatch)(Cart);

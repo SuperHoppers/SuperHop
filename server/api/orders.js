@@ -23,7 +23,6 @@ router.get('/users/:userId/openCart', async (req, res, next) => {
           orderId: order[0].id
         }
       })
-      console.log(cartItems)
       res.json(cartItems);
     } else {
       res.send('no-order')

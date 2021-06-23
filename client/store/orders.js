@@ -6,7 +6,7 @@ const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 const CHECKOUT = 'CHECKOUT';
 const SET_ORDER = 'SET_ORDER';
-const INCREASE_QUANT = 'INCREASE_QUANT';
+const GET_OPEN_CART = 'GET_OPEN_CART'
 const GUEST_CHECKOUT = 'GUEST_CHECKOUT'
 
 //action creators
@@ -49,6 +49,13 @@ const setOrder = (order) => {
   return {
     type: SET_ORDER,
     order
+  }
+}
+
+const getOpenCart = (items) => {
+  return {
+    type: GET_OPEN_CART,
+    items
   }
 }
 
@@ -119,7 +126,6 @@ export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.get(`/api/orders/users/${userId}`);
-      console.log('this isi in the fetch order thunk creator',data);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);
@@ -127,6 +133,17 @@ export const fetchOrder = (userId) => {
   }
 }
 
+export const fetchOpenCart = (userId) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.get(`/api/orders/users/${userId}/openCart`);
+      console.log('data inside thunk', data)
+      dispatch(getOpenCart(data));
+    } catch (error) {
+      console.log('error fetching open order', error);
+    }
+  }
+}
 export const guestCheckout = (cart) => {
   return async (dispatch) => {
     try {
@@ -149,8 +166,6 @@ const ordersReducer = (state = initialState, action) => {
       return {...state, order: action.order};
     case ADD_TO_CART:
       return {...state, order: action.order};
-    case INCREASE_QUANT:
-      return {...state, order: action.order};
     case REMOVE_FROM_CART:
       return {...state, order: action.order};
     case SET_ORDER:
@@ -159,6 +174,8 @@ const ordersReducer = (state = initialState, action) => {
       return {...state, order: action.order};
     case GUEST_CHECKOUT:
       return {...state, order: {}};
+    case GET_OPEN_CART:
+      return {...state, cartItems: [action.items]};
     default:
       return state;
   }

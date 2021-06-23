@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {guestCheckout} from '../store/orders';
+import {guestCheckout, fetchOpenCart, fetchOrder, checkout} from '../store/orders';
 import CartItem from './CartItem';
 import { fetchAllProducts } from '../store/products';
  // import from store
@@ -17,6 +17,10 @@ class Cart extends Component {
     this.handleRemove = this.handleRemove.bind(this);
   }
   componentDidMount(){
+    if( this.props.isLoggedIn ){
+      this.props.getOrder(this.props.user)
+      this.props.getCartItems(this.props.user)
+    }
     let localCart = JSON.parse(window.localStorage.getItem('cart'));
     this.setState({cart:localCart})
     this.props.getProducts();
@@ -58,15 +62,28 @@ handleRemove(evt){
 
   }
   render() {
-    const cartState =  this.state.cart
-    const cartKeys = (Object.keys(cartState))
+    console.log(this.props.items)
     let cartItems = [];
-    (this.props.products).forEach((product) => {
-      let productIdString = product.id.toString()
-      if (cartKeys.includes(productIdString)){
-        cartItems.push(product)
-      }
-    })
+    const cartState =  this.state.cart;
+    if(this.props.isLoggedIn){
+      let cartKeys = [];
+      // (this.props.items).forEach(product => cartKeys.push(product.productId))
+      // (this.props.products).forEach((product) => {
+      //   let productIdString = product.id.toString()
+      //   if (cartKeys.includes(productIdString)){
+      //     cartItems.push(product)
+      //   }
+      // })
+    } else {
+      const cartKeys = (Object.keys(cartState));
+      (this.props.products).forEach((product) => {
+        let productIdString = product.id.toString()
+        if (cartKeys.includes(productIdString)){
+          cartItems.push(product)
+        }
+      })
+    }
+
     return (
       <div className="cart">
         {cartItems.length > 0 ?
@@ -103,7 +120,9 @@ const mapDispatch = (dispatch) => {
     getProducts: () => dispatch(fetchAllProducts()),
     guestCheck: (cart) => dispatch(guestCheckout(cart)),
     addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
-    removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId))
+    removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
+    getCartItems: (userId) => dispatch(fetchOpenCart(userId)),
+    getOrder: (userId) => dispatch(fetchOrder(userId))
   }
 };
 

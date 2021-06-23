@@ -1,5 +1,10 @@
 const isAdminMiddleware = (req, res, next) => {
-  if (!req.headers.authorization.isAdmin) {
+  // if(!req.body.username){
+  //   const err = new Error('Sign up or login!');
+  //   err.status = 401;
+  //   next(err)
+  // }
+  if (!req.headers.authorization && !req.headers.authorization.isAdmin) {
     const err = new Error(`You aren't authorized to do that`);
     err.status = 401;
     next(err);

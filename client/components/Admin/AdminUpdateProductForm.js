@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSingleProduct, updateProduct } from '../../store/products';
 
@@ -61,7 +61,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="name"
                 type="text"
                 onChange={handleChange}
-                value={name || ''}
+                value={name}
               />
             </li>
 
@@ -71,7 +71,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="price"
                 type="text"
                 onChange={handleChange}
-                value={price || ''}
+                value={price}
               />
             </li>
 
@@ -81,7 +81,7 @@ class AdminUpdateProductForm extends React.Component {
                 name="inventory"
                 type="text"
                 onChange={handleChange}
-                value={inventory || ''}
+                value={inventory}
               />
             </li>
 
@@ -91,17 +91,17 @@ class AdminUpdateProductForm extends React.Component {
                 name="description"
                 type="text"
                 onChange={handleChange}
-                value={description || ''}
+                value={description}
               />
             </li>
 
             <li>
-              <label htmlFor="image">Image:</label>
+              <label htmlFor="imageURL">Image:</label>
               <textarea
-                name="image"
+                name="imageURL"
                 type="text"
                 onChange={handleChange}
-                value={imageURL || ''}
+                value={imageURL}
               />
               {/* {uploading && <div>Uploading...</div>} */}
             </li>
@@ -114,9 +114,9 @@ class AdminUpdateProductForm extends React.Component {
 
             <li>
               {/* Back to Admin Product List */}
-              {/* <Link to="/admin/products">
-                <button className="secondary__btn">Back</button>
-              </Link> */}
+              <Link to="/admin/products">
+                <button className="secondary__btn">Back To Product List</button>
+              </Link>
             </li>
           </ul>
         </form>
@@ -133,10 +133,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, {history}) => {
   return {
     loadProduct: (productId) => dispatch(fetchSingleProduct(productId)),
-    updateProduct: (product) => dispatch(updateProduct(product)),
+    updateProduct: (product) => dispatch(updateProduct(product, history)),
   };
 };
 

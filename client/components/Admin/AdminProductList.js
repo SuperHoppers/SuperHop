@@ -1,21 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchAllProducts } from '../../store/products';
+import { fetchAllProducts, deleteProductThunk } from '../../store/products';
 import { Link } from 'react-router-dom';
 
 export class AdminProductList extends React.Component {
-  // constructor() {
-  //     super();
-  //     this.handleDelete = this.handleDelete.bind(this);
-  // }
+  constructor() {
+      super();
+      this.handleDelete = this.handleDelete.bind(this);
+  }
 
   componentDidMount() {
     this.props.loadProducts();
   }
 
-  // handleDelete(id) {
-  //     this.props.deleteStudent(id);
-  // }
+  handleDelete(id) {
+      this.props.deleteProduct(id);
+  }
 
   render() {
     console.log(this.props);
@@ -47,7 +47,7 @@ export class AdminProductList extends React.Component {
                   <Link to={`/admin/products/${product.id}`}>
                     <button className="button">Edit </button>
                   </Link>
-                  <button className="button">Delete</button>
+                  <button className="button" type='button' onClick={()=>this.handleDelete(product.id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -64,9 +64,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, {history}) => {
   return {
     loadProducts: () => dispatch(fetchAllProducts()),
+    deleteProduct: (id) => dispatch(deleteProductThunk(id, history))
   };
 };
 

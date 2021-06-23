@@ -98,9 +98,9 @@ class AdminProductForm extends React.Component {
 
             <li>
               {/* Back to Admin Product List */}
-              {/* <Link to="/admin/products">
-                <button className="secondary__btn">Back</button>
-              </Link> */}
+              <Link to="/admin/products">
+                <button className="secondary__btn">Back to Product list</button>
+              </Link>
             </li>
           </ul>
         </form>
@@ -115,8 +115,8 @@ const mapState = (state) => {
   }
 }
 
-const mapDispatch = (dispatch) => ({
-  createProduct: (newProduct) => dispatch(createNewProduct(newProduct)),
+const mapDispatch = (dispatch, {history}) => ({
+  createProduct: (newProduct) => dispatch(createNewProduct(newProduct, history)),
 });
 
 export default connect(mapState, mapDispatch)(AdminProductForm);

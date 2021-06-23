@@ -5,6 +5,7 @@ const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
+const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 // ACTION CREATORS
 const setProducts = (products) => {
@@ -33,6 +34,12 @@ const _updateProduct = (product) => ({
   product,
 });
 
+const deleteProduct = (product) => ({
+    type: DELETE_PRODUCT,
+    product
+})
+
+
 // THUNK
 export const fetchAllProducts = () => async (dispatch) => {
   try {
@@ -52,10 +59,11 @@ export const fetchSingleProduct = (productId) => async (dispatch) => {
   }
 };
 
-export const createNewProduct = (newProduct) => async (dispatch) => {
+export const createNewProduct = (newProduct, history) => async (dispatch) => {
   try {
     const { data } = await axios.post('/api/products', newProduct);
     dispatch(addNewProduct(data));
+    history.push('/admin/products');
   } catch (error) {
     console.log('error creating new product thunk', error);
   }
@@ -69,12 +77,22 @@ export const updateProduct = (product, history) => {
         product
       );
       dispatch(_updateProduct(updated));
-      history.push(`/api/products/${product.id}`);
+      history.push('/admin/products');
     } catch (error) {
-      console.log(error);
+      console.log('error updating product',error);
     }
   };
 };
+
+export const deleteProductThunk = (id, history) => async(dispatch) => {
+    try {
+        const {data: product} = await axios.delete(`/api/products/${id}`)
+        dispatch(deleteProduct(product))
+        history.push('/admin/products')
+    } catch (error) {
+        console.log('error deleting product', error)
+    }
+}
 
 // initial state
 const initialState = {
@@ -101,6 +119,11 @@ const productsReducer = (state = initialState, action) => {
         ...state,
         singleProduct: action.product,
       };
+    case DELETE_PRODUCT:
+        return {
+            ...state,
+            allProducts: state.allProducts.filter((product) => product.id !== action.product)
+        }
     default:
       return state;
   }

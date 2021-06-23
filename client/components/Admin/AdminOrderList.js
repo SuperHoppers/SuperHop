@@ -30,43 +30,45 @@ const orders = [
     }
 ];
 
-const AdminOrderList = (props) => {
-    return (
-        <div className="order__list">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>User</th>
-                        <th>Total Price</th>
-                        <th>Paid?</th>
-                        <th>Paid At</th>
-                        <th>Delivered At</th>
-                    </tr>
-                </thead>
+class AdminOrderList extends React.Component {
 
-                <tbody>
-                    {orders.map((order) => (
-                        <tr key={order.id}>
-                            <td>{order.id}</td>
-                            <td>{order.date}</td>
-                            <td>{order.username}</td>
-                            <td>{order.totalPrice}</td>
-                            <td>{order.paidStatus}</td>
-                            <td>{order.paidAt}</td>
-                            <td>{order.deliveredAt}</td>
-                            <td>
-                                <button className="button">Edit</button>
-
-                                <button className="button">Delete</button>
-                            </td>
+    render(){
+        return (
+            <div className="order__list">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Total Price</th>
+                            <th>Paid?</th>
+                            <th>Paid At</th>
+                            <th>Delivered At</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+                    </thead>
+    
+                    <tbody>
+                        {orders.map((order) => (
+                            <tr key={order.id}>
+                                <td>{order.id}</td>
+                                <td>{order.date}</td>
+                                <td>{order.username}</td>
+                                <td>{order.totalPrice}</td>
+                                <td>{order.paidStatus}</td>
+                                <td>{order.paidAt}</td>
+                                <td>{order.deliveredAt}</td>
+                                {/* <td>
+                                    <button className="button">Edit</button>
+                                    <button className="button">Delete</button>
+                                </td> */}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
 };
 
 export default AdminOrderList;

@@ -18,7 +18,7 @@ import AdminUpdateProductForm from './components/Admin/AdminUpdateProductForm';
 import AdminProductList from './components/Admin/AdminProductList';
 import AllUsers from "./components/AllUsers";
 import SingleUser from "./components/SingleUser";
-
+import AdminOrderList from './components/Admin/AdminOrderList';
 
 const Routes = () => {
   return (
@@ -34,6 +34,7 @@ const Routes = () => {
         <Route path="/login" component={Login} />
         <Route exact path="/admin" component={AdminHome} />
         <Route exact path="/admin/products" component={AdminProductList} />
+        <Route exact path="/admin/orders" component={AdminOrderList} />
         <Route
           exact
           path="/admin/products/:productId"

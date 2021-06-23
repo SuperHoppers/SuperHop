@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {guestCheckout} from '../store/orders';
 import CartItem from './CartItem';
+import { fetchAllProducts } from '../store/products';
  // import from store
 
 class Cart extends Component {
@@ -17,6 +18,7 @@ class Cart extends Component {
   componentDidMount(){
     let localCart = JSON.parse(window.localStorage.getItem('cart'));
     this.setState({cart:localCart})
+    this.props.getProducts();
   }
   handleAdd(evt){
     evt.preventDefault();
@@ -55,15 +57,24 @@ handleRemove(evt){
 
   }
   render() {
-    const localCart = [];
     const cartState =  this.state.cart
-    for(let product in cartState){
-      localCart.push({[product]: cartState[product]})
-    }
-    console.log(Object.keys(cartState))
+    const cartKeys = (Object.keys(cartState))
+    let cartItems = [];
+    (this.props.products).forEach((product) => {
+      let productIdString = product.id.toString()
+      if (cartKeys.includes(productIdString)){
+        cartItems.push(product)
+      }
+    })
     return (
       <div className="cart">
-        {Object.keys(cartState).length ? Object.keys(cartState).map((cartItem) => <CartItem handleAdd ={this.handleAdd} handleRemove = {this.handleRemove} key = {parseInt(cartItem)} id = {parseInt(cartItem)} quantity = {cartState[cartItem]}/>) : 'Your cart is empty!'}
+        {cartItems.length > 0 ?
+        cartItems.map((cartItem) => { return (<CartItem
+        handleAdd ={this.handleAdd}
+        handleRemove = {this.handleRemove}
+        product = {cartItem}
+        key = {cartItem.id}
+        quantity = {cartState[cartItem.id]}/>)}) : 'Your cart is empty!'}
         <div className="cart__action">
           <h3>Subtotal:</h3>
           <Link to="/checkout">
@@ -75,13 +86,24 @@ handleRemove(evt){
   }
 }
 
+const mapState = (state) => {
+  return {
+    items: state.orders.cartItems,
+    order: state.orders.order,
+    products: state.products.allProducts,
+    isLoggedIn: !!state.auth.id,
+    user: state.auth.id,
+  };
+};
+
 
 const mapDispatch = (dispatch) => {
   return {
+    getProducts: () => dispatch(fetchAllProducts()),
     guestCheck: (cart) => dispatch(guestCheckout(cart)),
     addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
     removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId))
   }
 };
 
-export default connect(null, mapDispatch)(Cart);
+export default connect(mapState, mapDispatch)(Cart);

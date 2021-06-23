@@ -5,9 +5,10 @@ import { fetchSingleProduct } from '../store/products';
 class CartItem extends React.Component{
   componentDidMount() {
     const productId  = this.props.id;
-    this.props.loadSingleProduct(productId);
+    //this.props.loadSingleProduct(productId);
 }
   render(){
+    const { id, name, price, imageURL } = this.props.product;
     return (
       <div className="cart">
       <div className="cart__list">
@@ -18,27 +19,27 @@ class CartItem extends React.Component{
           <li>
             <div className="cart__image">
               <img
-                src={this.props.product.imageURL}
+                src={imageURL}
                 alt="cart img"
               />
             </div>
             <div className="cartItem__name">
               <div>
                 {/* Single Product Link here */}
-                {this.props.product.name}
+                {name}
               </div>
               <div>
                 Quantity:
-                <button onClick = {this.props.handleAdd}>+</button>
+                <button value = {id} onClick = {this.props.handleAdd}>+</button>
                 <span>{this.props.quantity}</span>
-                <button onClick = {this.props.handleRemove}>-</button>
+                <button value = {id} onClick = {this.props.handleRemove}>-</button>
                 {/* <div>
                   Remove from Cart:
                   <button>REMOVE ITEM</button>
                 </div> */}
               </div>
             </div>
-            <div className="cart__price">${this.props.product.price * this.props.quantity}</div>
+            <div className="cart__price">${price * this.props.quantity}</div>
           </li>
         </ul>
       </div>
@@ -48,12 +49,12 @@ class CartItem extends React.Component{
 }
 
 
-const mapState = (state) => ({
-  product: state.products.singleProduct
-});
+// const mapState = (state) => ({
+//   product: state.products.singleProduct
+// });
 
-const mapDispatch = (dispatch) => ({
-  loadSingleProduct: (productId) => dispatch(fetchSingleProduct(productId)),
-});
+// const mapDispatch = (dispatch) => ({
+//   loadSingleProduct: (productId) => dispatch(fetchSingleProduct(productId)),
+// });
 
-export default connect(mapState, mapDispatch)(CartItem)
+export default CartItem

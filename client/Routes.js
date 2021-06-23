@@ -41,7 +41,7 @@ const Routes = () => {
         />
         <Route
           exact
-          path="/admin/products/create"
+          path="/create"
           component={AdminProductForm}
         />
         <Route path="/signup" component={Signup} />

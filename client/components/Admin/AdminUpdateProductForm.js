@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSingleProduct, updateProduct } from '../../store/products';
 
@@ -7,11 +7,11 @@ class AdminUpdateProductForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: props.product.name,
-      price: props.product.price,
-      inventory: props.product.inventory,
-      image: props.product.imageURL,
-      description: props.product.description,
+      name: '',
+      price: '',
+      inventory: '',
+      image: '',
+      description: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,18 +20,13 @@ class AdminUpdateProductForm extends React.Component {
   componentDidMount() {
     const { productId } = this.props.match.params;
     this.props.loadProduct(productId);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.product.id !== this.props.product.id) {
-      this.setState({
-        name: this.props.product.name || '',
-        price: this.props.product.price || '',
-        inventory: this.props.product.inventory || '',
-        image: this.props.product.imageURL || '',
-        description: this.props.product.description || '',
-      });
-    }
+    this.setState({
+      name: this.props.product.name || '',
+      price: this.props.product.price || '',
+      inventory: this.props.product.inventory || '',
+      image: this.props.product.imageURL || '',
+      description: this.props.product.description || '',
+    })
   }
 
   handleChange(evt) {
@@ -50,9 +45,11 @@ class AdminUpdateProductForm extends React.Component {
 
   render() {
     const { name, price, inventory, imageURL, description } = this.props;
+    const {handleChange, handleSubmit} = this
+
     return (
       <div className="form">
-        <form>
+        <form onSubmit={handleSubmit}>
           <ul className="form__container">
             <li>
               <h2>Update Product</h2>
@@ -63,8 +60,8 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="name"
                 type="text"
-                onChange={this.handleChange}
-                value={name || ''}
+                onChange={handleChange}
+                value={name}
               />
             </li>
 
@@ -73,8 +70,8 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="price"
                 type="text"
-                onChange={this.handleChange}
-                value={price || ''}
+                onChange={handleChange}
+                value={price}
               />
             </li>
 
@@ -83,8 +80,8 @@ class AdminUpdateProductForm extends React.Component {
               <input
                 name="inventory"
                 type="text"
-                onChange={this.handleChange}
-                value={inventory || ''}
+                onChange={handleChange}
+                value={inventory}
               />
             </li>
 
@@ -93,18 +90,18 @@ class AdminUpdateProductForm extends React.Component {
               <textarea
                 name="description"
                 type="text"
-                onChange={this.handleChange}
-                value={description || ''}
+                onChange={handleChange}
+                value={description}
               />
             </li>
 
             <li>
-              <label htmlFor="image">Image:</label>
+              <label htmlFor="imageURL">Image:</label>
               <textarea
-                name="image"
+                name="imageURL"
                 type="text"
-                onChange={this.handleChange}
-                value={imageURL || ''}
+                onChange={handleChange}
+                value={imageURL}
               />
               {/* {uploading && <div>Uploading...</div>} */}
             </li>
@@ -117,9 +114,9 @@ class AdminUpdateProductForm extends React.Component {
 
             <li>
               {/* Back to Admin Product List */}
-              {/* <Link to="/admin/products">
-                <button className="secondary__btn">Back</button>
-              </Link> */}
+              <Link to="/admin/products">
+                <button className="secondary__btn">Back To Product List</button>
+              </Link>
             </li>
           </ul>
         </form>
@@ -136,10 +133,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, {history}) => {
   return {
     loadProduct: (productId) => dispatch(fetchSingleProduct(productId)),
-    updateProduct: (product) => dispatch(updateProduct(product)),
+    updateProduct: (product) => dispatch(updateProduct(product, history)),
   };
 };
 

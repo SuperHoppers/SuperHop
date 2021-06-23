@@ -60,9 +60,7 @@ const mapSignup = (state) => {
 const mapDispatch = (dispatch, { history }) => {
   return {
     handleSubmit(evt) {
-      console.log(evt);
       evt.preventDefault();
-      // const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
       const email = evt.target.email.value;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchAllProductsAdmin, deleteProductThunk } from '../../store/products';
+import { fetchAllProducts, deleteProductThunk } from '../../store/products';
 import { Link } from 'react-router-dom';
 
 export class AdminProductList extends React.Component {
@@ -21,7 +21,6 @@ export class AdminProductList extends React.Component {
     console.log(this.props);
     const { products } = this.props;
 
-    if(this.props.products.length > 0){
     return (
       <div className="product__list">
         <table className="table">
@@ -55,12 +54,7 @@ export class AdminProductList extends React.Component {
           </tbody>
         </table>
       </div>
-    );}
-    else {
-      return (
-        <div><h2>Sorry, you seem to be lost. Try our <Link to="/products">All Products</Link> page.</h2></div>
-      )
-    }
+    );
   }
 }
 
@@ -72,7 +66,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch, {history}) => {
   return {
-    loadProducts: () => dispatch(fetchAllProductsAdmin()),
+    loadProducts: () => dispatch(fetchAllProducts()),
     deleteProduct: (id) => dispatch(deleteProductThunk(id, history))
   };
 };

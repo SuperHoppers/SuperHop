@@ -16,7 +16,6 @@ class Cart extends Component {
         this.handleCheckout = this.handleCheckout.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
-    }
   }
   componentDidMount(){
     if( this.props.isLoggedIn ){
@@ -138,7 +137,7 @@ const mapDispatch = (dispatch) => {
     getCartItems: (userId) => dispatch(fetchOpenCart(userId)),
     getOrder: (userId) => dispatch(fetchOrder(userId)),
     userCheck: (orderId) => dispatch(checkout(orderId))
-  
+  }
 };
 
 export default connect(mapState, mapDispatch)(Cart);

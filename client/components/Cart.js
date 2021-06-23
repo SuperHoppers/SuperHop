@@ -57,12 +57,15 @@ handleRemove(evt){
 }
   handleCheckout(evt){
     evt.preventDefault()
-    const localCart = JSON.parse(window.localStorage.getItem('cart'));
-    this.props.guestCheck(localCart);
-
+    if(this.props.isLoggedIn){
+      this.props.userCheck(this.props.order.id)
+    } else {
+      const localCart = JSON.parse(window.localStorage.getItem('cart'));
+      this.props.guestCheck(localCart);
+    }
   }
   render() {
-    console.log(this.props.items)
+    console.log(this.props.order)
     let cartItems = [];
     const cartState =  this.state.cart;
     if(this.props.isLoggedIn){
@@ -122,7 +125,8 @@ const mapDispatch = (dispatch) => {
     addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
     removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId)),
     getCartItems: (userId) => dispatch(fetchOpenCart(userId)),
-    getOrder: (userId) => dispatch(fetchOrder(userId))
+    getOrder: (userId) => dispatch(fetchOrder(userId)),
+    userCheck: (orderId) => dispatch(checkout(orderId))
   }
 };
 

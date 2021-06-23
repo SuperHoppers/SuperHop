@@ -67,7 +67,12 @@ export const fetchSingleProduct = (productId) => async (dispatch) => {
 
 export const createNewProduct = (newProduct, history) => async (dispatch) => {
   try {
-    const { data } = await axios.post('/api/products', newProduct);
+    const token = window.localStorage.getItem(TOKEN);
+    const { data } = await axios.post('/api/products', newProduct, {
+      headers: {
+        authorization: token,
+      }
+    });
     dispatch(addNewProduct(data));
     history.push('/admin/products');
   } catch (error) {
@@ -78,9 +83,14 @@ export const createNewProduct = (newProduct, history) => async (dispatch) => {
 export const updateProduct = (product, history) => {
   return async (dispatch) => {
     try {
+      const token = window.localStorage.getItem(TOKEN);
       const { data: updated } = await axios.put(
         `/api/products/${product.id}`,
-        product
+        product, {
+          headers: {
+            authorization: token,
+          }
+        }
       );
       dispatch(_updateProduct(updated));
       history.push('/admin/products');
@@ -92,7 +102,12 @@ export const updateProduct = (product, history) => {
 
 export const deleteProductThunk = (id, history) => async (dispatch) => {
   try {
-    const { data: product } = await axios.delete(`/api/products/${id}`);
+    const token = window.localStorage.getItem(TOKEN);
+    const { data: product } = await axios.delete(`/api/products/${id}`, {
+      headers: {
+        authorization: token,
+      }
+    });
     dispatch(deleteProduct(product));
     history.push('/admin/products');
   } catch (error) {

@@ -79,7 +79,7 @@ router.get('/:productId', async (req, res, next) => {
 //   });
 
 // /products/create
-router.post('/', async (req, res, next) => {
+router.post('/', requireToken, async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.json(newProduct);
@@ -90,7 +90,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // /products/:productId
-router.put('/:productId', async (req, res, next) => {
+router.put('/:productId', requireToken, async (req, res, next) => {
   try {
     const updatedProduct = await Product.findByPk(req.params.productId);
     res.json(await updatedProduct.update(req.body));
@@ -100,7 +100,7 @@ router.put('/:productId', async (req, res, next) => {
 });
 
 // /products/:productId
-router.delete('/:productId', async (req, res, next) => {
+router.delete('/:productId', requireToken, async (req, res, next) => {
   try {
     const removedProduct = await Product.findByPk(req.params.productId);
     await removedProduct.destroy();

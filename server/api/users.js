@@ -51,8 +51,7 @@ const isUserMiddleware = (req, res, next) => {
 router.get(
   '/admin',
   requireToken,
-  isAdminMiddleware,
-  async (req, res, next) => {
+   async (req, res, next) => {
     try {
       const users = await User.findAll({
         attributes: [
@@ -77,7 +76,7 @@ router.get(
 );
 
 //admin find one user by userid
-router.get('/:userId/admin', isAdminMiddleware, async (req, res, next) => {
+router.get('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId, {
       attributes: [
@@ -103,7 +102,7 @@ router.get('/:userId/admin', isAdminMiddleware, async (req, res, next) => {
 //admin find one user by username
 router.get(
   '/search/:username/admin',
-  isAdminMiddleware,
+  requireToken,
   async (req, res, next) => {
     try {
       const user = await User.findAll({
@@ -132,7 +131,7 @@ router.get(
 );
 
 //admin update user info
-router.put('/:userId/admin', isAdminMiddleware, async (req, res, next) => {
+router.put('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId);
     console.log('req.body', req.body);
@@ -153,7 +152,7 @@ router.put('/:userId/admin', isAdminMiddleware, async (req, res, next) => {
 });
 
 //admin delete user
-router.delete('/:userId/admin', isAdminMiddleware, async (req, res, next) => {
+router.delete('/:userId/admin',  requireToken, async (req, res, next) => {
   try {
     let destroyedUser = await User.destroy({
       where: {
@@ -266,7 +265,7 @@ router.delete('/:userId', requireToken, async (req, res, next) => {
 });
 
 //User GET CART with eager loading
-router.get('/orders/:id', async (req, res, next) => {
+router.get('/orders/:id',  requireToken,async (req, res, next) => {
   try {
     let user = await User.findByPk(req.params.id, {
       attributes: ['id', 'username'],

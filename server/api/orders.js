@@ -2,10 +2,11 @@ const router = require('express').Router();
 const {
   models: { Product, Order, Order_Product, User },
 } = require('../db');
+const {requireToken} = require('./gatekeepingMiddleware')
 module.exports = router;
 
 // /api/orders/users/:userId
-router.get('/users/:userId', async (req, res, next) => {
+router.get('/users/:userId', requireToken, async (req, res, next) => {
   try {
     const order = await Order.currentOrder(req.params.userId)
     if(order.length > 0){
@@ -25,10 +26,9 @@ router.get('/users/:userId', async (req, res, next) => {
 })
 
 
-router.put('/addToCart', async (req, res, next) => {
+router.put('/addToCart', requireToken, async (req, res, next) => {
   // cartTotal
   try {
-
      const cart = await Order.findByPk(req.body.orderId);
       const orderProduct = await Product.findByPk(req.body.productId);
       if(await cart.hasProduct(orderProduct)){
@@ -67,7 +67,7 @@ router.put('/addToCart', async (req, res, next) => {
 //     next(error);
 //   }
 // })
-router.put('/removeFromCart', async (req, res, next) => {
+router.put('/removeFromCart', requireToken, async (req, res, next) => {
   // cartTotal
   try {
     const cart = await Order.findByPk(req.body.orderId);
@@ -97,7 +97,7 @@ router.put('/removeFromCart', async (req, res, next) => {
   }
 });
 
-router.put('/checkout', async (req, res, next) => {
+router.put('/checkout', requireToken, async (req, res, next) => {
   // clearOrder
   try {
     const cart = await Order.findByPk(req.body.orderId);
@@ -110,7 +110,7 @@ router.put('/checkout', async (req, res, next) => {
   }
 });
 
-router.post('/newOrder', async (req, res, next) => {
+router.post('/newOrder', requireToken, async (req, res, next) => {
   try {
     const newOrder = await Order.create({});
     const orderProduct = await Product.findByPk(req.body.productId);

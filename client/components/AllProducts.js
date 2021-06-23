@@ -17,7 +17,8 @@ export class AllProducts extends React.Component {
     this.handleAdd = this.handleAdd.bind(this)
 }
   componentDidMount() {
-    if ( this.props.isLoggedIn ){
+    console.log(this.props.isLoggedIn)
+    if (this.props.isLoggedIn ){
       this.props.loadOrder(this.props.user)
     }
     this.props.loadProducts()

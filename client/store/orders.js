@@ -45,10 +45,10 @@ const closeOrder = (order) => {
   }
 }
 
-const setOrder = (items) => {
+const setOrder = (order) => {
   return {
     type: SET_ORDER,
-    items
+    order
   }
 }
 
@@ -119,7 +119,7 @@ export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.get(`/api/orders/users/${userId}`);
-      console.log(data);
+      console.log('this isi in the fetch order thunk creator',data);
       dispatch(setOrder(data));
     } catch (error) {
       console.log('error fetching order', error);
@@ -154,7 +154,7 @@ const ordersReducer = (state = initialState, action) => {
     case REMOVE_FROM_CART:
       return {...state, order: action.order};
     case SET_ORDER:
-      return {...state, cartItems: action.items};
+      return {...state, order: action.order};
     case CHECKOUT:
       return {...state, order: action.order};
     case GUEST_CHECKOUT:

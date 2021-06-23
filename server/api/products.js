@@ -7,6 +7,7 @@ module.exports = router;
 
 router.get('/', async (req, res, next) => {
   try {
+    console.log(req.headers, ">>>>req.headers")
     const products = await Product.findAll({
       attributes: [
         'id',

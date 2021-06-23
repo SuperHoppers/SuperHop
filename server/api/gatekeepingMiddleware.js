@@ -15,5 +15,5 @@ const requireToken = async (req, res, next) => {
   }
 };
 
-
 module.exports = { requireToken };
+

@@ -3,8 +3,10 @@ const {
   models: { User, Order },
 } = require('../db');
 
+
 const { requireToken} = require('./gatekeepingMiddleware');
 module.exports = router;
+
 
 //ADMIN ROUTES
 //admin find all users

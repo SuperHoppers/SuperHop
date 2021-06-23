@@ -35,6 +35,10 @@ export class AllProducts extends React.Component {
       }
     } else {
       let cart = JSON.parse(window.localStorage.getItem('cart'))
+      if(!cart) {
+        window.localStorage.setItem('cart',JSON.stringify({}))
+      }
+      cart = JSON.parse(window.localStorage.getItem('cart'))
       if(cart[productId]){
         cart[productId] += 1
       } else {

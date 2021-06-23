@@ -98,26 +98,15 @@ User.authenticate = async function ({ username, password }) {
 };
 
 User.findByToken = async function (token) {
-  // try {
-  //   const { id } = await jwt.verify(token, process.env.JWT);
-  //   const user = User.findByPk(id);
-  //   if (!user) {
-  //     throw 'nooo';
-  //   }
-  //   return user;
-  // } catch (ex) {
-  //   const error = Error('bad token');
-  //   error.status = 401;
-  //   throw error;
-  // }
   try {
-    const { id } = await jwt.verify(token, JWT);
+    const { id } = await jwt.verify(token, process.env.JWT);
     const user = User.findByPk(id);
     if (!user) {
       throw 'nooo';
     }
+    return user;
   } catch (ex) {
-    const error = Error('bad credentials');
+    const error = Error('bad token');
     error.status = 401;
     throw error;
   }

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {guestCheckout, fetchOpenCart, fetchOrder, checkout} from '../store/orders';
+import {guestCheckout, fetchOpenCart, fetchOrder, checkout, addToCart, removeFromCart} from '../store/orders';
 import CartItem from './CartItem';
 import { fetchAllProducts } from '../store/products';
  // import from store
@@ -63,6 +63,9 @@ handleRemove(evt){
     } else {
       const localCart = JSON.parse(window.localStorage.getItem('cart'));
       this.props.guestCheck(localCart);
+      const newCart = {}
+      this.setState({cart:newCart})
+      window.localStorage.setItem('cart', JSON.stringify(newCart))
     }
   }
   render() {

@@ -47,7 +47,7 @@ export class AllProducts extends React.Component {
     }
 }
   render() {
-   console.log('THIS IS IN THE RENDER FUNCTION',this.state)
+   //console.log('THIS IS IN THE RENDER FUNCTION',this.state)
     return (
       <div id='products-page'>
         <div>

@@ -2,58 +2,68 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {guestCheckout} from '../store/orders';
+import CartItem from './CartItem';
  // import from store
 
 class Cart extends Component {
   constructor(){
     super()
+    this.state = {
+      cart: {}
+    }
     this.handleCheckout = this.handleCheckout.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
+  componentDidMount(){
+    let localCart = JSON.parse(window.localStorage.getItem('cart'));
+    this.setState({cart:localCart})
+  }
+  handleAdd(evt){
+    evt.preventDefault();
+    const productId = evt.target.value;
+    if(this.props.isLoggedIn){
+        const orderId = this.props.order.id;
+        this.props.addItem(orderId,productId);
+    } else {
+      let localCart = JSON.parse(window.localStorage.getItem('cart'))
+      if(localCart[productId]){
+        localCart[productId] += 1
+      } else {
+        localCart[productId] = 1;
+      }
+      this.setState({cart:localCart})
+      window.localStorage.setItem('cart', JSON.stringify(localCart))
+    }
+}
+handleRemove(evt){
+  evt.preventDefault();
+  const productId = evt.target.value;
+  if(this.props.isLoggedIn){
+      const orderId = this.props.order.id;
+      this.props.removeItem(orderId,productId);
+  } else {
+    let localCart = JSON.parse(window.localStorage.getItem('cart'))
+    localCart[productId] -= 1;
+    this.setState({cart:localCart})
+    window.localStorage.setItem('cart', JSON.stringify(localCart))
+  }
+}
   handleCheckout(evt){
     evt.preventDefault()
-    const cart = JSON.parse(window.localStorage.getItem('cart'));
-    this.props.guestCheck(cart);
+    const localCart = JSON.parse(window.localStorage.getItem('cart'));
+    this.props.guestCheck(localCart);
 
   }
   render() {
+    const localCart = [];
+    const cartState =  this.state.cart
+    for(let product in cartState){
+      localCart.push({[product]: cartState[product]})
+    }
+    console.log(Object.keys(cartState))
     return (
       <div className="cart">
-        <div className="cart__list">
-          <ul className="cart__list__container">
-            <li>
-              <h3>Shopping Cart</h3>
-              <div>Price</div>
-            </li>
-            {/* conditional statement: if no items in the cart */}
-            {/* <div>Cart is empty!</div> */}
-            {/* : otherwise, map over the cart items */}
-            <li>
-              <div className="cart__image">
-                <img
-                  src="https://i.pinimg.com/originals/c3/69/e7/c369e74c60a3d178168da78fdb1642d7.png"
-                  alt="sample img"
-                />
-              </div>
-              <div className="cartItem__name">
-                <div>
-                  {/* Single Product Link here */}
-                  Lightning Power
-                </div>
-                <div>
-                  Quantity:
-                  <button>+</button>
-                  <button>-</button>
-                  <div>
-                    Remove from Cart:
-                    <button>REMOVE ITEM</button>
-                  </div>
-                </div>
-              </div>
-              <div className="cart__price">$100000</div>
-            </li>
-          </ul>
-        </div>
-
+        {Object.keys(cartState).length ? Object.keys(cartState).map((cartItem) => <CartItem handleAdd ={this.handleAdd} handleRemove = {this.handleRemove} key = {parseInt(cartItem)} id = {parseInt(cartItem)} quantity = {cartState[cartItem]}/>) : 'Your cart is empty!'}
         <div className="cart__action">
           <h3>Subtotal:</h3>
           <Link to="/checkout">
@@ -68,7 +78,9 @@ class Cart extends Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    guestCheck: (cart) => dispatch(guestCheckout(cart))
+    guestCheck: (cart) => dispatch(guestCheckout(cart)),
+    addItem: (orderId, productId) => dispatch(addToCart(orderId, productId)),
+    removeItem: (orderId, productId) => dispatch(removeFromCart(orderId, productId))
   }
 };
 

@@ -77,8 +77,11 @@ export const fetchSingleUser = (userId) => async (dispatch) => {
 export const updateUser = (userId, history) => async (dispatch) => {
   try {
     const token = window.localStorage.getItem(TOKEN);
-    const { data: updated } = await axios.put(`api/users/${userId}`);
-    //*III
+    const { data: updated } = await axios.put(`api/users/${userId}`, {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(updateSingleUser(updated));
     history.push("/users");
   } catch (error) {

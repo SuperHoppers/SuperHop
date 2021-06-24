@@ -8,6 +8,9 @@ class SingleProduct extends Component {
     componentDidMount() {
         const { productId } = this.props.match.params;
         this.props.loadSingleProduct(productId);
+        if (this.props.isLoggedIn ){
+            this.props.loadOrder(this.props.user)
+          }
     }
     constructor(){
         super()
@@ -15,9 +18,29 @@ class SingleProduct extends Component {
     }
     handleClick(evt){
         evt.preventDefault();
-        const orderId = 1;
         const productId = evt.target.value;
-        this.props.addItem(orderId,productId);
+        if(this.props.isLoggedIn){
+          if(!this.props.order.id){
+            const userId = this.props.user;
+            this.props.createOrder(productId, userId);
+          } else {
+            const orderId = this.props.order.id;
+            this.props.addItem(orderId,productId);
+          }
+        } else {
+          let cart = JSON.parse(window.localStorage.getItem('cart'))
+          if(!cart) {
+            window.localStorage.setItem('cart',JSON.stringify({}))
+          }
+          cart = JSON.parse(window.localStorage.getItem('cart'))
+          if(cart[productId]){
+            cart[productId] += 1
+          } else {
+            cart[productId] = 1;
+          }
+          this.setState({cart:cart})
+          window.localStorage.setItem('cart', JSON.stringify(cart))
+        }
     }
     render() {
         const { id, name, price, description, imageURL } = this.props.product;
@@ -59,12 +82,19 @@ class SingleProduct extends Component {
 }
 
 const mapState = (state) => ({
-    product: state.products.singleProduct
+    product: state.products.singleProduct,
+    items: state.orders.cartItems,
+    order: state.orders.order,
+    products: state.products.allProducts,
+    isLoggedIn: !!state.auth.id,
+    user: state.auth.id,
 });
 
 const mapDispatch = (dispatch) => ({
     loadSingleProduct: (productId) => dispatch(fetchSingleProduct(productId)),
-    addItem: (productId, orderId) => dispatch(addToCart(productId,orderId))
+    addItem: (productId, orderId) => dispatch(addToCart(productId,orderId)),
+    loadOrder: (userId) => dispatch(fetchOrder(userId)),
+    createOrder: (productId, userId) => dispatch(createOrder(productId, userId))
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);
